@@ -37,10 +37,17 @@ init();
         <div class="verticalLine"></div>
         <ice-input v-model="data.phone" placeholder="手机号" @input="inputChange"></ice-input>
         <div class="verticalLine"></div>
+        <ice-input v-model="data.wechatId" placeholder="微信" @input="inputChange"></ice-input>
+        <div class="verticalLine"></div>
         <ice-header>
           总结
         </ice-header>
-        <ice-input v-model="data.summary" placeholder="总结" @input="inputChange"></ice-input>
+        <ice-input v-model="data.summary1" placeholder="总结" @input="inputChange"></ice-input>
+        <ice-input v-model="data.summary2" placeholder="总结" @input="inputChange"></ice-input>
+        <ice-input v-model="data.summary3" placeholder="总结" @input="inputChange"></ice-input>
+
+        <ice-header>教育经历</ice-header>
+        <ice-input v-model="data.educate" placeholder="教育经历" @input="inputChange"></ice-input>
 
 
       </ice-column>
