@@ -9,46 +9,78 @@ const init = () => {
 }
 
 const emits = defineEmits(['update:myInfo'])
+
 // 子组件的内容改变,update父组件中的内容
-const inputChange = () => {
+watch(data, () => {
   emits('update:myInfo', data.value)
-}
+})
 init();
+// 控制元素添加
+const addElement = (type: string) => {
+  const list = data.value[type]
+  const keys = Object.keys(list)
+  const tempKey = type + (parseInt(keys[keys.length - 1].charAt(keys[keys.length - 1].length - 1)) + 1 + '');
+  data.value[type][tempKey] = ''
+}
+// 较少指定
+const decreaseElement = (type: string, target: string) => {
+  delete data.value[type][target]
+}
+// 控制元素删除
+const deleteElement = (type: string, index: number) => {
+  console.log("delete", type, index)
+  console.log(data.value)
+  console.log(data.value[type])
+}
+
 
 </script>
 
 <template>
   <div class="introduceMyself">
+    <ice-header>基本信息</ice-header>
     <ice-row class="alignC">
       <ice-avatar :src="data.avatar" block></ice-avatar>
-      <ice-input v-model="data.avatar" placeholder="picture" @input="inputChange"></ice-input>
+      <ice-input v-model="data.avatar" placeholder="picture"></ice-input>
     </ice-row>
 
     <ice-column>
       <ice-column>
         <div class="verticalLine"></div>
-        <ice-input v-model="data.name" placeholder="全名" @input="inputChange"></ice-input>
+        <ice-input v-model="data.name" placeholder="全名"></ice-input>
         <div class="verticalLine"></div>
-        <ice-input v-model="data.email" placeholder="email" @input="inputChange"></ice-input>
+
+        <template v-for="(key, index) in Object.keys(data.email)" :key="index">
+          <ice-row class="oneRow alignC">
+            <ice-input v-model="data.email[key]" placeholder="email" class="flex1"></ice-input>
+            <ice-button @click="decreaseElement('email',key)">-</ice-button>
+          </ice-row>
+        </template>
+
+        <ice-button @click="addElement('email')">加一</ice-button>
+
         <div class="verticalLine"></div>
-        <ice-input v-model="data.address" placeholder="当前居住地" @input="inputChange"></ice-input>
+        <ice-input v-model="data.address" placeholder="当前居住地"></ice-input>
         <div class="verticalLine"></div>
-        <ice-input v-model="data.website" placeholder="个人网站" @input="inputChange"></ice-input>
+        <ice-input v-model="data.website" placeholder="个人网站"></ice-input>
         <div class="verticalLine"></div>
-        <ice-input v-model="data.phone" placeholder="手机号" @input="inputChange"></ice-input>
+        <ice-input v-model="data.phone" placeholder="手机号"></ice-input>
         <div class="verticalLine"></div>
-        <ice-input v-model="data.wechatId" placeholder="微信" @input="inputChange"></ice-input>
+        <ice-input v-model="data.wechatId" placeholder="微信"></ice-input>
         <div class="verticalLine"></div>
         <ice-header>
           总结
         </ice-header>
-        <ice-input v-model="data.summary1" placeholder="总结" @input="inputChange"></ice-input>
-        <ice-input v-model="data.summary2" placeholder="总结" @input="inputChange"></ice-input>
-        <ice-input v-model="data.summary3" placeholder="总结" @input="inputChange"></ice-input>
 
-        <ice-header>教育经历</ice-header>
-        <ice-input v-model="data.educate" placeholder="教育经历" @input="inputChange"></ice-input>
+        <template v-for="(key, index) in Object.keys(data.summary)" :key="index">
+          <ice-row class="oneRow alignC">
+            <ice-input v-model="data.summary[key]" placeholder="总结" class="flex1"></ice-input>
+            <ice-button @click="decreaseElement('summary',key)">-</ice-button>
+          </ice-row>
+        </template>
 
+
+        <ice-button @click="addElement('summary')">加一</ice-button>
 
       </ice-column>
 
@@ -60,6 +92,9 @@ init();
 .introduceMyself{
   box-sizing: border-box;
   padding: 0 @p-small;
-}
 
+  .oneRow{
+
+  }
+}
 </style>

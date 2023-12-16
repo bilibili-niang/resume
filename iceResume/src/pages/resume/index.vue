@@ -7,10 +7,25 @@
 
     <div class="formContainer ice-row" ref="currentBox">
       <div class="left" ref="leftContentRef">
-        <ice-button @click="generate">生成</ice-button>
-        <!--自我介绍-->
-        <introduceMyself v-model="data.myInfo"/>
+        <ice-row>
+          <ice-column class="leftMenu">
+            <ice-text>
+              基本信息
+            </ice-text>
 
+            <ice-text>
+              教育经历
+            </ice-text>
+          </ice-column>
+
+          <ice-column class="rightSelection">
+            <ice-button @click="generate">生成</ice-button>
+            <!--自我介绍-->
+            <introduceMyself v-model="data.myInfo"/>
+            <!--教育经历-->
+            <educationalExperience v-model="data.education"/>
+          </ice-column>
+        </ice-row>
 
       </div>
       <div class="resize" title="收缩侧边栏" ref="resizeBox">⋮</div>
@@ -29,20 +44,33 @@
 import indexHeader from "@/components/index/header.vue"
 import introduceMyself from '@/components/resume/introduceMyself/index.vue'
 import renderPage from '@/components/resume/renderPage/index.vue'
+import educationalExperience from '@/components/resume/educationalExperience/index.vue'
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
-
+import resumeStore from '@/store/modules/resume.ts'
+import {ref} from "vue";
+const resumeData = resumeStore()
+console.log("resumeData:")
+console.log(resumeData)
 let data = ref({
   myInfo: {
     avatar: 'https://blog.icestone.work/default.png',
-    email: 'killicestone@126.com',
+    email: {
+      email1: 'killicestone@126.com'
+    },
     website: "https://blog.icestone.work/#/",
     phone: 18672148720,
-    summary1: "",
-    summary2: "",
-    summary3: "",
+    summary: {
+      summary1: '暂无内容'
+    },
     wechatId: '',
     educate: ''
+  },
+  education: {
+    school: '武汉轻工大学',
+    major: '计算机科学与技术',
+    time: '2020.09-至今',
+    degree: '本科'
   }
 })
 let startX = ref();
@@ -99,7 +127,7 @@ const init = () => {
     data.value = JSON.parse(localStorage.getItem('info'))
   }
 }
-const generate = (title = 'resume') => {
+const generate = () => {
   nextTick(() => {
     // htmlToPdfFun('pdfDom', '个人报告')
     const element = document.getElementById('pdfDom');
@@ -143,15 +171,16 @@ const generate = (title = 'resume') => {
               }
             }
           }
-          console.log("title:")
-          console.log(title)
-          PDF.save(title + ".pdf");
+          PDF.save("我的简历.pdf");
+          // PDF.save(title + ".pdf");
         })
         .catch((error) => {
           console.log("打印失败", error);
         });
   })
 }
+
+
 init()
 
 </script>
@@ -179,6 +208,32 @@ init()
   width: 18rem;
   padding: 0 @p-normal;
   box-sizing: border-box;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar{
+    width: 8px; /* 滚动条宽度 */
+  }
+
+  &::-webkit-scrollbar-track{
+    background: #f1f1f1; /* 滚动条轨道背景色 */
+  }
+
+  &::-webkit-scrollbar-thumb{
+    background: #888; /* 滚动条颜色 */
+  }
+
+  &::-webkit-scrollbar-thumb:hover{
+    background: #555; /* 滚动条悬停颜色 */
+  }
+
+
+  .leftMenu{
+    width: 1.5rem !important;
+  }
+
+  .rightSelection{
+    flex: 1;
+  }
 }
 .center{
   .flexC();

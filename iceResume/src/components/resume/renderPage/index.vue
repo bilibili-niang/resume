@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 
 import {color, heightLight} from "@/config.js";
 
@@ -36,27 +36,37 @@ const moveDiv = () => {
 onMounted(() => {
   moveDiv();
 });
+const changeMenu = (menu) => {
+
+}
 
 </script>
 
 <template>
   <div class="renderPage" ref="renderPageRef">
-    <ice-row>
+    <ice-row class="renderBlock">
       <ice-avatar :src="data.myInfo.avatar" block></ice-avatar>
       <ice-column class="userInfoText">
         <ice-text :color="color" size="l" m0>{{ data.myInfo.name }}</ice-text>
 
         <ice-row>
-          <ice-text :color="color" ta nowrap p0 m0>
-            <ice-tag :color="color" ta m0>电话:</ice-tag>
+          <ice-text :color="color" nowrap p0 m0>
+            <ice-tag :color="color">电话:</ice-tag>
             {{ data.myInfo.phone }}
           </ice-text>
-          <ice-text :color="color" ta nowrap p0 m0>
-            <ice-tag :color="color" ta m0>邮箱:</ice-tag>
-            {{ data.myInfo.email }}
+
+          <ice-text :color="color" nowrap p0 m0>
+            <ice-tag :color="color" nowrap>邮箱:</ice-tag>
+            <template v-for="(key, index) in Object.keys(data.myInfo.email)" :key="index">
+              <ice-text :color="color" v-if="data.myInfo.email[key]&&data.myInfo.email[key].length>0">
+                {{ data.myInfo.email[key] }}
+              </ice-text>
+            </template>
           </ice-text>
-          <ice-text :color="color" ta nowrap p0 m0>
-            <ice-tag :color="color" ta m0>微信:</ice-tag>
+
+
+          <ice-text :color="color" nowrap p0 m0>
+            <ice-tag :color="color">微信:</ice-tag>
             {{ data.myInfo.wechatId }}
           </ice-text>
 
@@ -64,13 +74,13 @@ onMounted(() => {
         </ice-row>
         <ice-row>
 
-          <ice-text :color="color" ta nowrap p0 m0>
-            <ice-tag :color="color" ta m0>个人网站:</ice-tag>
+          <ice-text :color="color" nowrap p0 m0>
+            <ice-tag :color="color">个人网站:</ice-tag>
             {{ data.myInfo.website }}
           </ice-text>
 
-          <ice-text :color="color" ta nowrap p0 m0>
-            <ice-tag :color="color" ta m0>当前居住地:</ice-tag>
+          <ice-text :color="color" nowrap p0 m0>
+            <ice-tag :color="color" m0>当前居住地:</ice-tag>
             {{ data.myInfo.address }}
           </ice-text>
 
@@ -78,33 +88,55 @@ onMounted(() => {
         </ice-row>
       </ice-column>
     </ice-row>
-    <div class="verticalLine"></div>
-    <ice-column>
-      <ice-split position="left" text="总结" :color="heightLight"></ice-split>
-      <ice-text :color="color">
-        {{ data.myInfo.summary1 }}
-      </ice-text>
-
-      <ice-text :color="color">
-        {{ data.myInfo.summary2 }}
-      </ice-text>
-
-      <ice-text :color="color">
-        {{ data.myInfo.summary3 }}
-      </ice-text>
-    </ice-column>
-    <div class="verticalLine"></div>
-    <ice-column>
+    <!--教育经历-->
+    <ice-column class="renderBlock" @click="changeMenu('education')">
+      <div class="verticalLine"></div>
       <ice-split position="left" text="教育经历"></ice-split>
       <ice-row class="justBetween">
         <ice-text :color="color">
-          {{ data.myInfo.educate }}
+          {{ data.education.school }}
         </ice-text>
-
 
         <ice-text :color="color">2022.9-2024.6</ice-text>
       </ice-row>
+
+
     </ice-column>
+
+    <ice-column class="renderBlock">
+      <div class="verticalLine"></div>
+      <ice-split position="left" text="专业技能"></ice-split>
+
+
+    </ice-column>
+
+    <ice-column class="renderBlock">
+      <div class="verticalLine"></div>
+      <ice-split position="left" text="项目经历"></ice-split>
+
+
+    </ice-column>
+
+    <ice-column class="renderBlock">
+      <div class="verticalLine"></div>
+      <ice-split position="left" text="获奖"></ice-split>
+
+
+    </ice-column>
+
+    <!--自我评价-->
+    <ice-column class="renderBlock">
+      <div class="verticalLine"></div>
+      <ice-split position="left" text="总结" :color="heightLight"></ice-split>
+
+      <template v-for="(key, index) in Object.keys(data.myInfo.summary)" :key="index">
+        <ice-text :color="color" v-if="data.myInfo.summary[key]&&data.myInfo.summary[key].length>0">
+          {{ data.myInfo.summary[key] }}
+        </ice-text>
+      </template>
+
+    </ice-column>
+
 
   </div>
 </template>
@@ -127,5 +159,12 @@ onMounted(() => {
 }
 .userInfoText{
   justify-content: flex-end;
+}
+.renderBlock{
+  transition-duration: @time-n;
+
+  &:hover{
+    background: rgba(0, 0, 0, .2);
+  }
 }
 </style>
