@@ -1,7 +1,9 @@
 <script setup lang="ts">
 
+import resumeStore from '@/store/modules/resume.ts'
 import {color, heightLight} from "@/config.js";
 
+const resumeData = resumeStore()
 const props = defineProps({
   data: {
     type: Object
@@ -32,64 +34,86 @@ const moveDiv = () => {
   });
 };
 
+// 监听点击并获取类名
+const elementLister = () => {
+  let elementList = document.getElementsByClassName("renderBlock");
+  for (let i = 0; i < elementList.length; i++) {
+    elementList[i].addEventListener("click", (e) => {
+      changeMenu(e.target.id);
+    });
+  }
+};
+
 // 监听鼠标按下
 onMounted(() => {
   moveDiv();
+  // elementLister();
 });
-const changeMenu = (menu) => {
 
+const changeMenu = (menu) => {
+  if (!menu) {
+    return void 0;
+  } else {
+    resumeData.updateMenu(menu);
+  }
 }
 
 </script>
 
 <template>
   <div class="renderPage" ref="renderPageRef">
-    <ice-row class="renderBlock">
-      <ice-avatar :src="data.myInfo.avatar" block></ice-avatar>
-      <ice-column class="userInfoText">
-        <ice-text :color="color" size="l" m0>{{ data.myInfo.name }}</ice-text>
 
-        <ice-row>
-          <ice-text :color="color" nowrap p0 m0>
-            <ice-tag :color="color">电话:</ice-tag>
-            {{ data.myInfo.phone }}
-          </ice-text>
+    <!--头像-->
+    <ice-column class="renderBlock" id="avatar" @click="changeMenu('avatar')">
+      <div class="verticalLine"></div>
+      <ice-row>
+        <ice-avatar :src="data.myInfo.avatar" block></ice-avatar>
+        <ice-column class="userInfoText">
+          <ice-text :color="color" size="l" m0>{{ data.myInfo.name }}</ice-text>
 
-          <ice-text :color="color" nowrap p0 m0>
-            <ice-tag :color="color" nowrap>邮箱:</ice-tag>
-            <template v-for="(key, index) in Object.keys(data.myInfo.email)" :key="index">
-              <ice-text :color="color" v-if="data.myInfo.email[key]&&data.myInfo.email[key].length>0">
-                {{ data.myInfo.email[key] }}
-              </ice-text>
-            </template>
-          </ice-text>
+          <ice-row>
+            <ice-text :color="color" nowrap p0 m0>
+              <ice-tag :color="color">电话:</ice-tag>
+              {{ data.myInfo.phone }}
+            </ice-text>
 
-
-          <ice-text :color="color" nowrap p0 m0>
-            <ice-tag :color="color">微信:</ice-tag>
-            {{ data.myInfo.wechatId }}
-          </ice-text>
+            <ice-text :color="color" nowrap p0 m0>
+              <ice-tag :color="color" nowrap>邮箱:</ice-tag>
+              <template v-for="(key, index) in Object.keys(data.myInfo.email)" :key="index">
+                <ice-text :color="color" v-if="data.myInfo.email[key]&&data.myInfo.email[key].length>0">
+                  {{ data.myInfo.email[key] }}
+                </ice-text>
+              </template>
+            </ice-text>
 
 
-        </ice-row>
-        <ice-row>
-
-          <ice-text :color="color" nowrap p0 m0>
-            <ice-tag :color="color">个人网站:</ice-tag>
-            {{ data.myInfo.website }}
-          </ice-text>
-
-          <ice-text :color="color" nowrap p0 m0>
-            <ice-tag :color="color" m0>当前居住地:</ice-tag>
-            {{ data.myInfo.address }}
-          </ice-text>
+            <ice-text :color="color" nowrap p0 m0>
+              <ice-tag :color="color">微信:</ice-tag>
+              {{ data.myInfo.wechatId }}
+            </ice-text>
 
 
-        </ice-row>
-      </ice-column>
-    </ice-row>
+          </ice-row>
+          <ice-row>
+
+            <ice-text :color="color" nowrap p0 m0>
+              <ice-tag :color="color">个人网站:</ice-tag>
+              {{ data.myInfo.website }}
+            </ice-text>
+
+            <ice-text :color="color" nowrap p0 m0>
+              <ice-tag :color="color" m0>当前居住地:</ice-tag>
+              {{ data.myInfo.address }}
+            </ice-text>
+
+
+          </ice-row>
+        </ice-column>
+      </ice-row>
+    </ice-column>
+
     <!--教育经历-->
-    <ice-column class="renderBlock" @click="changeMenu('education')">
+    <ice-column class="renderBlock" id="education" @click="changeMenu('education')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="教育经历"></ice-split>
       <ice-row class="justBetween">
@@ -100,24 +124,27 @@ const changeMenu = (menu) => {
         <ice-text :color="color">2022.9-2024.6</ice-text>
       </ice-row>
 
-
     </ice-column>
 
-    <ice-column class="renderBlock">
+    <!--专业技能-->
+    <ice-column class="renderBlock" id="professionalSkills" @click="changeMenu('professionalSkills')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="专业技能"></ice-split>
-
+      <ice-text v-for="(item,index) in data.skill" :key="index" :color="color">
+        {{ item.name }}-{{ item.extent }}
+      </ice-text>
 
     </ice-column>
 
-    <ice-column class="renderBlock">
+    <!--项目经历-->
+    <ice-column class="renderBlock" id="projectExperience" @click="changeMenu('projectExperience')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="项目经历"></ice-split>
 
-
     </ice-column>
 
-    <ice-column class="renderBlock">
+    <!--获奖-->
+    <ice-column class="renderBlock" id="prize" @click="changeMenu('prize')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="获奖"></ice-split>
 
@@ -125,7 +152,7 @@ const changeMenu = (menu) => {
     </ice-column>
 
     <!--自我评价-->
-    <ice-column class="renderBlock">
+    <ice-column class="renderBlock" id="summary" @click="changeMenu('summary')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="总结" :color="heightLight"></ice-split>
 

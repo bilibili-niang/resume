@@ -7,23 +7,27 @@
 
     <div class="formContainer ice-row" ref="currentBox">
       <div class="left" ref="leftContentRef">
+        <ice-text>
+          menu:{{ resumeData.$state.resumeData.menu }}
+          <br>
+          componentName:{{ componentName }}
+        </ice-text>
         <ice-row>
-          <ice-column class="leftMenu">
-            <ice-text>
-              基本信息
-            </ice-text>
-
-            <ice-text>
-              教育经历
-            </ice-text>
-          </ice-column>
+          <ice-column class="leftMenu" v-if="false"></ice-column>
 
           <ice-column class="rightSelection">
             <ice-button @click="generate">生成</ice-button>
             <!--自我介绍-->
-            <introduceMyself v-model="data.myInfo"/>
+            <introduceMyself v-model="data.myInfo"
+                             v-if="menuData[resumeData.$state.resumeData.menu]==='introduceMyself'"/>
             <!--教育经历-->
-            <educationalExperience v-model="data.education"/>
+            <educationalExperience v-model="data.education"
+                                   v-if="menuData[resumeData.$state.resumeData.menu]==='educationalExperience'"/>
+            <!--专业技能-->
+            <skill v-model="data.skill"
+                   v-if="menuData[resumeData.$state.resumeData.menu]==='skill'"/>
+
+
           </ice-column>
         </ice-row>
 
@@ -36,43 +40,29 @@
       </div>
       <!-- <div class="right" ref="rightBox"></div>-->
     </div>
-
   </div>
 </template>
 
 <script setup lang="ts">
 import indexHeader from "@/components/index/header.vue"
-import introduceMyself from '@/components/resume/introduceMyself/index.vue'
 import renderPage from '@/components/resume/renderPage/index.vue'
-import educationalExperience from '@/components/resume/educationalExperience/index.vue'
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import resumeStore from '@/store/modules/resume.ts'
 import {ref} from "vue";
+import {menuData} from "@/config.js";
+
+
 const resumeData = resumeStore()
-console.log("resumeData:")
-console.log(resumeData)
-let data = ref({
-  myInfo: {
-    avatar: 'https://blog.icestone.work/default.png',
-    email: {
-      email1: 'killicestone@126.com'
-    },
-    website: "https://blog.icestone.work/#/",
-    phone: 18672148720,
-    summary: {
-      summary1: '暂无内容'
-    },
-    wechatId: '',
-    educate: ''
-  },
-  education: {
-    school: '武汉轻工大学',
-    major: '计算机科学与技术',
-    time: '2020.09-至今',
-    degree: '本科'
-  }
+console.log('menu')
+console.log(resumeData.$state.resumeData.menu)
+
+let componentName = computed(() => {
+  return menuData[resumeData.$state.resumeData.menu]
 })
+
+
+let data = ref({})
 let startX = ref();
 const onMousemove = (e: any) => {
   const endX = e.clientX
@@ -123,9 +113,10 @@ setInterval(() => {
   localStorage.setItem('info', JSON.stringify(data.value))
 }, 2000)
 const init = () => {
-  if (localStorage.getItem('info')) {
+  /*if (localStorage.getItem('info')) {
     data.value = JSON.parse(localStorage.getItem('info'))
-  }
+  }*/
+  data.value = resumeData.$state.resumeData
 }
 const generate = () => {
   nextTick(() => {
@@ -228,7 +219,7 @@ init()
 
 
   .leftMenu{
-    width: 1.5rem !important;
+    //width: 1.5rem !important;
   }
 
   .rightSelection{

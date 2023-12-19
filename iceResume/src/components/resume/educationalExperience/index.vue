@@ -24,7 +24,6 @@ init();
       <ice-input v-model="data.major" placeholder="专业"></ice-input>
       <ice-input v-model="data.time" placeholder="就读时间"></ice-input>
       <ice-input v-model="data.degree" placeholder="层级"></ice-input>
-
     </ice-column>
 
   </div>
