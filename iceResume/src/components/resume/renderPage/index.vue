@@ -50,7 +50,7 @@ onMounted(() => {
   // elementLister();
 });
 
-const changeMenu = (menu) => {
+const changeMenu = (menu: string) => {
   if (!menu) {
     return void 0;
   } else {
@@ -117,11 +117,15 @@ const changeMenu = (menu) => {
       <div class="verticalLine"></div>
       <ice-split position="left" text="教育经历"></ice-split>
       <ice-row class="justBetween">
-        <ice-text :color="color">
-          {{ data.education.school }}
+        <ice-row>
+          <ice-text :color="color" nowrap>
+            {{ data.education.school }}
+            -{{ data.education.major }}
+          </ice-text>
+        </ice-row>
+        <ice-text :color="color" nowrap>
+          {{ data.education.time }}
         </ice-text>
-
-        <ice-text :color="color">2022.9-2024.6</ice-text>
       </ice-row>
 
     </ice-column>
@@ -147,12 +151,12 @@ const changeMenu = (menu) => {
     <ice-column class="renderBlock" id="prize" @click="changeMenu('prize')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="获奖"></ice-split>
-
+      {{ data.prize }}
 
     </ice-column>
 
     <!--自我评价-->
-    <ice-column class="renderBlock" id="summary" @click="changeMenu('summary')">
+    <ice-column class="renderBlock" id="summary" @click="changeMenu('avatar')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="总结" :color="heightLight"></ice-split>
 

@@ -7,26 +7,27 @@
 
     <div class="formContainer ice-row" ref="currentBox">
       <div class="left" ref="leftContentRef">
-        <ice-text>
-          menu:{{ resumeData.$state.resumeData.menu }}
-          <br>
-          componentName:{{ componentName }}
-        </ice-text>
         <ice-row>
           <ice-column class="leftMenu" v-if="false"></ice-column>
-
           <ice-column class="rightSelection">
-            <ice-button @click="generate">生成</ice-button>
+            <ice-row>
+              <ice-button @click="generate">生成pdf</ice-button>
+              <ice-button @click="showAllTrigger" v-if="resumeData.$state.resumeData.menu!=='all'">展示所有</ice-button>
+            </ice-row>
             <!--自我介绍-->
             <introduceMyself v-model="data.myInfo"
-                             v-if="menuData[resumeData.$state.resumeData.menu]==='introduceMyself'"/>
+                             v-if="menuData[resumeData.$state.resumeData.menu]==='introduceMyself' || showAll"/>
             <!--教育经历-->
             <educationalExperience v-model="data.education"
-                                   v-if="menuData[resumeData.$state.resumeData.menu]==='educationalExperience'"/>
+                                   v-if="menuData[resumeData.$state.resumeData.menu]==='educationalExperience' || showAll"/>
+            <!--获奖-->
+            <getPrize
+                v-model="data.prize"
+                v-if="menuData[resumeData.$state.resumeData.menu]==='prize' || showAll"/>
+
             <!--专业技能-->
             <skill v-model="data.skill"
-                   v-if="menuData[resumeData.$state.resumeData.menu]==='skill'"/>
-
+                   v-if="menuData[resumeData.$state.resumeData.menu]==='skill' || showAll"/>
 
           </ice-column>
         </ice-row>
@@ -46,16 +47,18 @@
 <script setup lang="ts">
 import indexHeader from "@/components/index/header.vue"
 import renderPage from '@/components/resume/renderPage/index.vue'
+import getPrize from '@/components/resume/getPrize/index.vue'
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import resumeStore from '@/store/modules/resume.ts'
 import {ref} from "vue";
 import {menuData} from "@/config.js";
 
+const getComponentName = () => {
+  console.log(this)
+}
 
 const resumeData = resumeStore()
-console.log('menu')
-console.log(resumeData.$state.resumeData.menu)
 
 let componentName = computed(() => {
   return menuData[resumeData.$state.resumeData.menu]
@@ -75,7 +78,7 @@ const onMousemove = (e: any) => {
   }
   leftContentRef.value.style.width = CurBoxLen + 'px';
 };
-const onMouseup = (e: any) => {
+const onMouseup = () => {
   resizeBox.value.style.background = 'rgba(122, 115, 116, 1)';
   // 移除监听
   document.removeEventListener('mousedown', onMouseDown)
@@ -110,12 +113,14 @@ onMounted(() => {
 
 // 定时将 data 存入本地
 setInterval(() => {
-  localStorage.setItem('info', JSON.stringify(data.value))
+  if (data.value!=='{}') {
+    localStorage.setItem('info', JSON.stringify(data.value))
+  }
 }, 2000)
 const init = () => {
-  /*if (localStorage.getItem('info')) {
-    data.value = JSON.parse(localStorage.getItem('info'))
-  }*/
+  if (localStorage.getItem('info')) {
+    resumeData.updateResume(JSON.parse(localStorage.getItem('info')))
+  }
   data.value = resumeData.$state.resumeData
 }
 const generate = () => {
@@ -171,8 +176,17 @@ const generate = () => {
   })
 }
 
-
 init()
+
+let showAll = computed(() => {
+  return resumeData.$state.resumeData.menu === 'all' ? true : false
+})
+
+const showAllTrigger = () => {
+  resumeData.updateMenu('all')
+  console.log("resumeData.$state.resumeData.menu:")
+  console.log(resumeData.$state.resumeData.menu)
+}
 
 </script>
 

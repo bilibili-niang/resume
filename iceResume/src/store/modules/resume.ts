@@ -32,11 +32,20 @@ const resume = defineStore('resume', () => {
                 extent: '熟练',
             }
         },
-        menu: ''
+        menu: '',
+        prize: [
+            {
+                prizeName: '全国大学生逃课一等奖',
+                prizeTime: '2024-10-05'
+            }, {
+                prizeName: '班级进步奖',
+                prizeTime: '2001-01-10'
+            }
+        ]
     })
 
     const updateResume = (data: object): void => {
-        resume.value = data
+        resumeData.value = data
     }
     const updateMenu = (menu: string): void => {
         resumeData.value.menu = menu

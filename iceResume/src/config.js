@@ -3,5 +3,6 @@ export const heightLight = "rubai";
 export const menuData = {
   "avatar": "introduceMyself",
   "education": "educationalExperience",
-  "professionalSkills": "skill"
+  "professionalSkills": "skill",
+  "prize": "prize"
 };
