@@ -112,16 +112,21 @@ onMounted(() => {
 })
 
 // 定时将 data 存入本地
+let i = 0;
 setInterval(() => {
-  if (data.value!=='{}') {
+  if (data.value !== '{}') {
     localStorage.setItem('info', JSON.stringify(data.value))
+    console.log(`写入本地,第${i}次`)
+    i++
   }
 }, 2000)
 const init = () => {
-  if (localStorage.getItem('info')) {
+  /*if (localStorage.getItem('info')) {
     resumeData.updateResume(JSON.parse(localStorage.getItem('info')))
-  }
+  }*/
   data.value = resumeData.$state.resumeData
+  console.log("data.value")
+  console.log(data.value)
 }
 const generate = () => {
   nextTick(() => {

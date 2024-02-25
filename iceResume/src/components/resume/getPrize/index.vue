@@ -10,28 +10,25 @@ const init = () => {
   data.value = props.modelValue;
 }
 // 较少指定
-const decreaseElement = (type: string, target: string) => {
-  delete data.value[type][target]
+const decreaseElement = (key: number) => {
+  console.log("key", key)
+  console.log(data.value[key])
+  delete data.value[key]
 }
 init();
 </script>
 
 <template>
   <div class="getPrize">
-
-    <ice-header>
-      获奖
-    </ice-header>
-
+    <ice-header>获奖</ice-header>
     {{ data }}
-
     <div class="verticalLine"></div>
-    <!--    <template v-for="(key, index) in Object.keys(data.prize)" :key="index">
-          <ice-row class="oneRow alignC">
-            <ice-input v-model="data.summary[key]" placeholder="奖项名称" class="flex1"></ice-input>
-            <ice-button @click="decreaseElement('prize',key)">-</ice-button>
-          </ice-row>
-        </template>-->
+    <template v-for="(key, index) in data" :key="index">
+      <ice-row class="oneRow alignC">
+        <ice-input v-model="key.prizeName" placeholder="奖项名称" class="flex1"></ice-input>
+        <ice-button @click="decreaseElement(index)">-</ice-button>
+      </ice-row>
+    </template>
 
 
   </div>

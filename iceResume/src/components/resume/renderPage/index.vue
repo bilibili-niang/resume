@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
-import resumeStore from '@/store/modules/resume.ts'
+import resumeStore from "@/store/modules/resume.ts";
 import {color, heightLight} from "@/config.js";
 
-const resumeData = resumeStore()
+const resumeData = resumeStore();
 const props = defineProps({
   data: {
     type: Object
@@ -56,7 +56,7 @@ const changeMenu = (menu: string) => {
   } else {
     resumeData.updateMenu(menu);
   }
-}
+};
 
 </script>
 
@@ -151,7 +151,13 @@ const changeMenu = (menu: string) => {
     <ice-column class="renderBlock" id="prize" @click="changeMenu('prize')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="获奖"></ice-split>
-      {{ data.prize }}
+
+      <template v-for="(key, index) in Object.keys(data.prize)" :key="index">
+        <div class="ice-row justBetween">
+          <ice-text :color="color">{{ data.prize[key].prizeName }}</ice-text>
+          <ice-text :color="color">{{ data.prize[key].prizeTime }}</ice-text>
+        </div>
+      </template>
 
     </ice-column>
 
