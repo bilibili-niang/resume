@@ -21,11 +21,13 @@ init();
 <template>
   <div class="getPrize">
     <ice-header>获奖</ice-header>
-    {{ data }}
     <div class="verticalLine"></div>
     <template v-for="(key, index) in data" :key="index">
-      <ice-row class="oneRow alignC">
-        <ice-input v-model="key.prizeName" placeholder="奖项名称" class="flex1"></ice-input>
+      <ice-row class="oneRow alignC m-top-small">
+        <ice-column>
+          <ice-input v-model="key.prizeName" placeholder="奖项名称" class="flex1"></ice-input>
+          <ice-input v-model="key.prizeTime" placeholder="获奖时间" class="flex1"></ice-input>
+        </ice-column>
         <ice-button @click="decreaseElement(index)">-</ice-button>
       </ice-row>
     </template>

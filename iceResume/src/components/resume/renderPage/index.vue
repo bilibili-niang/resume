@@ -119,15 +119,13 @@ const changeMenu = (menu: string) => {
       <ice-row class="justBetween">
         <ice-row>
           <ice-text :color="color" nowrap>
-            {{ data.education.school }}
-            -{{ data.education.major }}
+            {{ data.education.school }} -{{ data.education.major }}
           </ice-text>
         </ice-row>
         <ice-text :color="color" nowrap>
           {{ data.education.time }}
         </ice-text>
       </ice-row>
-
     </ice-column>
 
     <!--专业技能-->
@@ -144,6 +142,8 @@ const changeMenu = (menu: string) => {
     <ice-column class="renderBlock" id="projectExperience" @click="changeMenu('projectExperience')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="项目经历"></ice-split>
+      {{ data.projectData}}
+
 
     </ice-column>
 

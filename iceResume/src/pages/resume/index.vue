@@ -20,6 +20,11 @@
             <!--教育经历-->
             <educationalExperience v-model="data.education"
                                    v-if="menuData[resumeData.$state.resumeData.menu]==='educationalExperience' || showAll"/>
+
+            <!--项目经历-->
+            <projectExperience v-model="data.projectData"
+                               v-if="menuData[resumeData.$state.resumeData.menu]==='projectExperience' || showAll"/>
+
             <!--获奖-->
             <getPrize
                 v-model="data.prize"
@@ -28,6 +33,7 @@
             <!--专业技能-->
             <skill v-model="data.skill"
                    v-if="menuData[resumeData.$state.resumeData.menu]==='skill' || showAll"/>
+
 
           </ice-column>
         </ice-row>
@@ -48,6 +54,7 @@
 import indexHeader from "@/components/index/header.vue"
 import renderPage from '@/components/resume/renderPage/index.vue'
 import getPrize from '@/components/resume/getPrize/index.vue'
+import projectExperience from '@/components/resume/projectExperience/index.vue'
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import resumeStore from '@/store/modules/resume.ts'
@@ -112,12 +119,9 @@ onMounted(() => {
 })
 
 // 定时将 data 存入本地
-let i = 0;
 setInterval(() => {
   if (data.value !== '{}') {
     localStorage.setItem('info', JSON.stringify(data.value))
-    console.log(`写入本地,第${i}次`)
-    i++
   }
 }, 2000)
 const init = () => {

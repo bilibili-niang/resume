@@ -16,6 +16,18 @@ const resume = defineStore('resume', () => {
             },
             wechatId: 'icestone9',
         },
+        projectData: [
+            {
+                company: '浙江嘉兴数字城市实验室有限公司',
+                projectName: '基层治理综合信息平台',
+                projectTime: '2021.09-至今',
+                projectContent: '基于SpringBoot+Vue+ElementUI+MySQL+Redis+MyBatis+Shiro+JWT+LayUI+Axios+Mock+MockJs+MockJs+MockJs+Mock',
+                projectRole: '前端开发',
+                city: '嘉兴',
+                // 是否为公司项目,0为false,1为true
+                companyProject: 1
+            }
+        ],
         education: {
             school: '武汉轻工大学',
             major: '计算机科学与技术',
