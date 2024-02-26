@@ -24,7 +24,6 @@
             <!--项目经历-->
             <projectExperience v-model="data.projectData"
                                v-if="menuData[resumeData.$state.resumeData.menu]==='projectExperience' || showAll"/>
-
             <!--获奖-->
             <getPrize
                 v-model="data.prize"

@@ -22,6 +22,9 @@ app.component("skill", skill);
 
 icepro.install(app);
 
+console.log("icepro:")
+console.log(icepro)
+
 app.use(pinia)
     .use(router)
     .mount('#app')

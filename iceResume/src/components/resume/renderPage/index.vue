@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import resumeStore from "@/store/modules/resume.ts";
-import {color, heightLight} from "@/config.js";
+import {color} from "@/config.js";
 
 const resumeData = resumeStore();
 const props = defineProps({
@@ -102,7 +102,7 @@ const changeMenu = (menu: string) => {
             </ice-text>
 
             <ice-text :color="color" nowrap p0 m0>
-              <ice-tag :color="color" m0>当前居住地:</ice-tag>
+              <ice-tag :color="color" m0>现居城市:</ice-tag>
               {{ data.myInfo.address }}
             </ice-text>
 
@@ -142,7 +142,36 @@ const changeMenu = (menu: string) => {
     <ice-column class="renderBlock" id="projectExperience" @click="changeMenu('projectExperience')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="项目经历"></ice-split>
-      {{ data.projectData}}
+
+
+      <ice-text v-for="(item,index) in data.projectData" :key="index" :color="color">
+        <ice-column class="justBetween">
+
+          <ice-row class="alignC justBetween">
+            <ice-row>
+              <ice-text :color="color">
+                {{ item.projectName }}-{{ item.projectRole }}
+              </ice-text>
+              <!--<ice-tag v-if="item.companyProject===1" :color="color">企业项目</ice-tag>-->
+              <ice-text :color="color" v-if="item.companyProject===1">
+                {{ item.company }}
+              </ice-text>
+              <ice-text :color="color">
+                {{ item.city }}
+              </ice-text>
+            </ice-row>
+            <ice-text :color="color" class="widthAuto nowrap">
+              {{ item.projectTime }}
+            </ice-text>
+          </ice-row>
+          <ice-text class="wrap" :color="color">
+            {{ item.projectContent }}
+          </ice-text>
+
+        </ice-column>
+
+
+      </ice-text>
 
 
     </ice-column>
@@ -164,7 +193,7 @@ const changeMenu = (menu: string) => {
     <!--自我评价-->
     <ice-column class="renderBlock" id="summary" @click="changeMenu('avatar')">
       <div class="verticalLine"></div>
-      <ice-split position="left" text="总结" :color="heightLight"></ice-split>
+      <ice-split position="left" text="总结"></ice-split>
 
       <template v-for="(key, index) in Object.keys(data.myInfo.summary)" :key="index">
         <ice-text :color="color" v-if="data.myInfo.summary[key]&&data.myInfo.summary[key].length>0">

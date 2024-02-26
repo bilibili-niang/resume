@@ -4,5 +4,6 @@ export const menuData = {
   "avatar": "introduceMyself",
   "education": "educationalExperience",
   "professionalSkills": "skill",
-  "prize": "prize"
+  "prize": "prize",
+  "projectExperience":"projectExperience"
 };
