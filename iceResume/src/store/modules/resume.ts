@@ -15,12 +15,13 @@ const resume = defineStore('resume', () => {
                 summary1: '暂无内容'
             },
             wechatId: 'icestone9',
+            address:"湖北-襄阳"
         },
         projectData: [
             {
                 company: '浙江嘉兴数字城市实验室有限公司',
                 projectName: '基层治理综合信息平台',
-                projectTime: '2021.09-至今',
+                projectTime: '2023.05-08',
                 projectContent: '项目描述\n' +
                     '负责全市社会治理信息化规划,建设和管理,同时协调指导各级指挥中心的运行.建立标准化流程,实现事务处理的规范高效的运营\n' +
                     'toB平台的后台管理系统,面向政府,主要是功能的安全性和实现,pc端\n' +
@@ -40,7 +41,7 @@ const resume = defineStore('resume', () => {
         education: {
             school: '武汉轻工大学',
             major: '计算机科学与技术',
-            time: '2020.09-至今',
+            time: '2022.09-2024.06',
             degree: '本科'
         },
         skill: {

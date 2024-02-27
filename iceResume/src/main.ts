@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router/index'
 // 导入less
 import "icepro/dist/style.css";
-import icepro from "icepro/dist/icepro.js";
+// import icepro from "icepro/dist/icepro.js";
+import icepro from "icepro";
 import './assets/css/reset.less'
 import './assets/css/common.less'
 import tag from '@/components/common/tag/index.vue'
@@ -22,8 +23,6 @@ app.component("skill", skill);
 
 icepro.install(app);
 
-console.log("icepro:")
-console.log(icepro)
 
 app.use(pinia)
     .use(router)

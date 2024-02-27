@@ -212,7 +212,8 @@ const changeMenu = (menu: string) => {
   position: absolute;
   margin: auto;
   width: 835.8px;
-  height: 1122.66px;
+  min-height: 1122.66px;
+  //height: 1122.66px;
   //aspect-ratio: 3/4;
   font-size: 16px;
   background: #e2e1e4;

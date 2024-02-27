@@ -12,6 +12,7 @@
           <ice-column class="rightSelection">
             <ice-row>
               <ice-button @click="generate">生成pdf</ice-button>
+              <ice-button @click="generateWord">生成word</ice-button>
               <ice-button @click="showAllTrigger" v-if="resumeData.$state.resumeData.menu!=='all'">展示所有</ice-button>
             </ice-row>
             <!--自我介绍-->
@@ -49,92 +50,84 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import indexHeader from "@/components/index/header.vue"
-import renderPage from '@/components/resume/renderPage/index.vue'
-import getPrize from '@/components/resume/getPrize/index.vue'
-import projectExperience from '@/components/resume/projectExperience/index.vue'
+<script setup>
+// 父组件引入子组件的正确写法:
+import indexHeader from "@/components/index/header.vue";
+import renderPage from "@/components/resume/renderPage/index.vue";
+import getPrize from "@/components/resume/getPrize/index.vue";
+import projectExperience from "@/components/resume/projectExperience/index.vue";
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
-import resumeStore from '@/store/modules/resume.ts'
+import resumeStore from "@/store/modules/resume.ts";
 import {ref} from "vue";
 import {menuData} from "@/config.js";
+import {saveAs} from "file-saver";
+import {asBlob} from "html-docx-js-typescript";
 
-const getComponentName = () => {
-  console.log(this)
-}
+const resumeData = resumeStore();
 
-const resumeData = resumeStore()
-
-let componentName = computed(() => {
-  return menuData[resumeData.$state.resumeData.menu]
-})
-
-
-let data = ref({})
+let data = ref({});
 let startX = ref();
-const onMousemove = (e: any) => {
-  const endX = e.clientX
+const onMousemove = (e) => {
+  const endX = e.clientX;
   // (endx-startx)= 移动的距离
-  const moveLen = endX - startX.value
+  const moveLen = endX - startX.value;
   // resize[i].left+移动的距离=左边区域最后的宽度
-  const CurBoxLen = curLen.value + moveLen
+  const CurBoxLen = curLen.value + moveLen;
   if (CurBoxLen < 150 || CurBoxLen > 500) {
-    return
+    return;
   }
-  leftContentRef.value.style.width = CurBoxLen + 'px';
+  leftContentRef.value.style.width = CurBoxLen + "px";
 };
 const onMouseup = () => {
-  resizeBox.value.style.background = 'rgba(122, 115, 116, 1)';
+  resizeBox.value.style.background = "rgba(122, 115, 116, 1)";
   // 移除监听
-  document.removeEventListener('mousedown', onMouseDown)
-  document.removeEventListener('mousemove', onMousemove)
+  document.removeEventListener("mousedown", onMouseDown);
+  document.removeEventListener("mousemove", onMousemove);
 };
-let resizeBox = ref()
+let resizeBox = ref();
 let curLen = ref();
 let currentBox = ref();
 let leftContentRef = ref();
 
-const onMouseDown = (e: any) => {
-  startX.value = e.clientX
-  curLen.value = leftContentRef.value.clientWidth
+const onMouseDown = () => {
+  startX.value = e.clientX;
+  curLen.value = leftContentRef.value.clientWidth;
   // 改变颜色
-  resizeBox.value.style.background = 'rgba(56, 25, 36, 1)';
-  document.addEventListener('mousemove', onMousemove)
-  document.addEventListener('mouseup', onMouseup)
-}
+  resizeBox.value.style.background = "rgba(56, 25, 36, 1)";
+  document.addEventListener("mousemove", onMousemove);
+  document.addEventListener("mouseup", onMouseup);
+};
 
-const dragControllerDiv: any = () => {
+const dragControllerDiv = () => {
   // 拖拽条
-  const resize = document.getElementsByClassName('resize')
+  const resize = document.getElementsByClassName("resize");
   // 循环为每个拖拽条添加事件
   for (let i = 0; i < resize.length; i++) {
     // 鼠标按下事件
-    resize[i].addEventListener('mousedown', onMouseDown)
+    resize[i].addEventListener("mousedown", onMouseDown);
   }
-}
+};
 onMounted(() => {
-  dragControllerDiv()
-})
+  dragControllerDiv();
+});
 
 // 定时将 data 存入本地
 setInterval(() => {
-  if (data.value !== '{}') {
-    localStorage.setItem('info', JSON.stringify(data.value))
+  if (data.value !== "{}") {
+    localStorage.setItem("info", JSON.stringify(data.value));
   }
-}, 2000)
+}, 2000);
 const init = () => {
   /*if (localStorage.getItem('info')) {
     resumeData.updateResume(JSON.parse(localStorage.getItem('info')))
   }*/
-  data.value = resumeData.$state.resumeData
-  console.log("data.value")
-  console.log(data.value)
-}
+  data.value = resumeData.$state.resumeData;
+};
 const generate = () => {
   nextTick(() => {
     // htmlToPdfFun('pdfDom', '个人报告')
-    const element = document.getElementById('pdfDom');
+    const element = document.getElementById("pdfDom");
 
     const opts = {
       scale: 12, // 缩放比例，提高生成图片清晰度
@@ -181,20 +174,85 @@ const generate = () => {
         .catch((error) => {
           console.log("打印失败", error);
         });
-  })
+  });
+};
+const handleCss = async () => {
+  const styles = document.head.querySelectorAll("style");
+
+  /* const links = document.head.querySelectorAll("link[type=\"text/css\"]");
+   const remoteCSSPromise = [...links].map((link) => fetch(link.href));
+   const remoteCSSResult = await Promise.allSettled(remoteCSSPromise);
+   const remoteCSSStreamPromise = remoteCSSResult.map((item) => {
+     const {status, value} = item;
+     if (status === "fulfilled") return handleCssStream(value);
+   });
+   const remoteCSSStreamResult = await Promise.allSettled(remoteCSSStreamPromise);
+   console.log("remoteCSSStreamResult", remoteCSSStreamResult);
+   const cssText = remoteCSSStreamResult.map((item) => {
+     // @ts-ignore
+     const {status, value} = item;
+     if (status === "fulfilled") return value;
+   });*/
+  const cssText = [];
+  styles.forEach((css) => cssText.push(css.innerHTML));
+  return cssText;
+};
+// 生成word
+const generateWord = async () => {
+  const htmlString = document.getElementById("pdfDom").innerHTML
+      // strong在word中不生效问题
+      .replace(/<strong>/g, "<b>")
+      .replace(/<\/strong>/g, "</b>")
+      // 背景色不生效问题
+      .replace(/<mark/g, "<span")
+      .replace(/<\/mark>/g, "</span>");
+
+  // let cssHTML = await handleCss();
+  let cssHTML =  `
+  html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    text-decoration: none;
+    color: red;
 }
 
-init()
+  `
+  // 创建一个完整的HTML文档字符串
+  const fullHtmlString = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Document</title>
+      <style> ${cssHTML.toString()}</style>
+    </head>
+    <body>
+      ${htmlString}
+    </body>
+    </html>`;
+
+  console.log("cssHTML.toString():");
+  console.log(cssHTML.toString());
+  // return;
+  asBlob(fullHtmlString).then(data => {
+    saveAs(data, "file.docx"); // save as docx file
+  });
+};
+
+init();
 
 let showAll = computed(() => {
-  return resumeData.$state.resumeData.menu === 'all' ? true : false
-})
+  return resumeData.$state.resumeData.menu === "all" ? true : false;
+});
 
 const showAllTrigger = () => {
-  resumeData.updateMenu('all')
-  console.log("resumeData.$state.resumeData.menu:")
-  console.log(resumeData.$state.resumeData.menu)
-}
+  resumeData.updateMenu("all");
+  console.log("resumeData.$state.resumeData.menu:");
+  console.log(resumeData.$state.resumeData.menu);
+};
 
 </script>
 

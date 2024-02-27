@@ -185,7 +185,7 @@
     "@vue/compiler-dom" "3.3.11"
     "@vue/shared" "3.3.11"
 
-"@vue/devtools-api@^6.5.0":
+"@vue/devtools-api@^6.4.5", "@vue/devtools-api@^6.5.0":
   version "6.5.1"
 
 "@vue/language-core@1.8.25":
@@ -2285,6 +2285,14 @@ pify@^4.0.1:
   resolved "https://registry.npmmirror.com/pify/-/pify-4.0.1.tgz"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
+pinia@2.0.27:
+  version "2.0.27"
+  resolved "https://registry.npmmirror.com/pinia/-/pinia-2.0.27.tgz"
+  integrity sha512-nOnXP0OFeL8R4WjAHsterU+11vptda643gH02xKNtSCDPiRzVfRYodOLihLDoa0gL1KKuQKV+KOzEgdt3YvqEw==
+  dependencies:
+    "@vue/devtools-api" "^6.4.5"
+    vue-demi "*"
+
 pkg-dir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmmirror.com/pkg-dir/-/pkg-dir-3.0.0.tgz"
@@ -2939,7 +2947,7 @@ typedarray@^0.0.6:
   resolved "https://registry.npmmirror.com/typedarray/-/typedarray-0.0.6.tgz"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@*, typescript@^5.2.2:
+typescript@*, typescript@^5.2.2, typescript@>=4.4.4:
   version "5.3.3"
   resolved "https://registry.npmmirror.com/typescript/-/typescript-5.3.3.tgz"
   integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
@@ -3099,6 +3107,11 @@ vm-browserify@^1.0.1:
   resolved "https://registry.npmmirror.com/vm-browserify/-/vm-browserify-1.1.2.tgz"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
+vue-demi@*:
+  version "0.14.7"
+  resolved "https://registry.npmmirror.com/vue-demi/-/vue-demi-0.14.7.tgz"
+  integrity sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==
+
 vue-router@^4.2.1:
   version "4.2.5"
   dependencies:
@@ -3121,7 +3134,7 @@ vue-tsc@^1.8.22:
     "@vue/language-core" "1.8.25"
     semver "^7.5.4"
 
-vue@^3.2.0, vue@^3.2.25, vue@^3.3.8, vue@3.3.11:
+"vue@^2.6.14 || ^3.2.0", "vue@^3.0.0-0 || ^2.6.0", vue@^3.2.0, vue@^3.2.25, vue@^3.3.8, vue@3.3.11:
   version "3.3.11"
   resolved "https://registry.npmmirror.com/vue/-/vue-3.3.11.tgz"
   integrity sha512-d4oBctG92CRO1cQfVBZp6WJAs0n8AK4Xf5fNjQCBeKCvMI1efGQ5E3Alt1slFJS9fZuPcFoiAiqFvQlv1X7t/w==
@@ -3168,7 +3181,7 @@ webpack-virtual-modules@^0.6.0:
   resolved "https://registry.npmmirror.com/webpack-virtual-modules/-/webpack-virtual-modules-0.6.1.tgz"
   integrity sha512-poXpCylU7ExuvZK8z+On3kX+S8o/2dQ/SVYueKA0D4WEMXROXgY8Ez50/bQEUmvoSMMrWcrJqCHuhAbsiwg7Dg==
 
-"webpack@^2.0.0 || ^3.0.0 || ^4.0.0", webpack@^4.0.0:
+"webpack@^2.0.0 || ^3.0.0 || ^4.0.0", webpack@^4.0.0, webpack@^4.47.0:
   version "4.47.0"
   resolved "https://registry.npmmirror.com/webpack/-/webpack-4.47.0.tgz"
   integrity sha512-td7fYwgLSrky3fI1EuU5cneU4+pbH6GgOfuKNS1tNPcfdGinGELAqsb/BP4nnvZyKSG2i/xFGU7+n2PvZA8HJQ==
