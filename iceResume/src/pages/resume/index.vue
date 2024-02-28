@@ -208,7 +208,7 @@ const generateWord = async () => {
       .replace(/<\/mark>/g, "</span>");
 
   // let cssHTML = await handleCss();
-  let cssHTML =  `
+  let cssHTML = `
   html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
@@ -220,22 +220,22 @@ const generateWord = async () => {
     color: red;
 }
 
-  `
+  `;
   // 创建一个完整的HTML文档字符串
   const fullHtmlString = `<!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
       <title>Document</title>
-      <style> ${cssHTML.toString()}</style>
+      <style> ${cssHTML}</style>
     </head>
     <body>
       ${htmlString}
     </body>
     </html>`;
 
-  console.log("cssHTML.toString():");
-  console.log(cssHTML.toString());
+  console.log("cssHTML:");
+  console.log(cssHTML);
   // return;
   asBlob(fullHtmlString).then(data => {
     saveAs(data, "file.docx"); // save as docx file

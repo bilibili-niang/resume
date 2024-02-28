@@ -74,7 +74,7 @@ const deleteElement = (type: string, index: number) => {
 
         <template v-for="(key, index) in Object.keys(data.summary)" :key="index">
           <ice-row class="oneRow alignC">
-            <ice-input v-model="data.summary[key]" placeholder="总结" class="flex1"></ice-input>
+            <ice-textarea v-model="data.summary[key]" class="flex1"></ice-textarea>
             <ice-button @click="decreaseElement('summary',key)">-</ice-button>
           </ice-row>
         </template>
