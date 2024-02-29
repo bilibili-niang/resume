@@ -8,7 +8,8 @@ import indexHeader from '@/components/index/header.vue';
       <ice-header size='l'>
         iceResume
       </ice-header>
-      <ice-row>
+      <ice-avatar block src="/public/logo.png"></ice-avatar>
+      <ice-row class="alignC">
         <indexHeader></indexHeader>
         <ice-text>
           基于

@@ -90,7 +90,7 @@ let curLen = ref();
 let currentBox = ref();
 let leftContentRef = ref();
 
-const onMouseDown = () => {
+const onMouseDown = (e) => {
   startX.value = e.clientX;
   curLen.value = leftContentRef.value.clientWidth;
   // 改变颜色
