@@ -78,10 +78,7 @@ const deleteElement = (type: string, index: number) => {
             <ice-button @click="decreaseElement('summary',key)">-</ice-button>
           </ice-row>
         </template>
-
-
         <ice-button @click="addElement('summary')">加一</ice-button>
-
       </ice-column>
 
     </ice-column>

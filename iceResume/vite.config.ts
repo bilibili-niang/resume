@@ -20,6 +20,12 @@ export default defineConfig({
             vueTemplate: true,
         }),
     ],
+    server: {
+        host: '0.0.0.0',
+        port: 9091,
+        // 是否开启 https
+        // https: true,
+    },
     resolve: {
         alias: {
             "@": path.resolve("src"),

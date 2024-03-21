@@ -8,7 +8,12 @@ import indexHeader from '@/components/index/header.vue';
       <ice-header size='l'>
         iceResume
       </ice-header>
-      <ice-avatar block src="/public/logo.png"></ice-avatar>
+      <ice-avatar size="120" block src="/public/logo.png"></ice-avatar>
+
+      <ice-row>
+        <ice-link href="/#/resume">起步</ice-link>
+      </ice-row>
+
       <ice-row class="alignC">
         <indexHeader></indexHeader>
         <ice-text>
@@ -18,10 +23,6 @@ import indexHeader from '@/components/index/header.vue';
           <ice-link href="https://github.com/bilibili-niang/icePro" target="_blank" color="luoxiahong">icepro</ice-link>
           简历编写工具
         </ice-text>
-      </ice-row>
-
-      <ice-row>
-        <ice-link href="/#/resume">开始!</ice-link>
       </ice-row>
 
 

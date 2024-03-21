@@ -11,10 +11,18 @@
           <ice-column class="leftMenu" v-if="false"></ice-column>
           <ice-column class="rightSelection">
             <ice-row>
-              <ice-button @click="generate">生成pdf</ice-button>
-              <ice-button @click="generateWord">生成word</ice-button>
+              <ice-button @click="generate" hover type="shadow-r-t">生成pdf</ice-button>
+              <ice-button @click="generateWord" v-if="false">生成word</ice-button>
+              <ice-button @click="generateHtml">生成html</ice-button>
               <ice-button @click="showAllTrigger" v-if="resumeData.$state.resumeData.menu!=='all'">展示所有</ice-button>
             </ice-row>
+
+            <div class="column widthAuto">
+              <ice-text>选择一种model</ice-text>
+              <ice-selector v-model="showModel" :list="selectionList"></ice-selector>
+            </div>
+            <customConfig></customConfig>
+
             <!--自我介绍-->
             <introduceMyself v-model="data.myInfo"
                              v-if="menuData[resumeData.$state.resumeData.menu]==='introduceMyself' || showAll"/>
@@ -41,11 +49,10 @@
       </div>
       <div class="resize" title="收缩侧边栏" ref="resizeBox">⋮</div>
       <div class="center">
-
-        <renderPage :data="data" id="pdfDom"/>
+        <renderPage :data="data" id="pdfDom" v-show="showModel==='resume'"/>
+        <markdownCard :data="data" id="markdownCard" v-show="showModel==='markdownCard'"></markdownCard>
 
       </div>
-      <!-- <div class="right" ref="rightBox"></div>-->
     </div>
   </div>
 </template>
@@ -63,6 +70,10 @@ import {ref} from "vue";
 import {menuData} from "@/config.js";
 import {saveAs} from "file-saver";
 import {asBlob} from "html-docx-js-typescript";
+import customConfig from "@/components/resume/customConfig/index.vue";
+import {messageAlert} from "@/utils/utils.js";
+import markdownCard from "@/components/resume/markdownCard/index.vue";
+import lessToJs from "less-vars-to-js";
 
 const resumeData = resumeStore();
 
@@ -124,19 +135,21 @@ const init = () => {
   }*/
   data.value = resumeData.$state.resumeData;
 };
+/**
+ * 生成pdf
+ */
 const generate = () => {
+  messageAlert("pdf正在生成,请稍等几秒");
   nextTick(() => {
     // htmlToPdfFun('pdfDom', '个人报告')
     const element = document.getElementById("pdfDom");
-
     const opts = {
       scale: 12, // 缩放比例，提高生成图片清晰度
       useCORS: true, // 允许加载跨域的图片
       allowTaint: false, // 允许图片跨域，和 useCORS 二者不可共同使用
-      tainttest: true, // 检测每张图片已经加载完成
-      logging: true // 日志开关，发布的时候记得改成 false
+      // tainttest: true, // 检测每张图片已经加载完成
+      logging: false // 日志开关，发布的时候记得改成 false
     };
-
     html2Canvas(element, opts)
         .then((canvas) => {
           const contentWidth = canvas.width;
@@ -177,26 +190,42 @@ const generate = () => {
   });
 };
 const handleCss = async () => {
-  const styles = document.head.querySelectorAll("style");
-
-  /* const links = document.head.querySelectorAll("link[type=\"text/css\"]");
-   const remoteCSSPromise = [...links].map((link) => fetch(link.href));
-   const remoteCSSResult = await Promise.allSettled(remoteCSSPromise);
-   const remoteCSSStreamPromise = remoteCSSResult.map((item) => {
-     const {status, value} = item;
-     if (status === "fulfilled") return handleCssStream(value);
-   });
-   const remoteCSSStreamResult = await Promise.allSettled(remoteCSSStreamPromise);
-   console.log("remoteCSSStreamResult", remoteCSSStreamResult);
-   const cssText = remoteCSSStreamResult.map((item) => {
-     // @ts-ignore
-     const {status, value} = item;
-     if (status === "fulfilled") return value;
-   });*/
-  const cssText = [];
-  styles.forEach((css) => cssText.push(css.innerHTML));
-  return cssText;
+  const rootElement = document.querySelector("#pdfDom");
+  const allStyles = getAllStyles(rootElement); // 获取所有样式
+  console.log(allStyles); // 打印样式对象
+  return allStyles;
 };
+
+function getAllStyles(element) {
+  // 创建一个对象来存储样式
+  var styles = {};
+
+  // 定义一个函数来递归获取样式
+  function getStylesRecursive(elem) {
+    // 获取当前元素的计算样式
+    var computedStyle = window.getComputedStyle(elem);
+
+    // 将当前元素的ID（或其他唯一标识）作为键，其样式作为值存入对象
+    styles[elem.id] = {};
+    for (var i = 0; i < computedStyle.length; i++) {
+      var styleName = computedStyle[i];
+      var styleValue = computedStyle.getPropertyValue(styleName);
+      styles[elem.id][styleName] = styleValue;
+    }
+
+    // 遍历子节点
+    for (var i = 0; i < elem.children.length; i++) {
+      getStylesRecursive(elem.children[i]); // 递归调用
+    }
+  }
+
+  // 从给定的元素开始递归
+  getStylesRecursive(element);
+
+  // 返回包含所有样式的对象
+  return styles;
+}
+
 // 生成word
 const generateWord = async () => {
   const htmlString = document.getElementById("pdfDom").innerHTML
@@ -218,9 +247,7 @@ const generateWord = async () => {
     vertical-align: baseline;
     text-decoration: none;
     color: red;
-}
-
-  `;
+}`;
   // 创建一个完整的HTML文档字符串
   const fullHtmlString = `<!DOCTYPE html>
     <html lang="en">
@@ -242,6 +269,35 @@ const generateWord = async () => {
   });
 };
 
+// 生成html
+// 获取全局css
+const css = document.querySelector("style").innerHTML;
+const generateHtml = () => {
+  console.log(css);
+  /*  const targetDom = document.querySelector("#markdownCard");
+  downloadFile(targetDom.innerHTML);*/
+};
+// 下载事件
+const downloadFile = (str, name = "resume.html") => {
+  // 创建一个Blob对象，包含HTML内容
+  const blob = new Blob([str], {type: "text/html;charset=utf-8"});
+  // 创建一个a标签用于下载
+  const a = document.createElement("a");
+  // 创建一个对象URL，指向Blob对象
+  const url = window.URL.createObjectURL(blob);
+  // 设置a标签的属性
+  a.href = url;
+  a.download = name; // 设置下载的文件名
+  a.style.display = "none"; // 隐藏a标签
+  // 将a标签添加到文档中
+  document.body.appendChild(a);
+  // 触发点击事件以开始下载
+  a.click();
+  // 下载完成后，移除对象URL并从文档中移除a标签
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+};
+
 init();
 
 let showAll = computed(() => {
@@ -253,6 +309,20 @@ const showAllTrigger = () => {
   console.log("resumeData.$state.resumeData.menu:");
   console.log(resumeData.$state.resumeData.menu);
 };
+
+// 展示模式
+const showModel = ref("resume");
+
+const selectionList = reactive([
+  {
+    label: "简历编写",
+    value: "resume"
+  },
+  {
+    label: "markdown模块",
+    value: "markdownCard"
+  },
+]);
 
 </script>
 

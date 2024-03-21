@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import resumeStore from "@/store/modules/resume.ts";
 import {color} from "@/config.js";
 
@@ -10,10 +9,18 @@ const props = defineProps({
   }
 });
 
+onBeforeMount(() => {
+  const targetDom = document.querySelector("#pdfDom");
+})
+
+
+onMounted(() => {
+  const targetDom = document.querySelector("#pdfDom");
+})
 
 let renderPageRef = ref();
 const moveDiv = () => {
-  renderPageRef.value.addEventListener("mousedown", (e) => {
+  renderPageRef.value.addEventListener("mousedown", (e: any) => {
     // 鼠标按下，计算当前元素距离可视区的距离
     let disX = e.clientX;
     let disY = e.clientY;
@@ -62,7 +69,7 @@ const changeMenu = (menu: string) => {
 
 <template>
   <div class="renderPage" ref="renderPageRef">
-
+    <ice-text :color="color">该页面正在开发测试中...</ice-text>
     <!--头像-->
     <ice-column class="renderBlock" id="avatar" @click="changeMenu('avatar')">
       <div class="verticalLine"></div>
@@ -216,7 +223,7 @@ const changeMenu = (menu: string) => {
   //height: 1122.66px;
   //aspect-ratio: 3/4;
   font-size: 16px;
-  background: #e2e1e4;
+  background: white;
   color: #2f2f35;
   border-radius: @radio-n;
   left: 50%;
