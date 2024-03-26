@@ -12,7 +12,10 @@ const resume = defineStore('resume', () => {
             website: "https://blog.icestone.work/#/",
             phone: 18672148720,
             summary: {
-                summary1: '暂无内容'
+                summary1: `本人具备良好的前端技能，熟练掌握HTML、CSS、JavaScript等技术，能够编写符合响应式设计和跨浏览器兼容性的前端页面。在团
+队合作中，本人积极参与并贡献自己的专业知识，具备良好的沟通和协作能力。
+乐于学习新技术，不断提升自己的技能水平，并能将所学应用于实际工作中。本人对新技术充满热情，热衷于尝试和探索，能够承受
+高强度的工作压力。对工作认真负责，始终保持积极的工作态度。`
             },
             wechatId: 'icestone9',
             address: "湖北-襄阳"

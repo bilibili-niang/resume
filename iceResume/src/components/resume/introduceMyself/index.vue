@@ -19,11 +19,23 @@ init();
 const addElement = (type: string) => {
   const list = data.value[type]
   const keys = Object.keys(list)
-  const tempKey = type + (parseInt(keys[keys.length - 1].charAt(keys[keys.length - 1].length - 1)) + 1 + '');
+  // 生成顺序的key
+  let tempKey = ''
+  try {
+    // 这里报错,是因为 summary 里面可能被删空了
+    tempKey = type + (parseInt(keys[keys.length - 1].charAt(keys[keys.length - 1].length - 1)) + 1 + '');
+  } catch (e) {
+    tempKey = 'summary1'
+  }
   data.value[type][tempKey] = ''
 }
-// 较少指定
+// 减少
 const decreaseElement = (type: string, target: string) => {
+  console.log("data.value[type]")
+  console.log(data.value[type])
+
+  console.log("Object.keys(data.value[type]):")
+  console.log(Object.keys(data.value[type]))
   delete data.value[type][target]
 }
 // 控制元素删除
@@ -73,10 +85,12 @@ const deleteElement = (type: string, index: number) => {
         </ice-header>
 
         <template v-for="(key, index) in Object.keys(data.summary)" :key="index">
-          <ice-row class="oneRow alignC">
-            <ice-textarea v-model="data.summary[key]" class="flex1"></ice-textarea>
-            <ice-button @click="decreaseElement('summary',key)">-</ice-button>
-          </ice-row>
+          <ice-column class="oneRow alignC">
+            <ice-textarea :rows="10" v-model="data.summary[key]" class="flex1 w100Percent"></ice-textarea>
+            <ice-row class="justS w100Percent">
+              <ice-button @click="decreaseElement('summary',key)">-</ice-button>
+            </ice-row>
+          </ice-column>
         </template>
         <ice-button @click="addElement('summary')">加一</ice-button>
       </ice-column>
@@ -86,11 +100,11 @@ const deleteElement = (type: string, index: number) => {
 </template>
 
 <style scoped lang="less">
-.introduceMyself{
+.introduceMyself {
   box-sizing: border-box;
   padding: 0 @p-small;
 
-  .oneRow{
+  .oneRow {
 
   }
 }
