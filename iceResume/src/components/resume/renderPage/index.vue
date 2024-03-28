@@ -123,16 +123,20 @@ const changeMenu = (menu: string) => {
     <ice-column class="renderBlock" id="education" @click="changeMenu('education')">
       <div class="verticalLine"></div>
       <ice-split position="left" text="教育经历"></ice-split>
-      <ice-row class="justBetween">
-        <ice-row>
+
+      <template v-for="(item,index) in data.education" :key="index">
+        <ice-row class="justBetween">
+          <ice-row>
+            <ice-text :color="color" nowrap>
+              {{ item.school }} -{{ item.major }}
+            </ice-text>
+          </ice-row>
           <ice-text :color="color" nowrap>
-            {{ data.education.school }} -{{ data.education.major }}
+            {{ item.time }}
           </ice-text>
         </ice-row>
-        <ice-text :color="color" nowrap>
-          {{ data.education.time }}
-        </ice-text>
-      </ice-row>
+      </template>
+
     </ice-column>
 
     <!--专业技能-->
@@ -215,7 +219,7 @@ const changeMenu = (menu: string) => {
 </template>
 
 <style scoped lang="less">
-.renderPage{
+.renderPage {
   position: absolute;
   margin: auto;
   width: 835.8px;
@@ -231,13 +235,15 @@ const changeMenu = (menu: string) => {
   transform: translate(-50%, -50%);
   padding: 10px;
 }
-.userInfoText{
+
+.userInfoText {
   justify-content: flex-end;
 }
-.renderBlock{
+
+.renderBlock {
   transition-duration: @time-n;
 
-  &:hover{
+  &:hover {
     background: rgba(0, 0, 0, .2);
   }
 }

@@ -14,18 +14,35 @@ watch(data, () => {
   emits('update:education', data.value)
 })
 init();
+
+// 控制元素添加
+const addElement = () => {
+  data.value.push(
+      {
+        school: '武汉轻工大学',
+        major: '软件工程',
+        time: '2022.09-2024.06',
+        degree: '本科'
+      }
+  )
+}
+
 </script>
 
 <template>
   <div class="educationalExperience">
     <ice-column>
       <ice-header>教育经历</ice-header>
-      <ice-input v-model="data.school" placeholder="学校"></ice-input>
-      <ice-input v-model="data.major" placeholder="专业"></ice-input>
-      <ice-input v-model="data.time" placeholder="就读时间"></ice-input>
-      <ice-input v-model="data.degree" placeholder="层级"></ice-input>
+      <template v-for="(item, index) in data" :key="index">
+        <ice-column class="m-top-large">
+          <ice-input v-model="item.school" placeholder="学校"></ice-input>
+          <ice-input v-model="item.major" placeholder="专业"></ice-input>
+          <ice-input v-model="item.time" placeholder="就读时间"></ice-input>
+          <ice-input v-model="item.degree" placeholder="层级"></ice-input>
+        </ice-column>
+      </template>
     </ice-column>
-    <ice-button>加一</ice-button>
+    <ice-button @click="addElement">加一</ice-button>
 
   </div>
 

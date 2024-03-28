@@ -55,12 +55,14 @@ const resume = defineStore('resume', () => {
                 companyProject: 1
             }
         ],
-        education: {
-            school: '武汉轻工大学',
-            major: '软件工程',
-            time: '2022.09-2024.06',
-            degree: '本科'
-        },
+        education: [
+            {
+                school: '武汉轻工大学',
+                major: '软件工程',
+                time: '2022.09-2024.06',
+                degree: '本科'
+            }
+        ],
         skill: {
             skill1: {
                 name: 'Java',
