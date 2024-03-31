@@ -26,6 +26,12 @@ const addElement = () => {
       }
   )
 }
+/**
+ * 删除元素
+ */
+const delElement = (index: number) => {
+  data.value.splice(index, 1);
+}
 
 </script>
 
@@ -40,6 +46,7 @@ const addElement = () => {
           <ice-input v-model="item.time" placeholder="就读时间"></ice-input>
           <ice-input v-model="item.degree" placeholder="层级"></ice-input>
         </ice-column>
+        <ice-button v-if="index!==0" @click="delElement(index)">减一</ice-button>
       </template>
     </ice-column>
     <ice-button @click="addElement">加一</ice-button>

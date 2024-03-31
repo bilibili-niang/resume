@@ -33,8 +33,8 @@ const addElement = (type: string) => {
 }
 
 // 删除项目
-const deleteElement = (key) => {
-
+const deleteElement = (key: number) => {
+  data.value.splice(key, 1)
 }
 
 init();
