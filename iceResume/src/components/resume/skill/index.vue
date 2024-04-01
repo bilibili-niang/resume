@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+
 const props = defineProps({
   modelValue: Object
 })
@@ -13,17 +14,21 @@ const init = () => {
 watch(data, () => {
   emits('update:myInfo', data.value)
 })
-const addElement = (type: string) => {
-  const list = data.value
-  const keys = Object.keys(list)
-  const tempKey = type + (parseInt(keys[keys.length - 1].charAt(keys[keys.length - 1].length - 1)) + 1 + '');
-  data.value[tempKey] = {
-    name:'技能',
-    extent:'熟练度'
+const addElement = () => {
+  const tempObj = (JSON.stringify(data.value[0]))
+  if (tempObj) {
+    data.value.push(
+        JSON.parse(tempObj)
+    )
+  } else {
+    data.value.push({
+      name: 'Vue',
+      extent: '熟练',
+    })
   }
 }
-const delElement= () => {
-
+const delElement = (index: number) => {
+  data.value.splice(index, 1);
 }
 
 init();
@@ -34,15 +39,14 @@ init();
     <ice-column>
       <ice-header>专业技能</ice-header>
       <ice-row v-for="(item,index) in data" :key="index">
-        <ice-input v-model="item.name" placeholder="技能"/>
-        <ice-input v-model="item.extent" placeholder="熟练度" size="s"/>
+        <ice-row width="85%" class="alignC">
+          <ice-input v-model="item.name" placeholder="技能"/>
+          <ice-input v-model="item.extent" placeholder="熟练度" size="s"/>
+        </ice-row>
+        <ice-button @click="delElement(index)" v-if="index!==0">减一</ice-button>
       </ice-row>
-        <ice-button @click="delElement">加一</ice-button>
       <ice-button @click="addElement('skill')">加一</ice-button>
     </ice-column>
   </div>
 </template>
 
-<style scoped lang="less">
-
-</style>

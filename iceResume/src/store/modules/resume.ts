@@ -63,16 +63,16 @@ const resume = defineStore('resume', () => {
                 degree: '本科'
             }
         ],
-        skill: {
-            skill1: {
+        skill: [
+            {
                 name: 'Java',
                 extent: '熟悉',
             },
-            skill2: {
+            {
                 name: 'Vue',
                 extent: '熟练',
             }
-        },
+        ],
         menu: '',
         prize: [
             {
