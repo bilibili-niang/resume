@@ -22,6 +22,10 @@ const addElement = (type: string) => {
     extent:'熟练度'
   }
 }
+const delElement= () => {
+
+}
+
 init();
 </script>
 
@@ -33,6 +37,7 @@ init();
         <ice-input v-model="item.name" placeholder="技能"/>
         <ice-input v-model="item.extent" placeholder="熟练度" size="s"/>
       </ice-row>
+        <ice-button @click="delElement">加一</ice-button>
       <ice-button @click="addElement('skill')">加一</ice-button>
     </ice-column>
   </div>
