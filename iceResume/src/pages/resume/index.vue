@@ -73,7 +73,7 @@ import {asBlob} from "html-docx-js-typescript";
 import customConfig from "@/components/resume/customConfig/index.vue";
 import {messageAlert} from "@/utils/utils.js";
 import markdownCard from "@/components/resume/markdownCard/index.vue";
-import lessToJs from "less-vars-to-js";
+
 
 const resumeData = resumeStore();
 
@@ -274,8 +274,6 @@ const generateWord = async () => {
 const css = document.querySelector("style").innerHTML;
 const generateHtml = () => {
   console.log(css);
-  /*  const targetDom = document.querySelector("#markdownCard");
-  downloadFile(targetDom.innerHTML);*/
 };
 // 下载事件
 const downloadFile = (str, name = "resume.html") => {
@@ -306,8 +304,6 @@ let showAll = computed(() => {
 
 const showAllTrigger = () => {
   resumeData.updateMenu("all");
-  console.log("resumeData.$state.resumeData.menu:");
-  console.log(resumeData.$state.resumeData.menu);
 };
 
 // 展示模式
@@ -327,68 +323,73 @@ const selectionList = reactive([
 </script>
 
 <style scoped lang="less">
-.flexC(){
+
+.flexC() {
   display: flex;
   flex-direction: column;
 }
 
-.resume{
-  .formContainer{
+.resume {
+  .formContainer {
     width: 100%;
     height: 95vh;
   }
 }
-.left, .center, .right{
+
+.left, .center, .right {
   height: 100%;
   box-sizing: border-box;
   background: @white-10;
   border-radius: @radio-n;
 }
-.left{
+
+.left {
   .flexC();
   width: 18rem;
   padding: 0 @p-normal;
   box-sizing: border-box;
   overflow-y: scroll;
 
-  &::-webkit-scrollbar{
+  &::-webkit-scrollbar {
     width: 8px; /* 滚动条宽度 */
   }
 
-  &::-webkit-scrollbar-track{
+  &::-webkit-scrollbar-track {
     background: #f1f1f1; /* 滚动条轨道背景色 */
   }
 
-  &::-webkit-scrollbar-thumb{
+  &::-webkit-scrollbar-thumb {
     background: #888; /* 滚动条颜色 */
   }
 
-  &::-webkit-scrollbar-thumb:hover{
+  &::-webkit-scrollbar-thumb:hover {
     background: #555; /* 滚动条悬停颜色 */
   }
 
 
-  .leftMenu{
+  .leftMenu {
     //width: 1.5rem !important;
   }
 
-  .rightSelection{
+  .rightSelection {
     flex: 1;
   }
 }
-.center{
+
+.center {
   .flexC();
   flex: 1;
   margin: 0 @m-small;
   overflow: hidden;
   position: relative;
 }
-.right{
+
+.right {
   .flexC();
   width: 15%;
 }
 
-.resize{
+.resize {
   cursor: col-resize;
   display: flex;
   flex-direction: column;
@@ -407,9 +408,8 @@ const selectionList = reactive([
   transition-duration: @time-n;
   user-select: none;
 
-  &:hover{
+  &:hover {
     background: @themeActiveColor;
   }
 }
-
 </style>
