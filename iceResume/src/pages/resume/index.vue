@@ -35,8 +35,8 @@
                                v-if="menuData[resumeData.$state.resumeData.menu]==='projectExperience' || showAll"/>
             <!--获奖-->
             <getPrize
-                v-model="data.prize"
-                v-if="menuData[resumeData.$state.resumeData.menu]==='prize' || showAll"/>
+              v-model="data.prize"
+              v-if="menuData[resumeData.$state.resumeData.menu]==='prize' || showAll"/>
 
             <!--专业技能-->
             <skill v-model="data.skill"
@@ -151,42 +151,44 @@ const generate = () => {
       logging: false // 日志开关，发布的时候记得改成 false
     };
     html2Canvas(element, opts)
-        .then((canvas) => {
-          const contentWidth = canvas.width;
-          const contentHeight = canvas.height;
-          // 一页pdf显示html页面生成的canvas高度;
-          const pageHeight = (contentWidth / 592.28) * 841.89;
-          // 未生成pdf的html页面高度
-          let leftHeight = contentHeight;
-          // 页面偏移
-          let position = 0;
-          // a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
-          const imgWidth = 595.28;
-          const imgHeight = (592.28 / contentWidth) * contentHeight;
-          const pageData = canvas.toDataURL("image/jpeg", 1.0);
-          // a4纸纵向，一般默认使用；new JsPDF('landscape'); 横向页面
-          const PDF = new JsPDF("", "pt", "a4");
-          // 当内容未超过pdf一页显示的范围，无需分页
-          if (leftHeight < pageHeight) {
-            // addImage(pageData, 'JPEG', 左，上，宽度，高度)设置
-            PDF.addImage(pageData, "JPEG", 0, 0, imgWidth, imgHeight);
-          } else {
-            // 超过一页时，分页打印（每页高度841.89）
-            while (leftHeight > 0) {
-              PDF.addImage(pageData, "JPEG", 0, position, imgWidth, imgHeight);
-              leftHeight -= pageHeight;
-              position -= 841.89;
-              if (leftHeight > 0) {
-                PDF.addPage();
-              }
+      .then((canvas) => {
+        const contentWidth = canvas.width;
+        const contentHeight = canvas.height;
+        // 一页pdf显示html页面生成的canvas高度;
+        const pageHeight = (contentWidth / 592.28) * 841.89;
+        // 未生成pdf的html页面高度
+        let leftHeight = contentHeight;
+        // 页面偏移
+        let position = 0;
+        // a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+        const imgWidth = 595.28;
+        const imgHeight = (592.28 / contentWidth) * contentHeight;
+        const pageData = canvas.toDataURL("image/jpeg", 1.0);
+
+        // a4纸纵向，一般默认使用；new JsPDF('landscape'); 横向页面
+        const PDF = new JsPDF("", "pt", "a4", true);
+
+        // 当内容未超过pdf一页显示的范围，无需分页
+        if (leftHeight < pageHeight) {
+          // addImage(pageData, 'JPEG', 左，上，宽度，高度)设置
+          PDF.addImage(pageData, "JPEG", 0, 0, imgWidth, imgHeight);
+        } else {
+          // 超过一页时，分页打印（每页高度841.89）
+          while (leftHeight > 0) {
+            PDF.addImage(pageData, "JPEG", 0, position, imgWidth, imgHeight);
+            leftHeight -= pageHeight;
+            position -= 841.89;
+            if (leftHeight > 0) {
+              PDF.addPage();
             }
           }
-          PDF.save("我的简历.pdf");
-          // PDF.save(title + ".pdf");
-        })
-        .catch((error) => {
-          console.log("打印失败", error);
-        });
+        }
+        PDF.save("我的简历.pdf");
+        // PDF.save(title + ".pdf");
+      })
+      .catch((error) => {
+        console.log("打印失败", error);
+      });
   });
 };
 const handleCss = async () => {
@@ -229,12 +231,12 @@ function getAllStyles(element) {
 // 生成word
 const generateWord = async () => {
   const htmlString = document.getElementById("pdfDom").innerHTML
-      // strong在word中不生效问题
-      .replace(/<strong>/g, "<b>")
-      .replace(/<\/strong>/g, "</b>")
-      // 背景色不生效问题
-      .replace(/<mark/g, "<span")
-      .replace(/<\/mark>/g, "</span>");
+    // strong在word中不生效问题
+    .replace(/<strong>/g, "<b>")
+    .replace(/<\/strong>/g, "</b>")
+    // 背景色不生效问题
+    .replace(/<mark/g, "<span")
+    .replace(/<\/mark>/g, "</span>");
 
   // let cssHTML = await handleCss();
   let cssHTML = `

@@ -65,20 +65,17 @@ const resume = defineStore('resume', () => {
     ],
     skill: [
       {
-        name: 'Java',
-        extent: '熟悉',
-      },
-      {
         name: 'Vue',
         extent: '熟练',
-      }
+      },
+      {
+        name: 'Taro/UniApp',
+        extent: '熟悉',
+      },
     ],
     menu: '',
     prize: [
       {
-        prizeName: '全国大学生逃课一等奖',
-        prizeTime: '2024-10-05'
-      }, {
         prizeName: '班级进步奖',
         prizeTime: '2001-01-10'
       }

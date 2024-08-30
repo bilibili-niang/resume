@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import indexHeader from '@/components/index/header.vue';
+import indexHeader from '@/components/index/header.vue'
 </script>
 
 <template>
@@ -13,9 +13,10 @@ import indexHeader from '@/components/index/header.vue';
       <ice-row>
         <ice-link href="/#/resume">起步</ice-link>
       </ice-row>
-
-      <ice-row class="alignC">
+      <ice-row>
         <indexHeader></indexHeader>
+      </ice-row>
+      <ice-row class="alignC">
         <ice-text>
           基于
           <ice-tag>vue</ice-tag>
@@ -32,7 +33,7 @@ import indexHeader from '@/components/index/header.vue';
 </template>
 
 <style scoped lang="less">
-.index{
+.index {
   padding: 0 @padding-layout-small;
   display: flex;
   box-sizing: border-box;
