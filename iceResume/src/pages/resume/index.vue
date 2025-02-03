@@ -41,8 +41,6 @@
             <!--专业技能-->
             <skill v-model="data.skill"
                    v-if="menuData[resumeData.$state.resumeData.menu]==='skill' || showAll"/>
-
-
           </ice-column>
         </ice-row>
 
@@ -51,7 +49,6 @@
       <div class="center">
         <renderPage :data="data" id="pdfDom" v-show="showModel==='resume'"/>
         <markdownCard :data="data" id="markdownCard" v-show="showModel==='markdownCard'"></markdownCard>
-
       </div>
     </div>
   </div>
@@ -73,12 +70,14 @@ import {asBlob} from "html-docx-js-typescript";
 import customConfig from "@/components/resume/customConfig/index.vue";
 import {messageAlert} from "@/utils/utils.js";
 import markdownCard from "@/components/resume/markdownCard/index.vue";
+import {findColor} from 'icepro'
 
 
 const resumeData = resumeStore();
 
 let data = ref({});
 let startX = ref();
+
 const onMousemove = (e) => {
   const endX = e.clientX;
   // (endx-startx)= 移动的距离
@@ -90,8 +89,16 @@ const onMousemove = (e) => {
   }
   leftContentRef.value.style.width = CurBoxLen + "px";
 };
+
 const onMouseup = () => {
-  resizeBox.value.style.background = "rgba(122, 115, 116, 1)";
+  console.log("resizeBox.value: ")
+  console.log(resizeBox.value)
+  try {
+    resizeBox.value.style.background = "rgba(122, 115, 116, 1)";
+  } catch (e) {
+    console.log(e)
+  }
+
   // 移除监听
   document.removeEventListener("mousedown", onMouseDown);
   document.removeEventListener("mousemove", onMousemove);
@@ -130,6 +137,7 @@ setInterval(() => {
   }
 }, 2000);
 const init = () => {
+  console.log(findColor('haitianlan'));
   /*if (localStorage.getItem('info')) {
     resumeData.updateResume(JSON.parse(localStorage.getItem('info')))
   }*/
@@ -319,7 +327,7 @@ const selectionList = reactive([
   {
     label: "markdown模块",
     value: "markdownCard"
-  },
+  }
 ]);
 
 </script>
@@ -349,6 +357,8 @@ const selectionList = reactive([
   .flexC();
   width: 18rem;
   padding: 0 @p-normal;
+  // 横向取消滚动条
+  overflow-x: hidden;
   box-sizing: border-box;
   overflow-y: scroll;
 
@@ -413,5 +423,14 @@ const selectionList = reactive([
   &:hover {
     background: @themeActiveColor;
   }
+}
+
+.light {
+  .center {
+    .renderPage {
+      border: 1px solid rgba(0, 0, 0, .5);
+    }
+  }
+
 }
 </style>

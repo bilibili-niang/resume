@@ -69,7 +69,6 @@ const changeMenu = (menu: string) => {
 
 <template>
   <div class="renderPage" ref="renderPageRef">
-    <ice-text :color="color">该页面正在开发测试中...</ice-text>
     <!--头像-->
     <ice-column class="renderBlock" id="avatar" @click="changeMenu('avatar')">
       <div class="verticalLine"></div>
