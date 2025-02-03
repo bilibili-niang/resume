@@ -4,7 +4,7 @@ import { ref } from 'vue'
 const resume = defineStore('resume', () => {
   const resumeData = ref({
     myInfo: {
-      name: '蔡徐坤',
+      name: '张嘉凯',
       avatar: 'https://avatars.githubusercontent.com/u/60811236?v=4',
       email: {
         email1: 'killicestone@126.com'
@@ -15,7 +15,9 @@ const resume = defineStore('resume', () => {
         summary1: `本人具备良好的前端技能`
       },
       wechatId: 'icestone9',
-      address: '湖北-襄阳'
+      address: '福建-厦门',
+      age:24,
+      githubRul:'https://github.com/bilibili-niang'
     },
     projectData: [
       {

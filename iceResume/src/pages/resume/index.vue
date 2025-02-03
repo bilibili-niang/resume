@@ -78,7 +78,6 @@ const resumeDataStore = resumeStore();
 const {updateMenu} = resumeDataStore;
 
 const {resumeData} = storeToRefs(resumeDataStore)
-console.log('resumeData', resumeData.value)
 let data = ref({});
 let startX = ref();
 
@@ -95,8 +94,6 @@ const onMousemove = (e) => {
 };
 
 const onMouseup = () => {
-  console.log("resizeBox.value: ")
-  console.log(resizeBox.value)
   try {
     resizeBox.value.style.background = "rgba(122, 115, 116, 1)";
   } catch (e) {

@@ -31,9 +31,6 @@ const addElement = (type: string) => {
 }
 // 减少
 const decreaseElement = (type: string, target: string) => {
-  console.log('data.value的长度:')
-  console.log(data.value.length)
-  return void 0
   delete data.value[type][target]
 }
 
@@ -71,13 +68,17 @@ const decreaseElement = (type: string, target: string) => {
         <ice-button @click="addElement('email')">加一</ice-button>
 
         <div class="verticalLine"></div>
+        <ice-input v-model="data.age" placeholder="年龄"></ice-input>
+        <div class="verticalLine"></div>
+        <ice-input v-model="data.phone" placeholder="手机号"></ice-input>
+        <div class="verticalLine"></div>
         <ice-input v-model="data.address" placeholder="当前居住地"></ice-input>
         <div class="verticalLine"></div>
         <ice-input v-model="data.website" placeholder="个人网站"></ice-input>
         <div class="verticalLine"></div>
-        <ice-input v-model="data.phone" placeholder="手机号"></ice-input>
-        <div class="verticalLine"></div>
         <ice-input v-model="data.wechatId" placeholder="微信"></ice-input>
+        <div class="verticalLine"></div>
+        <ice-input v-model="data.githubRul" placeholder="github主页"></ice-input>
         <div class="verticalLine"></div>
         <ice-header>
           总结

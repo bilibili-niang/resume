@@ -81,6 +81,11 @@ const changeMenu = (menu: string) => {
 
           <ice-row>
             <ice-text :color="color" nowrap p0 m0>
+              <ice-tag :color="color">年龄:</ice-tag>
+              {{ data.myInfo.age }}
+            </ice-text>
+
+            <ice-text :color="color" nowrap p0 m0>
               <ice-tag :color="color">电话:</ice-tag>
               {{ data.myInfo.phone }}
             </ice-text>
@@ -99,11 +104,16 @@ const changeMenu = (menu: string) => {
               <ice-tag :color="color">微信:</ice-tag>
               {{ data.myInfo.wechatId }}
             </ice-text>
-
-
           </ice-row>
-          <ice-row>
 
+          <ice-row>
+            <ice-text :color="color" p0 m0>
+              <ice-tag :color="color">github地址:</ice-tag>
+              {{ data.myInfo.githubRul }}
+            </ice-text>
+          </ice-row>
+
+          <ice-row>
             <ice-text :color="color" nowrap p0 m0>
               <ice-tag :color="color">个人网站:</ice-tag>
               {{ data.myInfo.website }}

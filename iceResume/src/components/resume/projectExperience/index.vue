@@ -10,7 +10,7 @@ const init = () => {
 }
 
 // 增加项目
-const addElement = (type: string) => {
+const addElement = () => {
   data.value.push({
     company: '浙江嘉兴数字城市实验室有限公司',
     projectName: '基层治理综合信息平台',
