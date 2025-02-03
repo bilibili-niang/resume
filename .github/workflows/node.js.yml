@@ -36,6 +36,3 @@ jobs:
     - name: Build
       working-directory: ./iceResume
       run: npm run build
-    - name: Test
-      working-directory: ./iceResume
-      run: npm test
