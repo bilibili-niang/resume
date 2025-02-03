@@ -13,6 +13,7 @@
     "html-docx-js": "^0.3.1",
     "html-docx-js-typescript": "^0.1.5",
     "html2canvas": "^1.4.1",
+    "icepro": "^1.1.26",
     "jspdf": "^2.5.1",
     "vue": "^3.3.8",
     "webpack": "^4.47.0"
