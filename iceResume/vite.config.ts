@@ -29,12 +29,19 @@ export default defineConfig({
     resolve: {
         alias: {
             "@": path.resolve("src"),
+            "@assets": path.resolve("src/assets"),
+            "@components": path.resolve("src/components"),
         },
         dedupe: [
             "vue"
         ],
         extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue"],
     },
+    build: {
+        outDir: '../docs',
+        emptyOutDir: true
+    },
+    base: '/resume/',
     css: {
         // 预处理器配置项
         preprocessorOptions: {
@@ -46,4 +53,3 @@ export default defineConfig({
         }
     },
 })
-
