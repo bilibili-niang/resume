@@ -39,7 +39,15 @@ export default defineConfig({
     },
     build: {
         outDir: '../docs',
-        emptyOutDir: true
+        emptyOutDir: true,
+        assetsDir: 'assets',
+        rollupOptions: {
+            output: {
+                chunkFileNames: 'assets/js/[name]-[hash].js',
+                entryFileNames: 'assets/js/[name]-[hash].js',
+                assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
+            }
+        }
     },
     base: '/resume/',
     css: {

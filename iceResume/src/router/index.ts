@@ -5,7 +5,6 @@ const routes: Array<RouteRecordRaw> = [
         path: '/',
         name: 'index',
         component: () => import("@/pages/index/index.vue"),
-        alias: '/',
         meta: {
             title: '首页'
         }
@@ -14,7 +13,6 @@ const routes: Array<RouteRecordRaw> = [
         path: '/resume',
         name: 'resume',
         component: () => import("@/pages/resume/index.vue"),
-        alias: '/',
         meta: {
             title: 'resume'
         }
@@ -22,7 +20,8 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHashHistory('/resume/'),
     routes
 });
+
 export default router;
