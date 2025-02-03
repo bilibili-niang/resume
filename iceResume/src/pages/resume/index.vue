@@ -13,34 +13,35 @@
             <ice-row>
               <ice-button @click="generate" hover type="shadow-r-t">生成pdf</ice-button>
               <ice-button @click="generateWord" v-if="false">生成word</ice-button>
-              <ice-button @click="generateHtml">生成html</ice-button>
-              <ice-button @click="showAllTrigger" v-if="resumeData.$state.resumeData.menu!=='all'">展示所有</ice-button>
+              <!--<ice-button @click="generateHtml">生成html</ice-button>-->
+              <ice-button @click="showAllTrigger" v-if="resumeData.menu!=='all'">展示所有模块
+              </ice-button>
             </ice-row>
-
-            <div class="column widthAuto">
-              <ice-text>选择一种model</ice-text>
-              <ice-selector v-model="showModel" :list="selectionList"></ice-selector>
-            </div>
-            <customConfig></customConfig>
-
+            <!--TODO 后续将会新增markdown编写个人简历-->
+            <!--
+                       <div class="column widthAuto">
+                          <ice-text>选择一种model</ice-text>
+                          <ice-selector v-model="showModel" :list="selectionList"></ice-selector>
+                        </div>
+                        <customConfig></customConfig>-->
             <!--自我介绍-->
             <introduceMyself v-model="data.myInfo"
-                             v-if="menuData[resumeData.$state.resumeData.menu]==='introduceMyself' || showAll"/>
+                             v-if="menuData[resumeData.menu]==='introduceMyself' || showAll"/>
             <!--教育经历-->
             <educationalExperience v-model="data.education"
-                                   v-if="menuData[resumeData.$state.resumeData.menu]==='educationalExperience' || showAll"/>
+                                   v-if="menuData[resumeData.menu]==='educationalExperience' || showAll"/>
 
             <!--项目经历-->
             <projectExperience v-model="data.projectData"
-                               v-if="menuData[resumeData.$state.resumeData.menu]==='projectExperience' || showAll"/>
+                               v-if="menuData[resumeData.menu]==='projectExperience' || showAll"/>
             <!--获奖-->
             <getPrize
               v-model="data.prize"
-              v-if="menuData[resumeData.$state.resumeData.menu]==='prize' || showAll"/>
+              v-if="menuData[resumeData.menu]==='prize' || showAll"/>
 
             <!--专业技能-->
             <skill v-model="data.skill"
-                   v-if="menuData[resumeData.$state.resumeData.menu]==='skill' || showAll"/>
+                   v-if="menuData[resumeData.menu]==='skill' || showAll"/>
           </ice-column>
         </ice-row>
 
@@ -71,10 +72,13 @@ import customConfig from "@/components/resume/customConfig/index.vue";
 import {messageAlert} from "@/utils/utils.js";
 import markdownCard from "@/components/resume/markdownCard/index.vue";
 import {findColor} from 'icepro'
+import {storeToRefs} from 'pinia'
 
+const resumeDataStore = resumeStore();
+const {updateMenu} = resumeDataStore;
 
-const resumeData = resumeStore();
-
+const {resumeData} = storeToRefs(resumeDataStore)
+console.log('resumeData', resumeData.value)
 let data = ref({});
 let startX = ref();
 
@@ -136,12 +140,13 @@ setInterval(() => {
     localStorage.setItem("info", JSON.stringify(data.value));
   }
 }, 2000);
+
 const init = () => {
-  console.log(findColor('haitianlan'));
-  /*if (localStorage.getItem('info')) {
-    resumeData.updateResume(JSON.parse(localStorage.getItem('info')))
-  }*/
-  data.value = resumeData.$state.resumeData;
+  // TODO 不从本地获取数据
+  /*  if (localStorage.getItem('info')) {
+      resumeData.updateResume(JSON.parse(localStorage.getItem('info')))
+    }*/
+  data.value = resumeData.value;
 };
 /**
  * 生成pdf
@@ -308,12 +313,12 @@ const downloadFile = (str, name = "resume.html") => {
 
 init();
 
-let showAll = computed(() => {
-  return resumeData.$state.resumeData.menu === "all" ? true : false;
+const showAll = computed(() => {
+  return resumeData.value.menu === "all";
 });
 
 const showAllTrigger = () => {
-  resumeData.updateMenu("all");
+  updateMenu("all");
 };
 
 // 展示模式
@@ -376,11 +381,6 @@ const selectionList = reactive([
 
   &::-webkit-scrollbar-thumb:hover {
     background: #555; /* 滚动条悬停颜色 */
-  }
-
-
-  .leftMenu {
-    //width: 1.5rem !important;
   }
 
   .rightSelection {

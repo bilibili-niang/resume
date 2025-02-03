@@ -1,69 +1,71 @@
 <script setup lang="ts">
-import resumeStore from "@/store/modules/resume.ts";
-import {color} from "@/config.js";
+import resumeStore from '@/store/modules/resume.ts'
+import { color } from '@/config.js'
 
-const resumeData = resumeStore();
+const resumeDataStore = resumeStore()
+
 const props = defineProps({
   data: {
     type: Object
   }
-});
+})
 
 onBeforeMount(() => {
-  const targetDom = document.querySelector("#pdfDom");
+  const targetDom = document.querySelector('#pdfDom')
 })
 
 
 onMounted(() => {
-  const targetDom = document.querySelector("#pdfDom");
+  const targetDom = document.querySelector('#pdfDom')
 })
 
-let renderPageRef = ref();
+let renderPageRef = ref()
 const moveDiv = () => {
-  renderPageRef.value.addEventListener("mousedown", (e: any) => {
+  renderPageRef.value.addEventListener('mousedown', (e: any) => {
     // 鼠标按下，计算当前元素距离可视区的距离
-    let disX = e.clientX;
-    let disY = e.clientY;
-    let left = renderPageRef.value.offsetLeft;
-    let top = renderPageRef.value.offsetTop;
+    let disX = e.clientX
+    let disY = e.clientY
+    let left = renderPageRef.value.offsetLeft
+    let top = renderPageRef.value.offsetTop
     document.onmousemove = (e) => {
       // 通过事件委托,计算移动的距离
-      let l = e.clientX - disX;
-      let t = e.clientY - disY;
+      let l = e.clientX - disX
+      let t = e.clientY - disY
       // 移动当前元素
-      renderPageRef.value.style.left = l + left + "px";
-      renderPageRef.value.style.top = t + top + "px";
-    };
+      renderPageRef.value.style.left = l + left + 'px'
+      renderPageRef.value.style.top = t + top + 'px'
+    }
     document.onmouseup = (e) => {
-      document.onmousemove = null;
-      document.onmouseup = null;
-    };
-  });
-};
+      document.onmousemove = null
+      document.onmouseup = null
+    }
+  })
+}
 
 // 监听点击并获取类名
 const elementLister = () => {
-  let elementList = document.getElementsByClassName("renderBlock");
+  let elementList = document.getElementsByClassName('renderBlock')
   for (let i = 0; i < elementList.length; i++) {
-    elementList[i].addEventListener("click", (e) => {
-      changeMenu(e.target.id);
-    });
+    elementList[i].addEventListener('click', (e) => {
+      changeMenu(e.target.id)
+    })
   }
-};
+}
 
 // 监听鼠标按下
 onMounted(() => {
-  moveDiv();
-  // elementLister();
-});
+  moveDiv()
+})
 
 const changeMenu = (menu: string) => {
   if (!menu) {
-    return void 0;
+    return void 0
   } else {
-    resumeData.updateMenu(menu);
+    resumeDataStore.updateMenu(menu)
+    // console.log(updateMenu)
+    // updateMenu(menu)
   }
-};
+}
 
 </script>
 

@@ -5,7 +5,7 @@ const props = defineProps({
 
 let data = ref()
 const init = () => {
-  data.value = props.modelValue;
+  data.value = props.modelValue
 }
 
 const emits = defineEmits(['update:myInfo'])
@@ -14,7 +14,7 @@ const emits = defineEmits(['update:myInfo'])
 watch(data, () => {
   emits('update:myInfo', data.value)
 })
-init();
+init()
 // 控制元素添加
 const addElement = (type: string) => {
   const list = data.value[type]
@@ -23,7 +23,7 @@ const addElement = (type: string) => {
   let tempKey = ''
   try {
     // 这里报错,是因为 summary 里面可能被删空了
-    tempKey = type + (parseInt(keys[keys.length - 1].charAt(keys[keys.length - 1].length - 1)) + 1 + '');
+    tempKey = type + (parseInt(keys[keys.length - 1].charAt(keys[keys.length - 1].length - 1)) + 1 + '')
   } catch (e) {
     tempKey = 'summary1'
   }
@@ -31,19 +31,18 @@ const addElement = (type: string) => {
 }
 // 减少
 const decreaseElement = (type: string, target: string) => {
-  console.log("data.value[type]")
-  console.log(data.value[type])
-
-  console.log("Object.keys(data.value[type]):")
-  console.log(Object.keys(data.value[type]))
+  console.log('data.value的长度:')
+  console.log(data.value.length)
+  return void 0
   delete data.value[type][target]
 }
+
 // 控制元素删除
-const deleteElement = (type: string, index: number) => {
-  console.log("delete", type, index)
+/*const deleteElement = (type: string, index: number) => {
+  console.log('delete', type, index)
   console.log(data.value)
   console.log(data.value[type])
-}
+}*/
 
 
 </script>
@@ -105,7 +104,6 @@ const deleteElement = (type: string, index: number) => {
   padding: 0 @p-small;
 
   .oneRow {
-
   }
 }
 </style>
