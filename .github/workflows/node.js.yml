@@ -26,15 +26,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: './iceResume/package-lock.json'
+        cache-dependency-path: './package-lock.json'
     - name: Clean and Install dependencies
-      working-directory: ./iceResume
       run: |
         rm -f package-lock.json
         rm -rf node_modules
         npm install
     - name: Build
-      working-directory: ./iceResume
       run: npm run build
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
