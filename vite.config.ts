@@ -15,6 +15,7 @@ export default defineConfig({
             // 自动导入目录下的模块导出
             dirs: ['src/components/**/*'],
             // 生成模块声明文件目录
+            // 生成模块声明文件目录
             dts: 'src/auto-imports.d.ts',
             // 是否在vue模板中自动导入
             vueTemplate: true,
@@ -38,7 +39,7 @@ export default defineConfig({
         extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue"],
     },
     build: {
-        outDir: '../docs',
+        outDir: './docs',
         emptyOutDir: true,
         assetsDir: 'assets',
         rollupOptions: {

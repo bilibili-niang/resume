@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/resume/logo.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>resume</title>
+  <script type="module" crossorigin src="/resume/assets/js/index-Z0jZ2lA_.js"></script>
+  <link rel="stylesheet" crossorigin href="/resume/assets/css/index-CPDnmrhZ.css">
+</head>
+<body onload="convertCSS()">
+<div id="app"></div>
+</body>
+<script>
+  function convertCSS() {
+    var elements = document.getElementsByClassName("mystyle");
+    var styleText = "";
+
+    // 遍历所有样式表
+    for (var k = 0; k < document.styleSheets.length; k++) {
+      var css = document.styleSheets[k];
+      var rules = css.cssRules || css.rules;
+
+      // 遍历样式表中的每一条规则
+      for (var i = 0; i < rules.length; i++) {
+        var rule = rules[i];
+
+        // 检查规则是否适用于类名为 '.mystyle' 的元素
+        if (rule.selectorText === ".mystyle") {
+          // 将规则的样式文本添加到 styleText 中
+          styleText += rule.style.cssText + ";";
+        }
+      }
+    }
+    // 应用合并后的样式到所有匹配的元素上
+    for (var j = 0; j < elements.length; j++) {
+      elements[j].style.cssText = styleText;
+    }
+  }
+
+  /* function convertCSS() {
+    var css = document.styleSheets[0];
+    var rules = css.cssRules || css.rules;
+    for (var i = 0; i < rules.length; i++) {
+      var rule = rules[i];
+      if (rule.selectorText === ".mystyle") {
+        var elements = document.getElementsByClassName("mystyle");
+        for (var j = 0; j < elements.length; j++) {
+          elements[j].style.cssText = rule.style.cssText;
+        }
+      }
+    }
+  }*/
+</script>
+</html>
