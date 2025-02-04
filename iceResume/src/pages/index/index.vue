@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import indexHeader from '@/components/index/header.vue'
+import router from '@/router'
+const goDoc = () => {
+  router.push({
+    name: 'resume'
+  })
+}
+
 </script>
 
 <template>
@@ -11,7 +18,7 @@ import indexHeader from '@/components/index/header.vue'
       <ice-avatar size="120" block src="/public/logo.png"></ice-avatar>
 
       <ice-row>
-        <ice-link href="/#/resume">起步</ice-link>
+        <ice-link @click="goDoc">起步</ice-link>
       </ice-row>
       <ice-row>
         <indexHeader></indexHeader>
@@ -25,11 +32,8 @@ import indexHeader from '@/components/index/header.vue'
           简历编写工具
         </ice-text>
       </ice-row>
-
-
     </ice-column>
   </div>
-
 </template>
 
 <style scoped lang="less">
