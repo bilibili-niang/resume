@@ -1,20 +1,22 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineConfig({
-    plugins: [vue(),
+    plugins: [
+        vue(),
+        vueJsx(),
         AutoImport({
             // 转换目标
             include: [
-                /\.vue$/, /\.vue\?vue/,
+                /\.vue$/, /\.vue\?vue/, /\.tsx$/, /\.jsx$/,
             ],
             // 全局导入注册
             imports: ['vue'],
             // 自动导入目录下的模块导出
             dirs: ['src/components/**/*'],
-            // 生成模块声明文件目录
             // 生成模块声明文件目录
             dts: 'src/auto-imports.d.ts',
             // 是否在vue模板中自动导入

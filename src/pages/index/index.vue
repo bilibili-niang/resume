@@ -23,7 +23,7 @@ const goDoc = () => {
       <ice-avatar size="120" block :src="logo"></ice-avatar>
 
       <ice-row>
-        <ice-tag pointer @click="goDoc">起步</ice-tag>
+        <ice-button @click="goDoc">起步</ice-button>
       </ice-row>
       <ice-row>
         <indexHeader></indexHeader>
