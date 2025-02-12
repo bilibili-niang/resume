@@ -65,7 +65,7 @@ import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import resumeStore from "@/store/modules/resume.ts";
 import {ref} from "vue";
-import {menuData} from "@/config.js";
+import {menuData} from "@/config";
 import {saveAs} from "file-saver";
 import {asBlob} from "html-docx-js-typescript";
 import customConfig from "@/components/resume/customConfig/index.vue";
@@ -154,7 +154,7 @@ const generate = () => {
     // htmlToPdfFun('pdfDom', '个人报告')
     const element = document.getElementById("pdfDom");
     const opts = {
-      scale: 12, // 缩放比例，提高生成图片清晰度
+      scale: 1, // 缩放比例，提高生成图片清晰度
       useCORS: true, // 允许加载跨域的图片
       allowTaint: false, // 允许图片跨域，和 useCORS 二者不可共同使用
       // tainttest: true, // 检测每张图片已经加载完成

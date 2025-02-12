@@ -1,0 +1,41 @@
+.otherBlock {
+  margin: 16px 0;
+
+  .renderBlock {
+    &:hover {
+      transition-duration: @time-n;
+      cursor: pointer;
+      background: @themeColor-bleak-bleak;
+    }
+  }
+
+  .custom-block {
+    background: #f5f7fa;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 12px;
+
+    .block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+
+      .block-type {
+        font-weight: bold;
+        color: #303133;
+      }
+
+      .block-time {
+        color: #909399;
+        font-size: 14px;
+      }
+    }
+
+    .block-content {
+      color: #606266;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+}

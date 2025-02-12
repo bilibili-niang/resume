@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import resumeStore from '@/store/modules/resume.ts'
-import { color } from '@/config.js'
+import { color } from '@/config'
 import OtherBlock from '@/components/resume/otherBlock'
 
 
@@ -226,7 +226,7 @@ const changeMenu = (menu: string) => {
       </template>
 
     </ice-column>
-    <OtherBlock class="renderBlock"/>
+    <OtherBlock/>
 
 
   </div>
@@ -255,10 +255,11 @@ const changeMenu = (menu: string) => {
 }
 
 .renderBlock {
+  cursor: pointer;
   transition-duration: @time-n;
 
   &:hover {
-    background: rgba(0, 0, 0, .2);
+    background: @themeColor-bleak-bleak;
     cursor: pointer;
   }
 }

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 const resume = defineStore('resume', () => {
   const resumeData = ref({
+    customBlocks:[],
     myInfo: {
       name: '张嘉凯',
       avatar: 'https://avatars.githubusercontent.com/u/60811236?v=4',
