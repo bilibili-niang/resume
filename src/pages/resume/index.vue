@@ -35,7 +35,11 @@
             <!--专业技能-->
             <skill v-model="data.skill"
                    v-if="menuData[resumeData.menu]==='skill' || showAll"/>
+<!--自定义区域-->
+            <CustomBlockController/>
+
           </ice-column>
+
         </ice-row>
 
       </div>
@@ -67,6 +71,7 @@ import markdownCard from "@/components/resume/markdownCard/index.vue";
 import {findColor} from 'icepro'
 import {storeToRefs} from 'pinia'
 import {EDUCATIONAL_EXPERIENCE, INTRODUCE_YOURSELF} from '@/constant';
+import CustomBlockController from '@/pages/resume/components/CustomBlockController';
 
 const resumeDataStore = resumeStore();
 const {updateMenu} = resumeDataStore;

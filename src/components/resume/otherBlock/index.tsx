@@ -1,12 +1,13 @@
+import './style.less'
 import { defineComponent, ref } from 'vue'
 import resumeStore from '@/store/modules/resume.ts'
 import { storeToRefs } from 'pinia'
-import './style.less'
 import CustomBlockList from './components/customBlockList'
 
 export interface CustomBlock {
   type: string
   content: string
+  id: string
   responsibilities: string
   time: {
     start: string
@@ -28,6 +29,7 @@ export default defineComponent({
     const addCustomBlock = () => {
       const newBlock: CustomBlock = {
         type: '自定义模块',
+        id: Math.random().toString(36).substring(2),
         responsibilities: '',
         content: '',
         time: {
@@ -46,7 +48,8 @@ export default defineComponent({
     }
 
     const handleSelect = (block: CustomBlock) => {
-      selectedBlock.value = block
+      selectedBlock.value = block.id
+      resumeData.value.menu=block.id
     }
 
     const handleUpdate = () => {
@@ -63,57 +66,10 @@ export default defineComponent({
 
     return () => (
       <div class="otherBlock">
-        <div class="edit-area">
-          {selectedBlock.value ? (
-            <div class="edit-form">
-              <div class="form-item">
-                <label>类型：</label>
-                <input 
-                  v-model={selectedBlock.value.type}
-                  onInput={handleUpdate}
-                />
-              </div>
-              <div class="form-item">
-                <label>职责：</label>
-                <input 
-                  v-model={selectedBlock.value.responsibilities}
-                  onInput={handleUpdate}
-                />
-              </div>
-              <div class="form-item">
-                <label>开始时间：</label>
-                <input 
-                  v-model={selectedBlock.value.time.start}
-                  onInput={handleUpdate}
-                />
-              </div>
-              <div class="form-item">
-                <label>结束时间：</label>
-                <input 
-                  v-model={selectedBlock.value.time.end}
-                  onInput={handleUpdate}
-                />
-              </div>
-              <div class="form-item">
-                <label>内容：</label>
-                <textarea 
-                  v-model={selectedBlock.value.content}
-                  onInput={handleUpdate}
-                  rows={4}
-                />
-              </div>
-            </div>
-          ) : (
-            <div class="empty-state">
-              请选择一个模块进行编辑，或点击"添加其他模块"创建新模块
-            </div>
-          )}
-        </div>
         <div class="content-area">
-          <CustomBlockList 
-            blocks={resumeData.value.customBlocks} 
+          <CustomBlockList
+            blocks={resumeData.value.customBlocks}
             onSelect={handleSelect}
-            selectedBlock={selectedBlock.value}
           />
           <ice-row onClick={addCustomBlock} class="add-button">
             添加其他模块

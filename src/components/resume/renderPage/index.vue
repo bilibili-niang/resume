@@ -2,8 +2,11 @@
 import resumeStore from '@/store/modules/resume.ts'
 import { color } from '@/config'
 import OtherBlock from '@/components/resume/otherBlock'
+import { storeToRefs } from 'pinia'
 
 const resumeDataStore = resumeStore()
+
+const { resumeData } = storeToRefs(resumeDataStore)
 
 const props = defineProps({
   data: {
@@ -70,7 +73,13 @@ const changeMenu = (menu: string) => {
 </script>
 
 <template>
-  <div class="renderPage" ref="renderPageRef">
+  <div
+    class="renderPage"
+    ref="renderPageRef"
+    @click="()=>{
+    console.log(resumeData.menu)
+  }"
+  >
     <!--头像-->
     <ice-column class="renderBlock" id="avatar" @click="changeMenu('avatar')">
       <div class="verticalLine"></div>
@@ -250,13 +259,4 @@ const changeMenu = (menu: string) => {
   justify-content: flex-end;
 }
 
-.renderBlock {
-  cursor: pointer;
-  transition-duration: @time-n;
-
-  &:hover {
-    background: @themeColor-bleak-bleak;
-    cursor: pointer;
-  }
-}
 </style>

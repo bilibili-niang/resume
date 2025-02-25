@@ -23,10 +23,10 @@ export default defineComponent({
     return () => (
       <div class="custom-blocks-content">
         {props.blocks?.map((block: CustomBlock, index: number) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             class={[
-              'block-item',
+              'block-item renderBlock',
               { selected: props.selectedBlock === block }
             ]}
             onClick={() => handleSelect(block)}
