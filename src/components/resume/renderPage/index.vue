@@ -3,7 +3,6 @@ import resumeStore from '@/store/modules/resume.ts'
 import { color } from '@/config'
 import OtherBlock from '@/components/resume/otherBlock'
 
-
 const resumeDataStore = resumeStore()
 
 const props = defineProps({
@@ -15,7 +14,6 @@ const props = defineProps({
 onBeforeMount(() => {
   const targetDom = document.querySelector('#pdfDom')
 })
-
 
 onMounted(() => {
   const targetDom = document.querySelector('#pdfDom')
@@ -224,10 +222,8 @@ const changeMenu = (menu: string) => {
           {{ data.myInfo.summary[key] }}
         </ice-text>
       </template>
-
     </ice-column>
     <OtherBlock/>
-
 
   </div>
 </template>

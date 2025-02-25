@@ -17,19 +17,12 @@
               <ice-button @click="showAllTrigger" v-if="resumeData.menu!=='all'">展示所有模块
               </ice-button>
             </ice-row>
-            <!--TODO 后续将会新增markdown编写个人简历-->
-            <!--
-                       <div class="column widthAuto">
-                          <ice-text>选择一种model</ice-text>
-                          <ice-selector v-model="showModel" :list="selectionList"></ice-selector>
-                        </div>
-                        <customConfig></customConfig>-->
             <!--自我介绍-->
             <introduceMyself v-model="data.myInfo"
-                             v-if="menuData[resumeData.menu]==='introduceMyself' || showAll"/>
+                             v-if="menuData[resumeData.menu]===INTRODUCE_YOURSELF || showAll"/>
             <!--教育经历-->
             <educationalExperience v-model="data.education"
-                                   v-if="menuData[resumeData.menu]==='educationalExperience' || showAll"/>
+                                   v-if="menuData[resumeData.menu]===EDUCATIONAL_EXPERIENCE || showAll"/>
 
             <!--项目经历-->
             <projectExperience v-model="data.projectData"
@@ -64,7 +57,7 @@ import projectExperience from "@/components/resume/projectExperience/index.vue";
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import resumeStore from "@/store/modules/resume.ts";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {menuData} from "@/config";
 import {saveAs} from "file-saver";
 import {asBlob} from "html-docx-js-typescript";
@@ -73,6 +66,7 @@ import {messageAlert} from "@/utils/utils.js";
 import markdownCard from "@/components/resume/markdownCard/index.vue";
 import {findColor} from 'icepro'
 import {storeToRefs} from 'pinia'
+import {EDUCATIONAL_EXPERIENCE, INTRODUCE_YOURSELF} from '@/constant';
 
 const resumeDataStore = resumeStore();
 const {updateMenu} = resumeDataStore;
@@ -145,6 +139,36 @@ const init = () => {
     }*/
   data.value = resumeData.value;
 };
+
+// 选中的模块
+const selectedBlock = ref(null)
+
+// 处理模块选择
+const handleSelectBlock = (block) => {
+  selectedBlock.value = JSON.parse(JSON.stringify(block))
+}
+
+// 处理模块更新
+const handleBlockUpdate = () => {
+  if (selectedBlock.value && resumeData.value.customBlocks) {
+    const index = resumeData.value.customBlocks.findIndex(
+      block => block === selectedBlock.value
+    )
+    if (index !== -1) {
+      resumeData.value.customBlocks[index] = JSON.parse(
+        JSON.stringify(selectedBlock.value)
+      )
+      resumeDataStore.updateResume(resumeData.value)
+    }
+  }
+}
+watch(() => resumeData.value.menu, (newV) => {
+  console.log('newV', newV, menuData[resumeData.value.menu])
+}, {
+  immediate: true,
+  deep: true
+})
+
 /**
  * 生成pdf
  */
@@ -335,6 +359,49 @@ const selectionList = reactive([
 </script>
 
 <style scoped lang="less">
+.resume {
+  .formContainer {
+    .left {
+      .leftMenu {
+        .edit-form {
+          padding: 16px;
+
+          h3 {
+            margin-bottom: 16px;
+            color: #333;
+          }
+
+          .form-item {
+            margin-bottom: 16px;
+
+            label {
+              display: block;
+              margin-bottom: 8px;
+              color: #666;
+            }
+
+            input, textarea {
+              width: 100%;
+              padding: 8px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              background: #fff;
+
+              &:focus {
+                outline: none;
+                border-color: #1890ff;
+              }
+            }
+
+            textarea {
+              resize: vertical;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 .flexC() {
   display: flex;

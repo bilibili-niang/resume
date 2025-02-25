@@ -7,33 +7,51 @@ export default defineComponent({
   props: {
     blocks: {
       type: Array as PropType<CustomBlock[]>,
-      required: true,
+      default: () => [],
+    },
+    selectedBlock: {
+      type: Object as PropType<CustomBlock>,
+      default: null,
     },
   },
-  setup(props) {
+  emits: ['select'],
+  setup(props, { emit }) {
+    const handleSelect = (block: CustomBlock) => {
+      emit('select', block)
+    }
+
     return () => (
       <div class="custom-blocks-content">
         {props.blocks?.map((block: CustomBlock, index: number) => (
-          <ice-column key={index}>
-            <ice-row>
-              <ice-split position="left">
-                {block.type}
-              </ice-split>
-              <ice-text color={color} nowrap>
-                {block.responsibilities}
+          <div 
+            key={index} 
+            class={[
+              'block-item',
+              { selected: props.selectedBlock === block }
+            ]}
+            onClick={() => handleSelect(block)}
+          >
+            <ice-column>
+              <ice-row>
+                <ice-split position="left">
+                  {block.type}
+                </ice-split>
+                <ice-text color={color} nowrap>
+                  {block.responsibilities}
+                </ice-text>
+              </ice-row>
+
+              <ice-text color={color}>
+                {(block.time.start && block.time.end) ?
+                  `${block.time.start} - ${block.time.end}`
+                  : ''}
               </ice-text>
-            </ice-row>
 
-            <ice-text color={color}>
-              {(block.time.start && block.time.end) ?
-                ` 起始时间:${block.time.start} - ${block.time.end}`
-                : ''}
-            </ice-text>
-
-            <ice-text class="wrap" color={color}>
-              {block.content}
-            </ice-text>
-          </ice-column>
+              <ice-text class="wrap" color={color}>
+                {block.content}
+              </ice-text>
+            </ice-column>
+          </div>
         ))}
       </div>
     )
