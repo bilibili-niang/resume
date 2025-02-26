@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import resumeStore from '@/store/modules/resume.ts'
-import { color } from '@/config.js'
+import { color, moduleIds } from '@/config'
+import OtherBlock from '@/components/resume/otherBlock'
+import { storeToRefs } from 'pinia'
 
 const resumeDataStore = resumeStore()
+const { updateMenu } = resumeDataStore
+const { resumeData } = storeToRefs(resumeDataStore)
 
 const props = defineProps({
   data: {
@@ -13,7 +17,6 @@ const props = defineProps({
 onBeforeMount(() => {
   const targetDom = document.querySelector('#pdfDom')
 })
-
 
 onMounted(() => {
   const targetDom = document.querySelector('#pdfDom')
@@ -42,100 +45,80 @@ const moveDiv = () => {
   })
 }
 
-// 监听点击并获取类名
-const elementLister = () => {
-  let elementList = document.getElementsByClassName('renderBlock')
-  for (let i = 0; i < elementList.length; i++) {
-    elementList[i].addEventListener('click', (e) => {
-      changeMenu(e.target.id)
-    })
-  }
-}
-
 // 监听鼠标按下
 onMounted(() => {
   moveDiv()
 })
 
-const changeMenu = (menu: string) => {
-  if (!menu) {
-    return void 0
-  } else {
-    resumeDataStore.updateMenu(menu)
-    // console.log(updateMenu)
-    // updateMenu(menu)
-  }
+// 切换菜单
+const changeMenu = (moduleId: string) => {
+  updateMenu(moduleId)
 }
-
 </script>
 
 <template>
-  <div class="renderPage" ref="renderPageRef">
+  <div
+    class="renderPage"
+    ref="renderPageRef"
+  >
     <!--头像-->
-    <ice-column class="renderBlock" id="avatar" @click="changeMenu('avatar')">
+    <ice-column class="renderBlock" id="avatar" @click="changeMenu(moduleIds.introduceMyself)">
       <div class="verticalLine"></div>
       <ice-row>
-        <ice-avatar :src="data.myInfo.avatar" block></ice-avatar>
+        <ice-avatar :src="data[moduleIds.introduceMyself].avatar" block></ice-avatar>
         <ice-column class="userInfoText">
-          <ice-text :color="color" size="l" m0>{{ data.myInfo.name }}</ice-text>
+          <ice-text :color="color" size="l" m0>{{ data[moduleIds.introduceMyself].name }}</ice-text>
 
           <ice-row>
             <ice-text :color="color" nowrap p0 m0>
               <ice-tag :color="color">年龄:</ice-tag>
-              {{ data.myInfo.age }}
+              {{ data[moduleIds.introduceMyself].age }}
             </ice-text>
 
             <ice-text :color="color" nowrap p0 m0>
               <ice-tag :color="color">电话:</ice-tag>
-              {{ data.myInfo.phone }}
+              {{ data[moduleIds.introduceMyself].phone }}
             </ice-text>
 
             <ice-text :color="color" nowrap p0 m0>
               <ice-tag :color="color" nowrap>邮箱:</ice-tag>
-              <template v-for="(key, index) in Object.keys(data.myInfo.email)" :key="index">
-                <ice-text :color="color" v-if="data.myInfo.email[key]&&data.myInfo.email[key].length>0">
-                  {{ data.myInfo.email[key] }}
-                </ice-text>
-              </template>
+              {{ data[moduleIds.introduceMyself].email.email1 }}
             </ice-text>
-
 
             <ice-text :color="color" nowrap p0 m0>
               <ice-tag :color="color">微信:</ice-tag>
-              {{ data.myInfo.wechatId }}
+              {{ data[moduleIds.introduceMyself].wechatId }}
             </ice-text>
           </ice-row>
 
           <ice-row>
             <ice-text :color="color" p0 m0>
               <ice-tag :color="color">github地址:</ice-tag>
-              {{ data.myInfo.githubRul }}
+              {{ data[moduleIds.introduceMyself].githubRul }}
             </ice-text>
           </ice-row>
 
           <ice-row>
             <ice-text :color="color" nowrap p0 m0>
               <ice-tag :color="color">个人网站:</ice-tag>
-              {{ data.myInfo.website }}
+              {{ data[moduleIds.introduceMyself].website }}
             </ice-text>
 
             <ice-text :color="color" nowrap p0 m0>
               <ice-tag :color="color" m0>现居城市:</ice-tag>
-              {{ data.myInfo.address }}
+              {{ data[moduleIds.introduceMyself].address }}
             </ice-text>
-
-
           </ice-row>
         </ice-column>
       </ice-row>
     </ice-column>
 
     <!--教育经历-->
-    <ice-column class="renderBlock" id="education" @click="changeMenu('education')">
+    <ice-column class="renderBlock" id="education" @click="changeMenu(moduleIds.educationalExperience)">
       <div class="verticalLine"></div>
       <ice-split position="left" text="教育经历"></ice-split>
 
-      <template v-for="(item,index) in data.education" :key="index">
+      <template v-for="(item,index) in data[moduleIds.educationalExperience]" :key="index">
         <ice-row class="justBetween">
           <ice-row>
             <ice-text :color="color" nowrap>
@@ -147,34 +130,29 @@ const changeMenu = (menu: string) => {
           </ice-text>
         </ice-row>
       </template>
-
     </ice-column>
 
     <!--专业技能-->
-    <ice-column class="renderBlock" id="professionalSkills" @click="changeMenu('professionalSkills')">
+    <ice-column class="renderBlock" id="professionalSkills" @click="changeMenu(moduleIds.skill)">
       <div class="verticalLine"></div>
       <ice-split position="left" text="专业技能"></ice-split>
-      <ice-text v-for="(item,index) in data.skill" :key="index" :color="color">
-        {{ item.name }}-{{ item.extent }}
+      <ice-text v-for="(item,index) in data[moduleIds.skill]" :key="index" :color="color">
+        {{ item.skillName }}-{{ item.extent }}
       </ice-text>
-
     </ice-column>
 
     <!--项目经历-->
-    <ice-column class="renderBlock" id="projectExperience" @click="changeMenu('projectExperience')">
+    <ice-column class="renderBlock" id="projectExperience" @click="changeMenu(moduleIds.projectExperience)">
       <div class="verticalLine"></div>
       <ice-split position="left" text="项目经历"></ice-split>
 
-
-      <ice-text v-for="(item,index) in data.projectData" :key="index" :color="color">
+      <ice-text v-for="(item,index) in data[moduleIds.projectExperience]" :key="index" :color="color">
         <ice-column class="justBetween">
-
           <ice-row class="alignC justBetween">
             <ice-row>
               <ice-text :color="color">
                 {{ item.projectName }}-{{ item.projectRole }}
               </ice-text>
-              <!--<ice-tag v-if="item.companyProject===1" :color="color">企业项目</ice-tag>-->
               <ice-text :color="color" v-if="item.companyProject===1">
                 {{ item.company }}
               </ice-text>
@@ -189,73 +167,63 @@ const changeMenu = (menu: string) => {
           <ice-text class="wrap" :color="color">
             {{ item.projectContent }}
           </ice-text>
-
         </ice-column>
-
-
       </ice-text>
-
-
     </ice-column>
 
     <!--获奖-->
-    <ice-column class="renderBlock" id="prize" @click="changeMenu('prize')">
+    <ice-column class="renderBlock" id="prize" @click="changeMenu(moduleIds.prize)">
       <div class="verticalLine"></div>
       <ice-split position="left" text="获奖"></ice-split>
 
-      <template v-for="(key, index) in Object.keys(data.prize)" :key="index">
+      <template v-for="(item, index) in data[moduleIds.prize]" :key="index">
         <div class="ice-row justBetween">
-          <ice-text :color="color">{{ data.prize[key].prizeName }}</ice-text>
-          <ice-text :color="color">{{ data.prize[key].prizeTime }}</ice-text>
+          <ice-text :color="color">{{ item.prizeName }}</ice-text>
         </div>
       </template>
-
     </ice-column>
 
     <!--自我评价-->
-    <ice-column class="renderBlock" id="summary" @click="changeMenu('avatar')">
+    <ice-column class="renderBlock" id="summary" @click="changeMenu(moduleIds.introduceMyself)">
       <div class="verticalLine"></div>
       <ice-split position="left" text="总结"></ice-split>
 
-      <template v-for="(key, index) in Object.keys(data.myInfo.summary)" :key="index">
-        <ice-text :color="color" v-if="data.myInfo.summary[key]&&data.myInfo.summary[key].length>0">
-          {{ data.myInfo.summary[key] }}
+      <template v-for="(key, index) in Object.keys(data[moduleIds.introduceMyself].summary)" :key="index">
+        <ice-text :color="color" v-if="data[moduleIds.introduceMyself].summary[key]&&data[moduleIds.introduceMyself].summary[key].length>0">
+          {{ data[moduleIds.introduceMyself].summary[key] }}
         </ice-text>
       </template>
-
     </ice-column>
 
-
+    <OtherBlock :data="data"/>
   </div>
 </template>
 
 <style scoped lang="less">
 .renderPage {
   position: absolute;
-  margin: auto;
-  width: 835.8px;
-  min-height: 1122.66px;
-  //height: 1122.66px;
-  //aspect-ratio: 3/4;
-  font-size: 16px;
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 1cm;
+  margin: 1cm auto;
+  border-radius: 5px;
   background: white;
-  color: #2f2f35;
-  border-radius: @radio-n;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.userInfoText {
-  justify-content: flex-end;
+.verticalLine {
+  width: 4px;
+  height: 20px;
+  background: @themeColor;
+  margin-right: 10px;
 }
 
-.renderBlock {
-  transition-duration: @time-n;
+.avatarInfo {
+  margin-left: 10px;
+}
 
-  &:hover {
-    background: rgba(0, 0, 0, .2);
-  }
+:deep(.ice-split-text) {
+  color: @themeColor;
+  font-weight: bold;
 }
 </style>

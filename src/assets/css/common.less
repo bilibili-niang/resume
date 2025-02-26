@@ -1,8 +1,8 @@
 @import './variables.less';
 
 #app {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   padding: 0;
   margin: 0;
   overflow-x: hidden;
@@ -82,4 +82,16 @@ html {
 
 .w100Percent {
   width: 100%;
+}
+
+
+
+.renderBlock {
+  cursor: pointer;
+  transition-duration: @time-n;
+
+  &:hover {
+    background: @themeColor-bleak-bleak;
+    cursor: pointer;
+  }
 }

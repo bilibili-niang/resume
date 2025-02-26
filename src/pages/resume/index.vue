@@ -5,7 +5,7 @@
       <indexHeader/>
     </ice-row>
 
-    <div class="formContainer ice-row" ref="currentBox">
+    <div class="formContainer">
       <div class="left" ref="leftContentRef">
         <ice-row>
           <ice-column class="leftMenu" v-if="false"></ice-column>
@@ -17,39 +17,45 @@
               <ice-button @click="showAllTrigger" v-if="resumeData.menu!=='all'">展示所有模块
               </ice-button>
             </ice-row>
-            <!--TODO 后续将会新增markdown编写个人简历-->
-            <!--
-                       <div class="column widthAuto">
-                          <ice-text>选择一种model</ice-text>
-                          <ice-selector v-model="showModel" :list="selectionList"></ice-selector>
-                        </div>
-                        <customConfig></customConfig>-->
             <!--自我介绍-->
-            <introduceMyself v-model="data.myInfo"
-                             v-if="menuData[resumeData.menu]==='introduceMyself' || showAll"/>
+            <transition name="fade">
+              <introduceMyself v-model="data[moduleIds.introduceMyself]"
+                               v-if="menuData[resumeData.menu]?.type === 'introduceMyself' || showAll"/>
+            </transition>
             <!--教育经历-->
-            <educationalExperience v-model="data.education"
-                                   v-if="menuData[resumeData.menu]==='educationalExperience' || showAll"/>
-
+            <transition name="fade">
+              <educationalExperience v-model="data[moduleIds.educationalExperience]"
+                                     v-if="menuData[resumeData.menu]?.type === 'educationalExperience' || showAll"/>
+            </transition>
             <!--项目经历-->
-            <projectExperience v-model="data.projectData"
-                               v-if="menuData[resumeData.menu]==='projectExperience' || showAll"/>
+            <transition name="fade">
+              <projectExperience v-model="data[moduleIds.projectExperience]"
+                                 v-if="menuData[resumeData.menu]?.type === 'projectExperience' || showAll"/>
+            </transition>
             <!--获奖-->
-            <getPrize
-              v-model="data.prize"
-              v-if="menuData[resumeData.menu]==='prize' || showAll"/>
-
+            <transition name="fade">
+              <getPrize
+                v-model="data[moduleIds.prize]"
+                v-if="menuData[resumeData.menu]?.type === 'prize' || showAll"/>
+            </transition>
             <!--专业技能-->
-            <skill v-model="data.skill"
-                   v-if="menuData[resumeData.menu]==='skill' || showAll"/>
+            <transition name="fade">
+              <skill v-model="data[moduleIds.skill]"
+                     v-if="menuData[resumeData.menu]?.type === 'skill' || showAll"/>
+            </transition>
+            <!--自定义区域-->
+            <transition name="fade">
+              <CustomBlockController v-if="showAll"/>
+            </transition>
           </ice-column>
+
         </ice-row>
 
       </div>
       <div class="resize" title="收缩侧边栏" ref="resizeBox">⋮</div>
       <div class="center">
         <renderPage :data="data" id="pdfDom" v-show="showModel==='resume'"/>
-        <markdownCard :data="data" id="markdownCard" v-show="showModel==='markdownCard'"></markdownCard>
+        <!--        <markdownCard :data="data" id="markdownCard" v-show="showModel==='markdownCard'"></markdownCard>-->
       </div>
     </div>
   </div>
@@ -64,8 +70,8 @@ import projectExperience from "@/components/resume/projectExperience/index.vue";
 import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import resumeStore from "@/store/modules/resume.ts";
-import {ref} from "vue";
-import {menuData} from "@/config.js";
+import {ref, watch} from "vue";
+import {menuData} from "@/config";
 import {saveAs} from "file-saver";
 import {asBlob} from "html-docx-js-typescript";
 import customConfig from "@/components/resume/customConfig/index.vue";
@@ -73,13 +79,17 @@ import {messageAlert} from "@/utils/utils.js";
 import markdownCard from "@/components/resume/markdownCard/index.vue";
 import {findColor} from 'icepro'
 import {storeToRefs} from 'pinia'
+import {EDUCATIONAL_EXPERIENCE, INTRODUCE_YOURSELF} from '@/constant';
+import CustomBlockController from '@/pages/resume/components/CustomBlockController';
+import {moduleIds} from '@/config';
 
 const resumeDataStore = resumeStore();
 const {updateMenu} = resumeDataStore;
 
 const {resumeData} = storeToRefs(resumeDataStore)
-let data = ref({});
-let startX = ref();
+let data = ref(resumeData.value);
+
+const startX = ref();
 
 const onMousemove = (e) => {
   const endX = e.clientX;
@@ -129,7 +139,16 @@ const dragControllerDiv = () => {
 };
 onMounted(() => {
   dragControllerDiv();
+  // 设置初始选中的模块
+  if (!resumeData.value.menu) {
+    updateMenu(moduleIds.introduceMyself);
+  }
 });
+
+// 监听resumeData的变化
+watch(() => resumeData.value, (newVal) => {
+  data.value = newVal;
+}, {deep: true});
 
 // 定时将 data 存入本地
 setInterval(() => {
@@ -138,13 +157,35 @@ setInterval(() => {
   }
 }, 2000);
 
-const init = () => {
-  // TODO 不从本地获取数据
-  /*  if (localStorage.getItem('info')) {
-      resumeData.updateResume(JSON.parse(localStorage.getItem('info')))
-    }*/
-  data.value = resumeData.value;
-};
+// 选中的模块
+const selectedBlock = ref(null)
+
+// 处理模块选择
+const handleSelectBlock = (block) => {
+  selectedBlock.value = JSON.parse(JSON.stringify(block))
+}
+
+// 处理模块更新
+const handleBlockUpdate = () => {
+  if (selectedBlock.value && resumeData.value.customBlocks) {
+    const index = resumeData.value.customBlocks.findIndex(
+      block => block === selectedBlock.value
+    )
+    if (index !== -1) {
+      resumeData.value.customBlocks[index] = JSON.parse(
+        JSON.stringify(selectedBlock.value)
+      )
+      resumeDataStore.updateResume(resumeData.value)
+    }
+  }
+}
+watch(() => resumeData.value.menu, (newV) => {
+  console.log('newV', newV, menuData[resumeData.value.menu])
+}, {
+  immediate: true,
+  deep: true
+})
+
 /**
  * 生成pdf
  */
@@ -154,7 +195,7 @@ const generate = () => {
     // htmlToPdfFun('pdfDom', '个人报告')
     const element = document.getElementById("pdfDom");
     const opts = {
-      scale: 12, // 缩放比例，提高生成图片清晰度
+      scale: 1, // 缩放比例，提高生成图片清晰度
       useCORS: true, // 允许加载跨域的图片
       allowTaint: false, // 允许图片跨域，和 useCORS 二者不可共同使用
       // tainttest: true, // 检测每张图片已经加载完成
@@ -308,8 +349,6 @@ const downloadFile = (str, name = "resume.html") => {
   document.body.removeChild(a);
 };
 
-init();
-
 const showAll = computed(() => {
   return resumeData.value.menu === "all";
 });
@@ -335,17 +374,22 @@ const selectionList = reactive([
 </script>
 
 <style scoped lang="less">
+.resume {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  .formContainer {
+    display: flex;
+    width: 100%;
+    height: 95vh;
+  }
+}
 
 .flexC() {
   display: flex;
   flex-direction: column;
-}
-
-.resume {
-  .formContainer {
-    width: 100%;
-    height: 95vh;
-  }
 }
 
 .left, .center, .right {
@@ -359,25 +403,61 @@ const selectionList = reactive([
   .flexC();
   width: 18rem;
   padding: 0 @p-normal;
-  // 横向取消滚动条
-  overflow-x: hidden;
   box-sizing: border-box;
   overflow-y: scroll;
 
   &::-webkit-scrollbar {
-    width: 8px; /* 滚动条宽度 */
+    width: 8px;
   }
 
   &::-webkit-scrollbar-track {
-    background: #f1f1f1; /* 滚动条轨道背景色 */
+    background: #f1f1f1;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #888; /* 滚动条颜色 */
+    background: #888;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #555; /* 滚动条悬停颜色 */
+    background: #555;
+  }
+
+  .leftMenu {
+    .edit-form {
+      padding: 16px;
+
+      h3 {
+        margin-bottom: 16px;
+        color: #333;
+      }
+
+      .form-item {
+        margin-bottom: 16px;
+
+        label {
+          display: block;
+          margin-bottom: 8px;
+          color: #666;
+        }
+
+        input, textarea {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          background: #fff;
+
+          &:focus {
+            outline: none;
+            border-color: #1890ff;
+          }
+        }
+
+        textarea {
+          resize: vertical;
+        }
+      }
+    }
   }
 
   .rightSelection {
@@ -391,6 +471,10 @@ const selectionList = reactive([
   margin: 0 @m-small;
   overflow: hidden;
   position: relative;
+
+  .renderPage {
+    border: 1px solid rgba(0, 0, 0, .5);
+  }
 }
 
 .right {
@@ -428,6 +512,15 @@ const selectionList = reactive([
       border: 1px solid rgba(0, 0, 0, .5);
     }
   }
+}
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

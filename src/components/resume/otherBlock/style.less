@@ -1,0 +1,56 @@
+.otherBlock {
+  display: flex;
+  margin: 16px 0;
+
+  .edit-area {
+    border-right: 1px solid #eee;
+
+    .edit-form {
+      .form-item {
+        margin-bottom: 16px;
+
+        label {
+          display: block;
+          margin-bottom: 8px;
+          color: #666;
+        }
+
+        input, textarea {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          background: #fff;
+
+          &:focus {
+            outline: none;
+            border-color: #1890ff;
+          }
+        }
+
+        textarea {
+          resize: vertical;
+          min-height: 80px;
+        }
+      }
+    }
+  }
+
+  .content-area {
+    flex: 1;
+
+    .block-item {
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+
+    .add-button {
+      text-align: center;
+      padding: 12px;
+      border: 1px dashed #d9d9d9;
+      border-radius: 4px;
+      color: #666;
+
+    }
+  }
+}

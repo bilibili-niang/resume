@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import indexHeader from '@/components/index/header.vue'
 import router from '@/router'
+import logo from '@/assets/png/logo.png'
 
 const goDoc = () => {
-  console.log('router:')
-  console.log(router)
-
   router.push({
     name: 'resume'
   })
@@ -19,10 +17,10 @@ const goDoc = () => {
       <ice-header size='l'>
         iceResume
       </ice-header>
-      <ice-avatar size="120" block src="/public/logo.png"></ice-avatar>
+      <ice-avatar size="120" block :src="logo"></ice-avatar>
 
       <ice-row>
-        <ice-tag pointer @click="goDoc">起步</ice-tag>
+        <ice-button @click="goDoc">起步</ice-button>
       </ice-row>
       <ice-row>
         <indexHeader></indexHeader>
