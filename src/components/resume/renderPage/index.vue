@@ -45,17 +45,6 @@ const moveDiv = () => {
   })
 }
 
-// 监听点击并获取类名
-const elementLister = () => {
-  let elementList = document.getElementsByClassName('renderBlock')
-  for (let i = 0; i < elementList.length; i++) {
-    elementList[i].addEventListener('click', () => {
-      console.log(elementList[i])
-      // console.log(elementList[i].id)
-    })
-  }
-}
-
 // 监听鼠标按下
 onMounted(() => {
   moveDiv()
@@ -71,9 +60,6 @@ const changeMenu = (moduleId: string) => {
   <div
     class="renderPage"
     ref="renderPageRef"
-    @click="()=>{
-      elementLister()
-    }"
   >
     <!--头像-->
     <ice-column class="renderBlock" id="avatar" @click="changeMenu(moduleIds.introduceMyself)">

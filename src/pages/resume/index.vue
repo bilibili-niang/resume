@@ -5,7 +5,7 @@
       <indexHeader/>
     </ice-row>
 
-    <div class="formContainer ice-row" ref="currentBox">
+    <div class="formContainer">
       <div class="left" ref="leftContentRef">
         <ice-row>
           <ice-column class="leftMenu" v-if="false"></ice-column>
@@ -18,24 +18,35 @@
               </ice-button>
             </ice-row>
             <!--自我介绍-->
-            <introduceMyself v-model="data[moduleIds.introduceMyself]"
-                             v-if="menuData[resumeData.menu]?.type === 'introduceMyself' || showAll"/>
+            <transition name="fade">
+              <introduceMyself v-model="data[moduleIds.introduceMyself]"
+                               v-if="menuData[resumeData.menu]?.type === 'introduceMyself' || showAll"/>
+            </transition>
             <!--教育经历-->
-            <educationalExperience v-model="data[moduleIds.educationalExperience]"
-                                   v-if="menuData[resumeData.menu]?.type === 'educationalExperience' || showAll"/>
+            <transition name="fade">
+              <educationalExperience v-model="data[moduleIds.educationalExperience]"
+                                     v-if="menuData[resumeData.menu]?.type === 'educationalExperience' || showAll"/>
+            </transition>
             <!--项目经历-->
-            <projectExperience v-model="data[moduleIds.projectExperience]"
-                               v-if="menuData[resumeData.menu]?.type === 'projectExperience' || showAll"/>
+            <transition name="fade">
+              <projectExperience v-model="data[moduleIds.projectExperience]"
+                                 v-if="menuData[resumeData.menu]?.type === 'projectExperience' || showAll"/>
+            </transition>
             <!--获奖-->
-            <getPrize
-              v-model="data[moduleIds.prize]"
-              v-if="menuData[resumeData.menu]?.type === 'prize' || showAll"/>
+            <transition name="fade">
+              <getPrize
+                v-model="data[moduleIds.prize]"
+                v-if="menuData[resumeData.menu]?.type === 'prize' || showAll"/>
+            </transition>
             <!--专业技能-->
-            <skill v-model="data[moduleIds.skill]"
-                   v-if="menuData[resumeData.menu]?.type === 'skill' || showAll"/>
+            <transition name="fade">
+              <skill v-model="data[moduleIds.skill]"
+                     v-if="menuData[resumeData.menu]?.type === 'skill' || showAll"/>
+            </transition>
             <!--自定义区域-->
-            <CustomBlockController/>
-
+            <transition name="fade">
+              <CustomBlockController v-if="showAll"/>
+            </transition>
           </ice-column>
 
         </ice-row>
@@ -364,59 +375,21 @@ const selectionList = reactive([
 
 <style scoped lang="less">
 .resume {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
   .formContainer {
-    .left {
-      .leftMenu {
-        .edit-form {
-          padding: 16px;
-
-          h3 {
-            margin-bottom: 16px;
-            color: #333;
-          }
-
-          .form-item {
-            margin-bottom: 16px;
-
-            label {
-              display: block;
-              margin-bottom: 8px;
-              color: #666;
-            }
-
-            input, textarea {
-              width: 100%;
-              padding: 8px;
-              border: 1px solid #ddd;
-              border-radius: 4px;
-              background: #fff;
-
-              &:focus {
-                outline: none;
-                border-color: #1890ff;
-              }
-            }
-
-            textarea {
-              resize: vertical;
-            }
-          }
-        }
-      }
-    }
+    display: flex;
+    width: 100%;
+    height: 95vh;
   }
 }
 
 .flexC() {
   display: flex;
   flex-direction: column;
-}
-
-.resume {
-  .formContainer {
-    width: 100%;
-    height: 95vh;
-  }
 }
 
 .left, .center, .right {
@@ -430,25 +403,61 @@ const selectionList = reactive([
   .flexC();
   width: 18rem;
   padding: 0 @p-normal;
-  // 横向取消滚动条
-  overflow-x: hidden;
   box-sizing: border-box;
   overflow-y: scroll;
 
   &::-webkit-scrollbar {
-    width: 8px; /* 滚动条宽度 */
+    width: 8px;
   }
 
   &::-webkit-scrollbar-track {
-    background: #f1f1f1; /* 滚动条轨道背景色 */
+    background: #f1f1f1;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #888; /* 滚动条颜色 */
+    background: #888;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #555; /* 滚动条悬停颜色 */
+    background: #555;
+  }
+
+  .leftMenu {
+    .edit-form {
+      padding: 16px;
+
+      h3 {
+        margin-bottom: 16px;
+        color: #333;
+      }
+
+      .form-item {
+        margin-bottom: 16px;
+
+        label {
+          display: block;
+          margin-bottom: 8px;
+          color: #666;
+        }
+
+        input, textarea {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          background: #fff;
+
+          &:focus {
+            outline: none;
+            border-color: #1890ff;
+          }
+        }
+
+        textarea {
+          resize: vertical;
+        }
+      }
+    }
   }
 
   .rightSelection {
@@ -462,6 +471,10 @@ const selectionList = reactive([
   margin: 0 @m-small;
   overflow: hidden;
   position: relative;
+
+  .renderPage {
+    border: 1px solid rgba(0, 0, 0, .5);
+  }
 }
 
 .right {
@@ -499,6 +512,15 @@ const selectionList = reactive([
       border: 1px solid rgba(0, 0, 0, .5);
     }
   }
+}
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
