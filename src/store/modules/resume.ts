@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { ModuleConfig, moduleIds, menuData } from '@/config'
 
 const resume = defineStore('resume', () => {
   const resumeData = ref({
-    customBlocks:[],
-    myInfo: {
+    menu: '', // 当前选中的模块ID
+    menuType: '', // 当前选中的模块类型
+    customBlocks: [],
+    [moduleIds.introduceMyself]: {
       name: '张嘉凯',
       avatar: 'https://avatars.githubusercontent.com/u/60811236?v=4',
       email: {
@@ -17,10 +20,10 @@ const resume = defineStore('resume', () => {
       },
       wechatId: 'icestone9',
       address: '福建-厦门',
-      age:24,
-      githubRul:'https://github.com/bilibili-niang'
+      age: 24,
+      githubRul: 'https://github.com/bilibili-niang'
     },
-    projectData: [
+    [moduleIds.projectExperience]: [
       {
         company: '浙江嘉兴数字城市实验室有限公司',
         projectName: '基层治理综合信息平台',
@@ -35,7 +38,6 @@ const resume = defineStore('resume', () => {
 - 涉及技术: vue2, element, axios, echarts, vuex`,
         projectRole: '前端开发',
         city: '嘉兴',
-        // 是否为公司项目,0为false,1为true
         companyProject: 1
       },
       {
@@ -51,11 +53,10 @@ const resume = defineStore('resume', () => {
 的效率`,
         projectRole: '前端开发',
         city: '嘉兴',
-        // 是否为公司项目,0为false,1为true
         companyProject: 1
       }
     ],
-    education: [
+    [moduleIds.educationalExperience]: [
       {
         school: '武汉轻工大学',
         major: '软件工程',
@@ -63,30 +64,40 @@ const resume = defineStore('resume', () => {
         degree: '本科'
       }
     ],
-    skill: [
+    [moduleIds.skill]: [
       {
-        name: 'Vue',
+        skillName: 'Vue',
         extent: '熟练',
       },
       {
-        name: 'Taro/UniApp',
+        skillName: 'JavaScript',
+        extent: '熟练',
+      },
+      {
+        skillName: 'TypeScript',
         extent: '熟悉',
       },
     ],
-    menu: '',
-    prize: [
+    [moduleIds.prize]: [
       {
         prizeName: '班级进步奖',
-        prizeTime: '2001-01-10'
       }
     ]
   })
 
-  const updateResume = (data: any): void => {
+  // 更新简历数据
+  function updateResume(data: any): void {
     resumeData.value = data
   }
-  const updateMenu = (menu: string): void => {
-    resumeData.value.menu = menu
+
+  // 更新当前选中的菜单
+  function updateMenu(moduleId: string): void {
+    resumeData.value.menu = moduleId
+    // 从menuData中获取对应的类型
+    const moduleConfig = Object.values(menuData).find(config => config.id === moduleId)
+    if (moduleConfig) {
+      resumeData.value.menuType = moduleConfig.type
+    }
   }
 
   return {

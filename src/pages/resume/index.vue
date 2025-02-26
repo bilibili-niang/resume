@@ -18,24 +18,22 @@
               </ice-button>
             </ice-row>
             <!--自我介绍-->
-            <introduceMyself v-model="data.myInfo"
-                             v-if="menuData[resumeData.menu]===INTRODUCE_YOURSELF || showAll"/>
+            <introduceMyself v-model="data[moduleIds.introduceMyself]"
+                             v-if="menuData[resumeData.menu]?.type === 'introduceMyself' || showAll"/>
             <!--教育经历-->
-            <educationalExperience v-model="data.education"
-                                   v-if="menuData[resumeData.menu]===EDUCATIONAL_EXPERIENCE || showAll"/>
-
+            <educationalExperience v-model="data[moduleIds.educationalExperience]"
+                                   v-if="menuData[resumeData.menu]?.type === 'educationalExperience' || showAll"/>
             <!--项目经历-->
-            <projectExperience v-model="data.projectData"
-                               v-if="menuData[resumeData.menu]==='projectExperience' || showAll"/>
+            <projectExperience v-model="data[moduleIds.projectExperience]"
+                               v-if="menuData[resumeData.menu]?.type === 'projectExperience' || showAll"/>
             <!--获奖-->
             <getPrize
-              v-model="data.prize"
-              v-if="menuData[resumeData.menu]==='prize' || showAll"/>
-
+              v-model="data[moduleIds.prize]"
+              v-if="menuData[resumeData.menu]?.type === 'prize' || showAll"/>
             <!--专业技能-->
-            <skill v-model="data.skill"
-                   v-if="menuData[resumeData.menu]==='skill' || showAll"/>
-<!--自定义区域-->
+            <skill v-model="data[moduleIds.skill]"
+                   v-if="menuData[resumeData.menu]?.type === 'skill' || showAll"/>
+            <!--自定义区域-->
             <CustomBlockController/>
 
           </ice-column>
@@ -46,7 +44,7 @@
       <div class="resize" title="收缩侧边栏" ref="resizeBox">⋮</div>
       <div class="center">
         <renderPage :data="data" id="pdfDom" v-show="showModel==='resume'"/>
-        <markdownCard :data="data" id="markdownCard" v-show="showModel==='markdownCard'"></markdownCard>
+        <!--        <markdownCard :data="data" id="markdownCard" v-show="showModel==='markdownCard'"></markdownCard>-->
       </div>
     </div>
   </div>
@@ -72,13 +70,15 @@ import {findColor} from 'icepro'
 import {storeToRefs} from 'pinia'
 import {EDUCATIONAL_EXPERIENCE, INTRODUCE_YOURSELF} from '@/constant';
 import CustomBlockController from '@/pages/resume/components/CustomBlockController';
+import {moduleIds} from '@/config';
 
 const resumeDataStore = resumeStore();
 const {updateMenu} = resumeDataStore;
 
 const {resumeData} = storeToRefs(resumeDataStore)
-let data = ref({});
-let startX = ref();
+let data = ref(resumeData.value);
+
+const startX = ref();
 
 const onMousemove = (e) => {
   const endX = e.clientX;
@@ -128,7 +128,16 @@ const dragControllerDiv = () => {
 };
 onMounted(() => {
   dragControllerDiv();
+  // 设置初始选中的模块
+  if (!resumeData.value.menu) {
+    updateMenu(moduleIds.introduceMyself);
+  }
 });
+
+// 监听resumeData的变化
+watch(() => resumeData.value, (newVal) => {
+  data.value = newVal;
+}, {deep: true});
 
 // 定时将 data 存入本地
 setInterval(() => {
@@ -136,14 +145,6 @@ setInterval(() => {
     localStorage.setItem("info", JSON.stringify(data.value));
   }
 }, 2000);
-
-const init = () => {
-  // TODO 不从本地获取数据
-  /*  if (localStorage.getItem('info')) {
-      resumeData.updateResume(JSON.parse(localStorage.getItem('info')))
-    }*/
-  data.value = resumeData.value;
-};
 
 // 选中的模块
 const selectedBlock = ref(null)
@@ -336,8 +337,6 @@ const downloadFile = (str, name = "resume.html") => {
   window.URL.revokeObjectURL(url);
   document.body.removeChild(a);
 };
-
-init();
 
 const showAll = computed(() => {
   return resumeData.value.menu === "all";
