@@ -4,9 +4,6 @@ import router from '@/router'
 import logo from '@/assets/png/logo.png'
 
 const goDoc = () => {
-  console.log('router:')
-  console.log(router)
-
   router.push({
     name: 'resume'
   })
