@@ -9,8 +9,7 @@ const props = defineProps({
 
 <template>
   <div class="markdownCard">
-    <ice-avatar :src="data.myInfo.avatar" block></ice-avatar>
-    {{ data.myInfo }}
+<!--    <ice-avatar :src="data.myInfo.avatar" block></ice-avatar>-->
 
   </div>
 </template>

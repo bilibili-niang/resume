@@ -15,7 +15,12 @@ export default defineComponent({
     return () => {
       return (
         <div class="customBlockController">
-          <ice-text>
+          <ice-text
+          onClick={()=>{
+            console.log('resumeData.value')
+            console.log(resumeData.value)
+          }}
+          >
             menu:
             {resumeData.value.menu}
           </ice-text>
