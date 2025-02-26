@@ -20,6 +20,9 @@ importers:
       html2canvas:
         specifier: ^1.4.1
         version: 1.4.1
+      icepro:
+        specifier: ^1.1.26
+        version: 1.1.26(@types/sortablejs@1.15.8)(sortablejs@1.15.6)(vue@3.5.13(typescript@5.7.3))
       jspdf:
         specifier: ^2.5.1
         version: 2.5.2
@@ -563,6 +566,9 @@ packages:
 
   '@types/raf@3.4.3':
     resolution: {integrity: sha512-c4YAvMedbPZ5tEyxzQdMoOhhJ4RD3rngZIdwC2/qDN3d7JpEhB6fiBRKVY1lg5B7Wk+uPBjn5f39j1/2MY1oOw==}
+
+  '@types/sortablejs@1.15.8':
+    resolution: {integrity: sha512-b79830lW+RZfwaztgs1aVPgbasJ8e7AXtZYHTELNXZPsERt4ymJdjV4OccDbHQAvHrCcFpbF78jkm0R6h/pZVg==}
 
   '@vitejs/plugin-vue-jsx@4.1.1':
     resolution: {integrity: sha512-uMJqv/7u1zz/9NbWAD3XdjaY20tKTf17XVfQ9zq4wY1BjsB/PjpJPMe2xiG39QpP4ZdhYNhm4Hvo66uJrykNLA==}
@@ -1578,6 +1584,10 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  icepro@1.1.26:
+    resolution: {integrity: sha512-gNqj7woKvYrMjcLrlS/iaO0oEI3mle9V69A7O78BJE1entAsgerTf8z+dU06zpj0IWokhiA7oMfgr8fps6/ihg==}
+    hasBin: true
+
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -2099,6 +2109,9 @@ packages:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
 
+  normalize.css@8.0.1:
+    resolution: {integrity: sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==}
+
   object-copy@0.1.0:
     resolution: {integrity: sha512-79LYn6VAb63zgtmAteVOWo9Vdj71ZVBy3Pbse+VqxDpEP83XuujMrGqHIwAXJ5I/aM0zU7dIyIAhifVTPrNItQ==}
     engines: {node: '>=0.10.0'}
@@ -2504,6 +2517,9 @@ packages:
     resolution: {integrity: sha512-FtyOnWN/wCHTVXOMwvSv26d+ko5vWlIDD6zoUJ7LW8vh+ZBC8QdljveRP+crNrtBwioEUWy/4dMtbBjA4ioNlg==}
     engines: {node: '>=0.10.0'}
 
+  sortablejs@1.15.6:
+    resolution: {integrity: sha512-aNfiuwMEpfBM/CN6LY0ibyhxPfPbyFeBTYJKCvzkJ2GkUpazIt3H+QIPAMHwqQ7tMKaHz1Qj+rJJCqljnf4p3A==}
+
   source-list-map@2.0.1:
     resolution: {integrity: sha512-qnQ7gVMxGNxsiL4lEuJwe/To8UnK7fAnmbGEEH8RpLouuKbeEm0lhbQVFIrNSuB+G7tVrAlVsZgETT5nljf+Iw==}
 
@@ -2809,6 +2825,21 @@ packages:
     peerDependencies:
       '@vue/composition-api': ^1.0.0-rc.1
       vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+
+  vue-draggable-next@2.2.1:
+    resolution: {integrity: sha512-EAMS1IRHF0kZO0o5PMOinsQsXIqsrKT1hKmbICxG3UEtn7zLFkLxlAtajcCcUTisNvQ6TtCB5COjD9a1raNADw==}
+    peerDependencies:
+      sortablejs: ^1.14.0
+      vue: ^3.2.2
+
+  vue-draggable-plus@0.5.6:
+    resolution: {integrity: sha512-RMt8YuoB534GH2LD2M60KxHDPtfjfl2C9mH3YSEsfcZBclcoRs5RyrLiEKhUM0QCAQG2T/c3ktHujzxxomqfIw==}
+    peerDependencies:
+      '@types/sortablejs': ^1.15.0
+      '@vue/composition-api': '*'
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
@@ -3370,6 +3401,8 @@ snapshots:
 
   '@types/raf@3.4.3':
     optional: true
+
+  '@types/sortablejs@1.15.8': {}
 
   '@vitejs/plugin-vue-jsx@4.1.1(vite@5.4.14(@types/node@20.17.19)(less@3.13.1))(vue@3.5.13(typescript@5.7.3))':
     dependencies:
@@ -4654,6 +4687,17 @@ snapshots:
 
   husky@9.1.7: {}
 
+  icepro@1.1.26(@types/sortablejs@1.15.8)(sortablejs@1.15.6)(vue@3.5.13(typescript@5.7.3)):
+    dependencies:
+      normalize.css: 8.0.1
+      vue-draggable-next: 2.2.1(sortablejs@1.15.6)(vue@3.5.13(typescript@5.7.3))
+      vue-draggable-plus: 0.5.6(@types/sortablejs@1.15.8)
+    transitivePeerDependencies:
+      - '@types/sortablejs'
+      - '@vue/composition-api'
+      - sortablejs
+      - vue
+
   iconv-lite@0.4.24:
     dependencies:
       safer-buffer: 2.1.2
@@ -5222,6 +5266,8 @@ snapshots:
   normalize-path@3.0.0:
     optional: true
 
+  normalize.css@8.0.1: {}
+
   object-copy@0.1.0:
     dependencies:
       copy-descriptor: 0.1.1
@@ -5672,6 +5718,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  sortablejs@1.15.6: {}
+
   source-list-map@2.0.1: {}
 
   source-map-js@1.2.1: {}
@@ -5969,6 +6017,15 @@ snapshots:
   vue-demi@0.14.10(vue@3.5.13(typescript@5.7.3)):
     dependencies:
       vue: 3.5.13(typescript@5.7.3)
+
+  vue-draggable-next@2.2.1(sortablejs@1.15.6)(vue@3.5.13(typescript@5.7.3)):
+    dependencies:
+      sortablejs: 1.15.6
+      vue: 3.5.13(typescript@5.7.3)
+
+  vue-draggable-plus@0.5.6(@types/sortablejs@1.15.8):
+    dependencies:
+      '@types/sortablejs': 1.15.8
 
   vue-router@4.5.0(vue@3.5.13(typescript@5.7.3)):
     dependencies:
