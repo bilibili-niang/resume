@@ -42,9 +42,6 @@ export default defineComponent({
                   {block.projectName}-{block.projectRole}
                 </ice-text>
                 <ice-text color={color}>
-                  {block?.projectName}
-                </ice-text>
-                <ice-text color={color}>
                   {block.responsibilities}
                 </ice-text>
                 <ice-text color={color}>
