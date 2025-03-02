@@ -22,7 +22,7 @@ const addElement = () => {
     )
   } else {
     data.value.push({
-      name: 'Vue',
+      skillName: 'Vue',
       extent: '熟练',
     })
   }
@@ -40,7 +40,7 @@ init();
       <ice-header>专业技能</ice-header>
       <ice-row v-for="(item,index) in data" :key="index">
         <ice-row width="85%" class="alignC">
-          <ice-input v-model="item.name" placeholder="技能"/>
+          <ice-input v-model="item.skillName" placeholder="技能"/>
           <ice-input v-model="item.extent" placeholder="熟练度" size="s"/>
         </ice-row>
         <ice-button @click="delElement(index)" v-if="index!==0">减一</ice-button>
@@ -49,4 +49,3 @@ init();
     </ice-column>
   </div>
 </template>
-

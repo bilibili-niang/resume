@@ -63,7 +63,6 @@ const changeMenu = (moduleId: string) => {
   >
     <!--头像-->
     <ice-column class="renderBlock" id="avatar" @click="changeMenu(moduleIds.introduceMyself)">
-      <div class="verticalLine"></div>
       <ice-row>
         <ice-avatar :src="data[moduleIds.introduceMyself].avatar" block></ice-avatar>
         <ice-column class="userInfoText">
@@ -115,7 +114,7 @@ const changeMenu = (moduleId: string) => {
 
     <!--教育经历-->
     <ice-column class="renderBlock" id="education" @click="changeMenu(moduleIds.educationalExperience)">
-      <div class="verticalLine"></div>
+
       <ice-split position="left" text="教育经历"></ice-split>
 
       <template v-for="(item,index) in data[moduleIds.educationalExperience]" :key="index">
@@ -134,7 +133,7 @@ const changeMenu = (moduleId: string) => {
 
     <!--专业技能-->
     <ice-column class="renderBlock" id="professionalSkills" @click="changeMenu(moduleIds.skill)">
-      <div class="verticalLine"></div>
+
       <ice-split position="left" text="专业技能"></ice-split>
       <ice-text v-for="(item,index) in data[moduleIds.skill]" :key="index" :color="color">
         {{ item.skillName }}-{{ item.extent }}
@@ -143,12 +142,13 @@ const changeMenu = (moduleId: string) => {
 
     <!--项目经历-->
     <ice-column class="renderBlock" id="projectExperience" @click="changeMenu(moduleIds.projectExperience)">
-      <div class="verticalLine"></div>
+
       <ice-split position="left" text="项目经历"></ice-split>
 
       <ice-text v-for="(item,index) in data[moduleIds.projectExperience]" :key="index" :color="color">
         <ice-column class="justBetween">
           <ice-row class="alignC justBetween">
+
             <ice-row>
               <ice-text :color="color">
                 {{ item.projectName }}-{{ item.projectRole }}
@@ -160,20 +160,23 @@ const changeMenu = (moduleId: string) => {
                 {{ item.city }}
               </ice-text>
             </ice-row>
+
             <ice-text :color="color" class="widthAuto nowrap">
               {{ item.projectTime }}
             </ice-text>
           </ice-row>
+
           <ice-text class="wrap" :color="color">
             {{ item.projectContent }}
           </ice-text>
+
         </ice-column>
       </ice-text>
     </ice-column>
 
     <!--获奖-->
     <ice-column class="renderBlock" id="prize" @click="changeMenu(moduleIds.prize)">
-      <div class="verticalLine"></div>
+
       <ice-split position="left" text="获奖"></ice-split>
 
       <template v-for="(item, index) in data[moduleIds.prize]" :key="index">
@@ -185,16 +188,14 @@ const changeMenu = (moduleId: string) => {
 
     <!--自我评价-->
     <ice-column class="renderBlock" id="summary" @click="changeMenu(moduleIds.introduceMyself)">
-      <div class="verticalLine"></div>
-      <ice-split position="left" text="总结"></ice-split>
 
+      <ice-split position="left" text="总结"></ice-split>
       <template v-for="(key, index) in Object.keys(data[moduleIds.introduceMyself].summary)" :key="index">
         <ice-text :color="color" v-if="data[moduleIds.introduceMyself].summary[key]&&data[moduleIds.introduceMyself].summary[key].length>0">
           {{ data[moduleIds.introduceMyself].summary[key] }}
         </ice-text>
       </template>
     </ice-column>
-
     <OtherBlock :data="data"/>
   </div>
 </template>

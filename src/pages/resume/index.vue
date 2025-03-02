@@ -45,7 +45,7 @@
             </transition>
             <!--自定义区域-->
             <transition name="fade">
-              <CustomBlockController v-if="showAll"/>
+              <CustomBlockController/>
             </transition>
           </ice-column>
 
@@ -55,7 +55,7 @@
       <div class="resize" title="收缩侧边栏" ref="resizeBox">⋮</div>
       <div class="center">
         <renderPage :data="data" id="pdfDom" v-show="showModel==='resume'"/>
-        <!--        <markdownCard :data="data" id="markdownCard" v-show="showModel==='markdownCard'"></markdownCard>-->
+        <!-- <markdownCard :data="data" id="markdownCard" v-show="showModel==='markdownCard'"></markdownCard>-->
       </div>
     </div>
   </div>

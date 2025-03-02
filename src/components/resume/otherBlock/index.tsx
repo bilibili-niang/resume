@@ -3,6 +3,7 @@ import { defineComponent, ref } from 'vue'
 import resumeStore from '@/store/modules/resume.ts'
 import { storeToRefs } from 'pinia'
 import CustomBlockList from './components/customBlockList'
+import { color } from '@/config'
 
 export interface CustomBlock {
   type: string
@@ -49,7 +50,7 @@ export default defineComponent({
 
     const handleSelect = (block: CustomBlock) => {
       selectedBlock.value = block.id
-      resumeData.value.menu=block.id
+      resumeData.value.menu = block.id
     }
 
     const handleUpdate = () => {
@@ -71,8 +72,10 @@ export default defineComponent({
             blocks={resumeData.value.customBlocks}
             onSelect={handleSelect}
           />
-          <ice-row onClick={addCustomBlock} class="add-button">
-            添加其他模块
+          <ice-row onClick={addCustomBlock} class="add-button renderBlock">
+            <ice-text color={color} m0>
+              添加其他模块
+            </ice-text>
           </ice-row>
         </div>
       </div>
