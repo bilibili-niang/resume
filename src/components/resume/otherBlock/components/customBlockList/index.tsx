@@ -32,22 +32,39 @@ export default defineComponent({
             onClick={() => handleSelect(block)}
           >
             <ice-row>
-
               <ice-split position="left" text={block.type}></ice-split>
-              <ice-text color={color} nowrap>
-                {block.responsibilities}
-              </ice-text>
             </ice-row>
 
-            <ice-text color={color}>
-              {(block.time.start && block.time.end) ?
-                `${block.time.start} - ${block.time.end}`
-                : ''}
-            </ice-text>
+            <ice-row class="alignC justBetween">
+
+              <ice-row>
+                <ice-text color={color}>
+                  {block.projectName}-{block.projectRole}
+                </ice-text>
+                <ice-text color={color}>
+                  {block?.projectName}
+                </ice-text>
+                <ice-text color={color}>
+                  {block.responsibilities}
+                </ice-text>
+                <ice-text color={color}>
+                  {block.city}
+                </ice-text>
+              </ice-row>
+
+              <ice-text color={color} nowrap={true}>
+                {(block.time.start && block.time.end) ?
+                  `${block.time.start} - ${block.time.end}`
+                  : ''}
+              </ice-text>
+
+            </ice-row>
+
 
             <ice-text class="wrap" color={color}>
               {block.content}
             </ice-text>
+
           </ice-column>
         ))}
       </div>

@@ -6,7 +6,3 @@ export const messageAlert = (message, type = "info") => {
 		type
 	});
 };
-// 拷贝多层的深克隆
-export const deepClone = (obj) => {
-	return JSON.parse(JSON.stringify(obj));
-};

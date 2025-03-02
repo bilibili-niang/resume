@@ -1,13 +1,11 @@
 import { defineComponent } from 'vue'
 import resumeStore from '@/store/modules/resume.ts'
 import { storeToRefs } from 'pinia'
-import { deepClone } from '@/utils/utils'
+import { deepClone } from '@/utils'
 
 export default defineComponent({
   name: 'CustomBlockController',
-  props: {},
-  emits: [''],
-  setup(props, { emit }) {
+  setup() {
 
     const resumeDataStore = resumeStore()
     const { resumeData } = storeToRefs(resumeDataStore)
@@ -49,6 +47,33 @@ export default defineComponent({
                 v-model={resumeData.value.customBlocks.find(o => o.id === resumeData.value.menu).type}
               />
 
+              <ice-input
+                placeholder="所属公司"
+                v-model={resumeData.value.customBlocks.find(o => o.id === resumeData.value.menu).responsibilities}
+              />
+              <ice-input
+                placeholder="角色"
+                v-model={resumeData.value.customBlocks.find(o => o.id === resumeData.value.menu).projectRole}
+              />
+              <ice-input
+                placeholder="项目名称"
+                v-model={resumeData.value.customBlocks.find(o => o.id === resumeData.value.menu).projectName}
+              />
+              <ice-input
+                placeholder="城市"
+                v-model={resumeData.value.customBlocks.find(o => o.id === resumeData.value.menu).city}
+              />
+              <ice-input
+                placeholder="开始时间"
+                v-model={resumeData.value.customBlocks.find(o => o.id === resumeData.value.menu).time.start}
+              />
+              <ice-input
+                placeholder="结束时间"
+                v-model={resumeData.value.customBlocks.find(o => o.id === resumeData.value.menu).time.end}
+              />
+
+              <ice-textarea v-model={resumeData.value.customBlocks.find(o => o.id === resumeData.value.menu).content}
+                            rows={20} placeholder="项目描述"></ice-textarea>
 
             </ice-column>
           </div>

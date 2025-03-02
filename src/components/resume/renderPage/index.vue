@@ -149,6 +149,7 @@ const changeMenu = (moduleId: string) => {
       <ice-text v-for="(item,index) in data[moduleIds.projectExperience]" :key="index" :color="color">
         <ice-column class="justBetween">
           <ice-row class="alignC justBetween">
+
             <ice-row>
               <ice-text :color="color">
                 {{ item.projectName }}-{{ item.projectRole }}
@@ -160,13 +161,16 @@ const changeMenu = (moduleId: string) => {
                 {{ item.city }}
               </ice-text>
             </ice-row>
+
             <ice-text :color="color" class="widthAuto nowrap">
               {{ item.projectTime }}
             </ice-text>
           </ice-row>
+
           <ice-text class="wrap" :color="color">
             {{ item.projectContent }}
           </ice-text>
+
         </ice-column>
       </ice-text>
     </ice-column>
@@ -187,14 +191,12 @@ const changeMenu = (moduleId: string) => {
     <ice-column class="renderBlock" id="summary" @click="changeMenu(moduleIds.introduceMyself)">
       <div class="verticalLine"></div>
       <ice-split position="left" text="总结"></ice-split>
-
       <template v-for="(key, index) in Object.keys(data[moduleIds.introduceMyself].summary)" :key="index">
         <ice-text :color="color" v-if="data[moduleIds.introduceMyself].summary[key]&&data[moduleIds.introduceMyself].summary[key].length>0">
           {{ data[moduleIds.introduceMyself].summary[key] }}
         </ice-text>
       </template>
     </ice-column>
-
     <OtherBlock :data="data"/>
   </div>
 </template>
