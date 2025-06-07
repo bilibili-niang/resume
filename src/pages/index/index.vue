@@ -22,7 +22,7 @@ const goDoc = () => {
       <ice-row>
         <ice-button @click="goDoc">起步</ice-button>
       </ice-row>
-      <ice-row>
+      <ice-row class="header">
         <indexHeader></indexHeader>
       </ice-row>
       <ice-row class="alignC">
@@ -44,5 +44,14 @@ const goDoc = () => {
   display: flex;
   box-sizing: border-box;
   width: 100%;
+
+  .header {
+    width: fit-content;
+
+    .ice-row {
+      width: fit-content !important;
+    }
+  }
 }
+
 </style>

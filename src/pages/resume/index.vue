@@ -1,6 +1,6 @@
 <template>
   <div class="resume">
-    <ice-row>
+    <ice-row >
       <ice-text>resume</ice-text>
       <indexHeader/>
     </ice-row>
@@ -71,17 +71,13 @@ import html2Canvas from "html2canvas";
 import JsPDF from "jspdf";
 import resumeStore from "@/store/modules/resume.ts";
 import {ref, watch} from "vue";
-import {menuData} from "@/config";
+import {menuData, moduleIds} from "@/config";
 import {saveAs} from "file-saver";
 import {asBlob} from "html-docx-js-typescript";
-import customConfig from "@/components/resume/customConfig/index.vue";
 import {messageAlert} from "@/utils/utils.js";
 import markdownCard from "@/components/resume/markdownCard/index.vue";
-import {findColor} from 'icepro'
 import {storeToRefs} from 'pinia'
-import {EDUCATIONAL_EXPERIENCE, INTRODUCE_YOURSELF} from '@/constant';
 import CustomBlockController from '@/pages/resume/components/CustomBlockController';
-import {moduleIds} from '@/config';
 
 const resumeDataStore = resumeStore();
 const {updateMenu} = resumeDataStore;

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { ModuleConfig, moduleIds, menuData } from '@/config'
+import { menuData, moduleIds } from '@/config'
 
 const resume = defineStore('resume', () => {
   const resumeData = ref({
@@ -106,5 +106,4 @@ const resume = defineStore('resume', () => {
     updateMenu
   }
 })
-
 export default resume
