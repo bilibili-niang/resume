@@ -54,6 +54,7 @@
       </div>
       <div class="resize" title="收缩侧边栏" ref="resizeBox">⋮</div>
       <div class="center">
+        <StyleControllerBar/>
         <renderPage :data="data" id="pdfDom" v-show="showModel==='resume'"/>
         <!-- <markdownCard :data="data" id="markdownCard" v-show="showModel==='markdownCard'"></markdownCard>-->
       </div>
@@ -82,6 +83,7 @@ import {storeToRefs} from 'pinia'
 import {EDUCATIONAL_EXPERIENCE, INTRODUCE_YOURSELF} from '@/constant';
 import CustomBlockController from '@/pages/resume/components/CustomBlockController';
 import {moduleIds} from '@/config';
+import StyleControllerBar from './components/StyleControllerBar'
 
 const resumeDataStore = resumeStore();
 const {updateMenu} = resumeDataStore;
@@ -179,12 +181,12 @@ const handleBlockUpdate = () => {
     }
   }
 }
-watch(() => resumeData.value.menu, (newV) => {
+/*watch(() => resumeData.value.menu, (newV) => {
   console.log('newV', newV, menuData[resumeData.value.menu])
 }, {
   immediate: true,
   deep: true
-})
+})*/
 
 /**
  * 生成pdf

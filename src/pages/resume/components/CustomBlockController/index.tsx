@@ -20,7 +20,6 @@ export default defineComponent({
     watch(() => blockTempData.value, (newV) => {
       if (newV.length !== 0) {
         console.log('自定义模块更新了数据:')
-        console.log(newV)
       }
     })
     const showCustomBlock = computed(() => {
