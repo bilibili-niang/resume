@@ -5,7 +5,7 @@ import logo from '@/assets/png/logo.png'
 
 const goDoc = () => {
   router.push({
-    name: 'resume'
+    name: 'resume-list'
   })
 }
 

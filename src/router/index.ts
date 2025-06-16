@@ -10,11 +10,19 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: '/resume-list',
+    name: 'resume-list',
+    component: () => import('../pages/resume-list/index.vue'),
+    meta: {
+      title: '我的简历'
+    }
+  },
+  {
     path: '/resume',
     name: 'resume',
     component: () => import('../pages/resume/index.vue'),
     meta: {
-      title: 'resume'
+      title: '简历编辑器'
     }
   },
   {
