@@ -1,6 +1,5 @@
-import axios from 'axios'
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-
+import axios from 'axios'
 // 创建请求实例
 const instance: AxiosInstance = axios.create({
   // 强制使用代理路径，确保请求通过Vite代理
@@ -10,52 +9,41 @@ const instance: AxiosInstance = axios.create({
     'Content-Type': 'application/json'
   }
 })
-
 /**
  * 请求拦截器
  * 在发送请求之前处理请求配置
  */
 instance.interceptors.request.use(
-  async (config) => {
+  async (config: any) => {
     // 根据配置判断是否需要添加token
-    const noToken = (
-      // 1. 配置中指定不需要token
-      (config as RequestOptions).noToken === true || 
-      // 2. 登录或注册接口不需要token
-      config.url?.includes('/user/login') || 
-      config.url?.includes('/user/register')
-    )
-    
     // 如果配置中有noToken属性，移除它，不发送给服务器
     if ((config as any).noToken !== undefined) {
       delete (config as any).noToken
     }
-    
     // 如果需要添加token
-    if (!noToken) {
+    if (config.noToken) {
+      null
+    } else {
       const token = localStorage.getItem('token')
       if (token) {
-        // 使用后端预期的请求头名称 Blade-Auth
-        config.headers['Blade-Auth'] = token
+        // 使用后端预期的请求头名称 bladeauth
+        config.headers['bladeauth'] = token
       }
     }
-    
     // 在开发环境下输出日志
     if (import.meta.env.DEV) {
-      console.log(`[请求] ${config.method?.toUpperCase()} ${config.url}`, { 
-        params: config.params, 
+      console.log(`[请求] ${config.method?.toUpperCase()} ${config.url}`, {
+        params: config.params,
         data: config.data,
-        withToken: !noToken
+        withToken: !config.noToken
       })
     }
-    
     return config
   },
   (error) => {
     return Promise.reject(error)
   }
 )
-
 // 响应拦截器
 instance.interceptors.response.use(
   (response: AxiosResponse) => {
@@ -94,9 +82,8 @@ const request = {
    * @returns Promise
    */
   request<T = any>(options: RequestOptions): Promise<T> {
-    return instance(options);
+    return instance(options)
   },
-
   /**
    * GET请求
    * @param url 请求地址
@@ -110,9 +97,8 @@ const request = {
       method: 'GET',
       params,
       ...config
-    });
+    })
   },
-
   /**
    * POST请求
    * @param url 请求地址
@@ -126,9 +112,8 @@ const request = {
       method: 'POST',
       data,
       ...config
-    });
+    })
   },
-
   /**
    * PUT请求
    * @param url 请求地址
@@ -142,9 +127,8 @@ const request = {
       method: 'PUT',
       data,
       ...config
-    });
+    })
   },
-
   /**
    * DELETE请求
    * @param url 请求地址
@@ -158,8 +142,7 @@ const request = {
       method: 'DELETE',
       params,
       ...config
-    });
+    })
   }
 }
-
 export default request
