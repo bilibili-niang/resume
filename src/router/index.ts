@@ -17,6 +17,14 @@ const routes: Array<RouteRecordRaw> = [
       title: 'resume'
     }
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../pages/login/index.vue'),
+    meta: {
+      title: '登录'
+    }
+  },
 ]
 
 const router = createRouter({
