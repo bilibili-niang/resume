@@ -70,7 +70,7 @@ export default defineConfig({
       less: {
         math: 'always',
         // additionalData: "@import '@/assets/css/variables.less';"
-        additionalData: '@import \'icepro/src/assets/variables.less\';'
+        additionalData: `@import 'icepro/src/assets/variables.less';@import '@/assets/css/variables.less';`
       },
     }
   },

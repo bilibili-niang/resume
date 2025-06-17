@@ -2,7 +2,7 @@
   <div class="resume-list">
     <div class="header">
       <ice-row class="title-row">
-        <ice-text tag="h1" class="title">Resumes</ice-text>
+        <ice-text class="title">Resumes</ice-text>
         <div class="view-options">
           <ice-button class="view-btn grid-view" active>
             <i class="iconfont icon-grid"></i>
@@ -35,17 +35,20 @@
       <div v-for="resume in resumeList" :key="resume.id" class="resume-card">
         <div class="card-content preview" @click="openResume(resume.id)">
           <!-- 判断图片存在否，不存在则使用默认图片 -->
-          <img class="resume-thumbnail" 
-               :src="resume.img || 'https://via.placeholder.com/150x200?text=Resume'" 
-               alt="Resume Preview" 
-               @error="e => e.target.src = 'https://via.placeholder.com/150x200?text=No+Image'" />
+          <img class="resume-thumbnail"
+               :src="resume.img || 'https://via.placeholder.com/150x200?text=Resume'"
+               alt="Resume Preview"
+               @error="e => e.target.src = 'https://via.placeholder.com/150x200?text=No+Image'"/>
           <div class="card-info">
             <ice-text class="card-title">{{ resume.title || '无标题简历' }}</ice-text>
-            <ice-text class="card-date">更新于 {{ formatDate(new Date(resume.updatedAt || resume.createdAt || Date.now()).getTime()) }}</ice-text>
+            <ice-text class="card-date">更新于
+              {{ formatDate(new Date(resume.updatedAt || resume.createdAt || Date.now()).getTime()) }}
+            </ice-text>
           </div>
           <!-- 悬浮时显示的操作按钮 -->
           <div class="card-actions">
-            <ice-button class="delete-btn" type="red" size="small" @click.stop="confirmDeleteResume(resume.id, resume.title)">
+            <ice-button class="delete-btn" type="red" size="small"
+                        @click.stop="confirmDeleteResume(resume.id, resume.title)">
               <i class="iconfont icon-delete"></i> 删除
             </ice-button>
           </div>
@@ -68,10 +71,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getResumeList, createResume, deleteResume } from '@/api'
+import { deleteResume, getResumeList } from '@/api'
 import { PaginationParams, ResumeInfo } from '@/api/resume/types'
-import { iceMessage, iceMessageBox } from 'icepro'
-import dayjs from 'dayjs';
+import { iceMessage } from 'icepro'
 
 const router = useRouter()
 const resumeList = ref<ResumeInfo[]>([])
@@ -85,17 +87,14 @@ const pagination = ref<PaginationParams>({
 // 从接口加载简历列表数据
 const loadResumeList = () => {
   loading.value = true
-
   getResumeList(pagination.value)
     .then(res => {
       console.log('res===>')
       console.log(res)
-
       // 根据返回数据结构处理数据
       if (res && res.code === 200) {
         // 直接处理数据数组
         console.log('原始数据：', res)
-        
         // 判断数据格式是否包含 rows 和 count
         if (res.data && typeof res.data === 'object') {
           if (res.data.rows && Array.isArray(res.data.rows)) {
@@ -173,41 +172,37 @@ const openResume = (id: number) => {
     query: { id: String(id) } // 路由查询参数仍需要字符串
   })
 }
-
 // 确认删除简历
 const confirmDeleteResume = (id: number, title: string) => {
-  const isConfirmed = window.confirm(`确定要删除简历「${title || '无标题简历'}」吗？`);
+  const isConfirmed = window.confirm(`确定要删除简历「${title || '无标题简历'}」吗？`)
   if (isConfirmed) {
-    deleteResumeById(id);
+    deleteResumeById(id)
   }
 }
-
 // 执行删除简历
 const deleteResumeById = (id: number) => {
-  loading.value = true;
-  
+  loading.value = true
   // 确保有用户认证信息 - 设置一个固定的token来模拟登录状态
   // 这里的token应该包含用户ID '24cb5351abb64dceaddb62cdfda2aeba'
-  const mockToken = 'mock-token-for-fixed-user';
-  localStorage.setItem('token', mockToken);
-  
+  const mockToken = 'mock-token-for-fixed-user'
+  localStorage.setItem('token', mockToken)
   deleteResume(id)
     .then(res => {
       if (res.code === 200) {
-        iceMessage.success('删除成功');
+        iceMessage.success('删除成功')
         // 重新加载简历列表
-        loadResumeList();
+        loadResumeList()
       } else {
-        iceMessage.error(`删除失败: ${res.msg || '未知错误'}`);
+        iceMessage.error(`删除失败: ${res.msg || '未知错误'}`)
       }
     })
     .catch(err => {
-      console.error('删除简历出错:', err);
-      iceMessage.error('删除失败，请检查网络连接');
+      console.error('删除简历出错:', err)
+      iceMessage.error('删除失败，请检查网络连接')
     })
     .finally(() => {
-      loading.value = false;
-    });
+      loading.value = false
+    })
 }
 onMounted(() => {
   // 从接口加载用户的简历列表
@@ -217,6 +212,8 @@ onMounted(() => {
 
 <style scoped lang="less">
 .resume-list {
+  max-width: @max-page-width;
+  margin: 0 auto;
   width: 100%;
   min-height: 100vh;
   background-color: var(--color-theme-100);
@@ -235,7 +232,6 @@ onMounted(() => {
 
     .title {
       font-size: 24px;
-      color: var(--primary);
       margin: 0;
     }
 
@@ -259,7 +255,7 @@ onMounted(() => {
     gap: 20px;
     position: relative;
     min-height: 280px;
-    
+
     // 定义所有卡片的通用样式
     .resume-card {
       background-color: var(--color-theme-50);
@@ -267,12 +263,12 @@ onMounted(() => {
       overflow: hidden;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      
+
       .card-content {
         position: relative;
         cursor: pointer;
       }
-      
+
       .card-actions {
         position: absolute;
         top: 10px;
@@ -280,7 +276,7 @@ onMounted(() => {
         opacity: 0;
         transition: opacity 0.3s ease;
         z-index: 2;
-        
+
         .delete-btn {
           padding: 5px 10px;
           font-size: 12px;
@@ -291,32 +287,32 @@ onMounted(() => {
       &:hover {
         transform: translateY(-5px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        
+
         .card-actions {
           opacity: 1;
         }
       }
-      
+
       // 简历卡片内容区
       .card-content {
         height: 100%;
         display: flex;
         flex-direction: column;
-        
+
         &.preview {
           position: relative;
-          
+
           .resume-thumbnail {
             width: 100%;
             height: 200px;
             object-fit: cover;
             background-color: var(--color-theme-100);
           }
-          
+
           .card-info {
             padding: 15px;
             background-color: var(--color-theme-100);
-            
+
             .card-title {
               font-size: 16px;
               font-weight: 500;
@@ -326,7 +322,7 @@ onMounted(() => {
               overflow: hidden;
               text-overflow: ellipsis;
             }
-            
+
             .card-date {
               font-size: 12px;
               color: var(--color-bleak);
@@ -334,13 +330,13 @@ onMounted(() => {
           }
         }
       }
-      
+
       // 创建新简历卡片特殊样式
       &.create-new {
         background: linear-gradient(135deg, #36D1DC, #5B86E5);
         position: relative;
         overflow: hidden;
-        
+
         // 添加装饰性图案
         &:before {
           content: "";
@@ -353,7 +349,7 @@ onMounted(() => {
           background: rgba(255, 255, 255, 0.1);
           z-index: 1;
         }
-        
+
         &:after {
           content: "";
           position: absolute;
@@ -365,7 +361,7 @@ onMounted(() => {
           background: rgba(255, 255, 255, 0.08);
           z-index: 1;
         }
-        
+
         .card-content {
           display: flex;
           flex-direction: column;
@@ -377,7 +373,7 @@ onMounted(() => {
           text-align: center;
           position: relative;
           z-index: 2;
-          
+
           .pattern-overlay {
             position: absolute;
             top: 0;
@@ -408,16 +404,16 @@ onMounted(() => {
               color: white;
             }
           }
-          
+
           &:hover .icon-container {
             transform: scale(1.1);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
           }
-          
+
           .card-info {
             z-index: 3;
             text-align: center;
-            
+
             .card-title {
               font-weight: 600;
               color: white;
@@ -425,7 +421,7 @@ onMounted(() => {
               text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
               margin-bottom: 8px;
             }
-            
+
             .card-desc {
               color: rgba(255, 255, 255, 0.85);
               font-size: 14px;
@@ -436,6 +432,7 @@ onMounted(() => {
     }
 
     /* 加载状态覆盖层 */
+
     .loading-overlay {
       position: absolute;
       top: 0;
@@ -450,6 +447,7 @@ onMounted(() => {
     }
 
     /* 无数据提示 */
+
     .no-data {
       position: absolute;
       top: 0;
