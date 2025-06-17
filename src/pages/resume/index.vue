@@ -79,7 +79,7 @@ import {messageAlert} from "@/utils/utils.js";
 import markdownCard from "@/components/resume/markdownCard/index.vue";
 import {storeToRefs} from 'pinia'
 import CustomBlockController from '@/pages/resume/components/CustomBlockController';
-import { createResume, updateResume, getResumeDetail } from '@/api';
+import { $resumeCreate, $resumeUpdate, $resumeDetail } from '@/api';
 import { useRoute } from 'vue-router';
 
 const resumeDataStore = resumeStore();
@@ -108,8 +108,8 @@ const saveResume = () => {
   
   // 判断是新建还是更新
   const savePromise = resumeId.value
-    ? updateResume(Number(resumeId.value), saveData) // 更新已有简历
-    : createResume(saveData); // 创建新简历
+    ? $resumeUpdate(Number(resumeId.value), saveData) // 更新已有简历
+    : $resumeCreate(saveData); // 创建新简历
   
   savePromise
     .then(res => {
@@ -146,7 +146,7 @@ const loadResumeData = () => {
   if (!resumeId.value) return; // 没有ID则不加载
   
   isLoading.value = true;
-  getResumeDetail(resumeId.value) // resumeId已经转为数字类型
+  $resumeDetail(resumeId.value) // resumeId已经转为数字类型
     .then(res => {
       if (res.code === 200 && res.data) {
         try {

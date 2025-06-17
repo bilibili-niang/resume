@@ -14,14 +14,14 @@
     <div class="animated-squares">
       <div class="square" v-for="i in 10" :key="i"></div>
     </div>
-    
+
     <!-- 返回首页按钮 -->
     <div class="back-button">
       <ice-button @click="goBack" size="small" type="text" class="back-btn-custom" icon="arrow-left">
         返回首页
       </ice-button>
     </div>
-    
+
     <!-- 登录盒子 -->
     <div class="login-box">
       <div class="login-box-shine"></div>
@@ -32,52 +32,50 @@
             <div class="logo-glow"></div>
           </div>
         </div>
-        <h2>欢迎登录</h2>
-        <p>简历管理系统</p>
       </div>
-      
+
       <div class="login-form">
         <div class="form-item">
           <div class="input-group">
             <div class="input-icon">
               <span class="icon-placeholder">用</span>
             </div>
-            <ice-input 
-              v-model="loginForm.userName" 
-              placeholder="请输入用户名" 
+            <ice-input
+              v-model="loginForm.userName"
+              placeholder="请输入用户名"
               class="styled-input"
             />
           </div>
           <div class="error-message" v-if="errors.userName">{{ errors.userName }}</div>
         </div>
-        
+
         <div class="form-item">
           <div class="input-group">
             <div class="input-icon">
               <span class="icon-placeholder">密</span>
             </div>
-            <ice-input 
-              v-model="loginForm.password" 
-              type="password" 
-              placeholder="请输入密码" 
+            <ice-input
+              v-model="loginForm.password"
+              type="password"
+              placeholder="请输入密码"
               class="styled-input"
             />
           </div>
           <div class="error-message" v-if="errors.password">{{ errors.password }}</div>
         </div>
-        
+
         <div class="form-actions">
-          <ice-button 
-            @click="handleLogin" 
-            :loading="loading" 
-            type="primary" 
-            class="login-button" 
+          <ice-button
+            @click="handleLogin"
+            :loading="loading"
+            type="primary"
+            class="login-button"
             hover>
             {{ loading ? '登录中...' : '登 录' }}
           </ice-button>
         </div>
       </div>
-      
+
       <div class="login-footer">
         <p>简历管理系统 &copy; 2025</p>
       </div>
@@ -86,7 +84,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/modules/user'
 import { iceMessage } from 'icepro'
@@ -94,11 +92,9 @@ import { iceMessage } from 'icepro'
 const router = useRouter()
 const loading = ref(false)
 const userStore = useUserStore() // 创建store实例
-
 // 页面加载动画状态
 const pageVisible = ref(false)
 const pageLoaded = ref(false)
-
 // 页面入场动画
 onMounted(() => {
   setTimeout(() => {
@@ -110,8 +106,8 @@ onMounted(() => {
 })
 // 表单数据
 const loginForm = reactive({
-  userName: '',
-  password: ''
+  userName: 'admin',
+  password: '123456'
 })
 // 错误信息
 const errors = reactive({
@@ -179,20 +175,20 @@ const goHome = () => {
   overflow: hidden;
   opacity: 0;
   transition: opacity 0.8s ease-out;
-  
+
   &.loaded {
     opacity: 1;
-    
+
     .login-box {
       transform: translateY(0) scale(1);
       opacity: 1;
     }
-    
+
     .back-button {
       transform: translateX(0);
       opacity: 1;
     }
-    
+
     .bg-circles .circle,
     .animated-squares .square,
     .glow {
@@ -297,14 +293,26 @@ const goHome = () => {
 }
 
 @keyframes float {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(20px, 20px) rotate(5deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(20px, 20px) rotate(5deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
 }
 
 @keyframes pulse {
-  0% { opacity: 0.2; transform: scale(0.9); }
-  100% { opacity: 0.4; transform: scale(1.1); }
+  0% {
+    opacity: 0.2;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1.1);
+  }
 }
 
 .animated-squares {
@@ -330,23 +338,91 @@ const goHome = () => {
   animation: float-random 20s infinite linear;
 }
 
-.square:nth-child(1) { top: 10%; left: 20%; animation-duration: 15s; }
-.square:nth-child(2) { top: 40%; left: 80%; animation-duration: 18s; animation-delay: 1s; }
-.square:nth-child(3) { top: 70%; left: 10%; animation-duration: 20s; animation-delay: 2s; }
-.square:nth-child(4) { top: 5%; left: 60%; animation-duration: 22s; animation-delay: 0.5s; }
-.square:nth-child(5) { top: 80%; left: 30%; animation-duration: 25s; animation-delay: 1.5s; }
-.square:nth-child(6) { top: 30%; left: 50%; animation-duration: 17s; animation-delay: 3s; }
-.square:nth-child(7) { top: 60%; left: 70%; animation-duration: 24s; animation-delay: 2.5s; }
-.square:nth-child(8) { top: 75%; left: 40%; animation-duration: 21s; animation-delay: 1s; }
-.square:nth-child(9) { top: 20%; left: 80%; animation-duration: 19s; animation-delay: 0s; }
-.square:nth-child(10) { top: 50%; left: 10%; animation-duration: 16s; animation-delay: 4s; }
+.square:nth-child(1) {
+  top: 10%;
+  left: 20%;
+  animation-duration: 15s;
+}
+
+.square:nth-child(2) {
+  top: 40%;
+  left: 80%;
+  animation-duration: 18s;
+  animation-delay: 1s;
+}
+
+.square:nth-child(3) {
+  top: 70%;
+  left: 10%;
+  animation-duration: 20s;
+  animation-delay: 2s;
+}
+
+.square:nth-child(4) {
+  top: 5%;
+  left: 60%;
+  animation-duration: 22s;
+  animation-delay: 0.5s;
+}
+
+.square:nth-child(5) {
+  top: 80%;
+  left: 30%;
+  animation-duration: 25s;
+  animation-delay: 1.5s;
+}
+
+.square:nth-child(6) {
+  top: 30%;
+  left: 50%;
+  animation-duration: 17s;
+  animation-delay: 3s;
+}
+
+.square:nth-child(7) {
+  top: 60%;
+  left: 70%;
+  animation-duration: 24s;
+  animation-delay: 2.5s;
+}
+
+.square:nth-child(8) {
+  top: 75%;
+  left: 40%;
+  animation-duration: 21s;
+  animation-delay: 1s;
+}
+
+.square:nth-child(9) {
+  top: 20%;
+  left: 80%;
+  animation-duration: 19s;
+  animation-delay: 0s;
+}
+
+.square:nth-child(10) {
+  top: 50%;
+  left: 10%;
+  animation-duration: 16s;
+  animation-delay: 4s;
+}
 
 @keyframes float-random {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  25% { transform: translate(20px, 30px) rotate(90deg); }
-  50% { transform: translate(-20px, 40px) rotate(180deg); }
-  75% { transform: translate(-30px, -20px) rotate(270deg); }
-  100% { transform: translate(0, 0) rotate(360deg); }
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(20px, 30px) rotate(90deg);
+  }
+  50% {
+    transform: translate(-20px, 40px) rotate(180deg);
+  }
+  75% {
+    transform: translate(-30px, -20px) rotate(270deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
 }
 
 /* 返回按钮 */
@@ -359,7 +435,7 @@ const goHome = () => {
   transform: translateX(-20px);
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: 0.2s;
-  
+
   :deep(.ice-button) {
     background: var(--color-theme-50);
     border: none;
@@ -381,10 +457,9 @@ const goHome = () => {
   width: 400px;
   background-color: var(--color-theme-100);
   border-radius: 20px;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.2),
-    0 15px 20px rgba(0, 0, 0, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
+  0 15px 20px rgba(0, 0, 0, 0.1),
+  inset 0 0 0 1px rgba(255, 255, 255, 0.4);
   padding: 40px;
   position: relative;
   transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
@@ -395,13 +470,12 @@ const goHome = () => {
   perspective: 800px;
   opacity: 0;
   transform: translateY(30px) scale(0.95);
-  
+
   &:hover {
     transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
-    box-shadow: 
-      0 25px 65px rgba(0, 0, 0, 0.25),
-      0 10px 20px rgba(0, 0, 0, 0.15),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 25px 65px rgba(0, 0, 0, 0.25),
+    0 10px 20px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -411,12 +485,10 @@ const goHome = () => {
   left: -200px;
   width: 200px;
   height: 800px;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(to right,
+  rgba(255, 255, 255, 0) 0%,
+  rgba(255, 255, 255, 0.1) 50%,
+  rgba(255, 255, 255, 0) 100%);
   transform: rotate(45deg);
   animation: shine 6s infinite;
   pointer-events: none;
@@ -456,14 +528,13 @@ const goHome = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 
-    0 10px 20px rgba(0, 0, 0, 0.2),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2),
+  inset 0 0 0 1px rgba(255, 255, 255, 0.3);
   position: relative;
   animation: pulse-subtle 3s infinite alternate ease-in-out;
   z-index: 1;
   overflow: hidden;
-  
+
   &:before {
     content: '';
     position: absolute;
@@ -471,10 +542,10 @@ const goHome = () => {
     left: 0;
     width: 100%;
     height: 30%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
     border-radius: 20px 20px 100px 100px;
   }
-  
+
   span {
     color: white;
     font-size: 34px;
@@ -491,7 +562,7 @@ const goHome = () => {
   position: absolute;
   width: 120%;
   height: 120%;
-  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
   border-radius: 50%;
   z-index: 0;
   animation: glow-pulse 2s infinite alternate ease-in-out;
@@ -499,13 +570,23 @@ const goHome = () => {
 }
 
 @keyframes pulse-subtle {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.05); }
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
 }
 
 @keyframes glow-pulse {
-  0% { opacity: 0.5; transform: scale(0.8); }
-  100% { opacity: 0.8; transform: scale(1.2); }
+  0% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
 }
 
 .login-header h2 {
@@ -530,35 +611,32 @@ const goHome = () => {
   .form-item {
     margin-bottom: 24px;
   }
-  
+
   .input-group {
     display: flex;
     align-items: center;
     position: relative;
     border-radius: 14px;
     overflow: hidden;
-    box-shadow: 
-      0 2px 10px rgba(0, 0, 0, 0.04),
-      inset 0 0 0 1px rgba(0, 0, 0, 0.03),
-      0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.03),
+    0 1px 2px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    
+
     &:hover {
-      box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.08),
-        inset 0 0 0 1px rgba(var(--primary-rgb), 0.3),
-        0 1px 2px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08),
+      inset 0 0 0 1px rgba(var(--primary-rgb), 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.15);
     }
-    
+
     &:focus-within {
-      box-shadow: 
-        0 4px 20px rgba(var(--primary-rgb), 0.15),
-        inset 0 0 0 2px rgba(var(--primary-rgb), 0.4),
-        0 1px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(var(--primary-rgb), 0.15),
+      inset 0 0 0 2px rgba(var(--primary-rgb), 0.4),
+      0 1px 3px rgba(0, 0, 0, 0.1);
       transform: translateY(-2px);
     }
   }
-  
+
   .input-icon {
     background: var(--color-theme-200);
     width: 54px;
@@ -569,7 +647,7 @@ const goHome = () => {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    
+
     &:before {
       content: '';
       position: absolute;
@@ -579,7 +657,7 @@ const goHome = () => {
       height: 1px;
       background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
     }
-    
+
     .icon-placeholder {
       color: var(--primary);
       font-size: 14px;
@@ -588,7 +666,7 @@ const goHome = () => {
       position: relative;
       z-index: 1;
     }
-    
+
     &:after {
       content: '';
       position: absolute;
@@ -603,12 +681,12 @@ const goHome = () => {
       transition: all 0.3s ease;
     }
   }
-  
+
   .input-group:focus-within .input-icon:after {
     opacity: 1;
     transform: translateY(0);
   }
-  
+
   :deep(.styled-input) {
     flex: 1;
     height: 54px;
@@ -620,18 +698,18 @@ const goHome = () => {
     padding: 0 15px;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
-    
+
     &::placeholder {
       color: var(--color-bleak);
       opacity: 0.6;
     }
-    
+
     &:focus {
       box-shadow: none;
       background: var(--color-theme-50);
     }
   }
-  
+
   .error-message {
     color: var(--danger);
     font-size: 13px;
@@ -642,11 +720,11 @@ const goHome = () => {
     display: flex;
     align-items: center;
     opacity: 0.9;
-    animation: shake-subtle 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake-subtle 0.5s cubic-bezier(.36, .07, .19, .97) both;
     transform: translateX(0);
     backface-visibility: hidden;
     perspective: 1000px;
-    
+
     &::before {
       content: '!';
       display: inline-flex;
@@ -663,12 +741,20 @@ const goHome = () => {
       box-shadow: 0 2px 5px rgba(var(--danger-rgb), 0.3);
     }
   }
-  
+
   @keyframes shake-subtle {
-    10%, 90% { transform: translateX(-1px); }
-    20%, 80% { transform: translateX(1px); }
-    30%, 50%, 70% { transform: translateX(-2px); }
-    40%, 60% { transform: translateX(2px); }
+    10%, 90% {
+      transform: translateX(-1px);
+    }
+    20%, 80% {
+      transform: translateX(1px);
+    }
+    30%, 50%, 70% {
+      transform: translateX(-2px);
+    }
+    40%, 60% {
+      transform: translateX(2px);
+    }
   }
 }
 
@@ -686,33 +772,30 @@ const goHome = () => {
   font-weight: 600;
   letter-spacing: 2px;
   background: linear-gradient(135deg, var(--primary), var(--primary-light));
-  box-shadow: 
-    0 10px 20px rgba(var(--primary-rgb), 0.2),
-    0 6px 6px rgba(0, 0, 0, 0.1),
-    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.2),
+  0 6px 6px rgba(0, 0, 0, 0.1),
+  inset 0 2px 0 rgba(255, 255, 255, 0.2);
   overflow: hidden;
   position: relative;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
   margin-top: 10px;
-  
+
   &:hover {
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 
-      0 15px 30px rgba(var(--primary-rgb), 0.25),
-      0 8px 8px rgba(0, 0, 0, 0.15),
-      inset 0 2px 0 rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 30px rgba(var(--primary-rgb), 0.25),
+    0 8px 8px rgba(0, 0, 0, 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4);
     letter-spacing: 2.5px;
   }
-  
+
   &:active {
     transform: translateY(2px) scale(0.98);
-    box-shadow: 
-      0 5px 15px rgba(var(--primary-rgb), 0.2),
-      0 3px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.2),
+    0 3px 3px rgba(0, 0, 0, 0.1);
     transition-duration: 0.1s;
   }
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -723,7 +806,7 @@ const goHome = () => {
     background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
     border-radius: 14px 14px 50px 50px / 14px 14px 25px 25px;
   }
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -734,7 +817,7 @@ const goHome = () => {
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
     transition: all 0.6s ease;
   }
-  
+
   &:hover::after {
     left: 100%;
   }
@@ -746,7 +829,7 @@ const goHome = () => {
   margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid var(--color-theme-200);
-  
+
   p {
     font-size: 13px;
     color: var(--color-bleak);

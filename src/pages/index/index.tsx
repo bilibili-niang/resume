@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue'
-import indexHeader from '@/components/index/header.vue'
+import IndexHeader from '@/components/index/header.vue'
 import router from '@/router'
 import logo from '@/assets/png/logo.png'
 import './index.less'
@@ -16,6 +16,10 @@ export default defineComponent({
     // 返回渲染函数
     return () => (
       <div class="index">
+        {/* 先显示header组件，确保登录/退出按钮正确显示 */}
+        <div class="header-container">
+          <IndexHeader/>
+        </div>
         <ice-column>
           <ice-header size="l">
             iceResume
@@ -25,9 +29,7 @@ export default defineComponent({
           <ice-row>
             <ice-button onClick={goDoc}>起步</ice-button>
           </ice-row>
-          <ice-row class="header">
-            <indexHeader/>
-          </ice-row>
+
           <ice-row class="alignC">
             <ice-text>
               基于

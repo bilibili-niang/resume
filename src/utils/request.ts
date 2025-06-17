@@ -1,149 +1,98 @@
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import axios from 'axios'
-// 创建请求实例
-const instance: AxiosInstance = axios.create({
-  // 强制使用代理路径，确保请求通过Vite代理
-  baseURL: '/api',
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json'
+/* eslint-disable */
+import axios, { AxiosError, type AxiosInstance } from 'axios'
+
+const useLogin = () => {
+  console.log('useLogin')
+}
+export type RequestPagination<T = {}> = {
+  /** 当前页码, 1 开始 */
+  current: number
+  /** 一页数量 */
+  size: number
+} & T
+export type ResponseBody<D> = Promise<ResponseData<D>>
+export type ResponseData<D> = {
+  code: number
+  success: boolean
+  data: D
+  msg: string
+}
+export type PaginationData<Record> = {
+  countId: string
+  current: number
+  maxLimit: number
+  optimizeCountSql: boolean
+  orders: string[]
+  pages: number
+  records: Record[]
+  searchCount: boolean
+  size: number
+  total: number
+}
+export type ResponsePaginationData<Record> = ResponseBody<PaginationData<Record>>
+export const getAuthHeaders = () => {
+  return {
+    'BladeAuth': localStorage.getItem('token')
   }
-})
-/**
- * 请求拦截器
- * 在发送请求之前处理请求配置
- */
-instance.interceptors.request.use(
-  async (config: any) => {
-    // 保存noToken标记值，避免删除后无法判断
-    const shouldSkipToken = config.noToken === true
-    
-    // 如果配置中有noToken属性，移除它，不发送给服务器
-    if (config.noToken !== undefined) {
-      delete config.noToken
-    }
-    
-    // 如果不需要跳过token，则添加token
-    if (!shouldSkipToken) {
-      const token = localStorage.getItem('token')
-      if (token) {
-        // 使用后端预期的请求头名称 bladeauth
-        config.headers['bladeauth'] = token
+}
+// 覆盖 AxiosResponse 默认类型
+declare module 'axios' {
+  // 扩展AxiosRequestConfig接口，添加自定义属性
+  interface AxiosRequestConfig {
+    noToken?: boolean; // 标记不需要认证头
+  }
+
+  interface AxiosInstance extends Axios {
+    // 自定义
+    <T = any, R = ResponseData<T>, D = any>(config: AxiosRequestConfig<D>): Promise<R>
+
+    <T = any, R = ResponseData<T>, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>
+
+    defaults: Omit<AxiosDefaults, 'headers'> & {
+      headers: HeadersDefaults & {
+        [key: string]: AxiosHeaderValue
       }
     }
-    // 在开发环境下输出日志
-    if (import.meta.env.DEV) {
-      console.log(`[请求] ${config.method?.toUpperCase()} ${config.url}`, {
-        params: config.params,
-        data: config.data,
-        withToken: !config.noToken
-      })
-    }
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  }
-)
-// 响应拦截器
-instance.interceptors.response.use(
-  (response: AxiosResponse) => {
-    // 如果接口返回不成功，统一处理错误
-    if (response.data && response.data.code !== 200) {
-      return Promise.reject(new Error(response.data.msg || '请求失败'))
-    }
-    return response.data
-  },
-  (error) => {
-    // 处理401未授权错误，清除token并跳转到登录页
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('userInfo')
-      window.location.href = '/login'
-    }
-    return Promise.reject(error)
-  }
-)
-
-// 定义请求配置类型
-interface RequestOptions extends AxiosRequestConfig {
-  url: string;
-  method?: string;
-  data?: any;
-  params?: any;
-  headers?: any;
-  noToken?: boolean; // 是否忽略token
-}
-
-// 封装统一请求方法
-const request = {
-  /**
-   * 发送请求
-   * @param options 请求配置项
-   * @returns Promise
-   */
-  request<T = any>(options: RequestOptions): Promise<T> {
-    return instance(options)
-  },
-  /**
-   * GET请求
-   * @param url 请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   * @returns Promise
-   */
-  get<T = any>(url: string, params?: any, config?: AxiosRequestConfig): Promise<T> {
-    return this.request<T>({
-      url,
-      method: 'GET',
-      params,
-      ...config
-    })
-  },
-  /**
-   * POST请求
-   * @param url 请求地址
-   * @param data 请求数据
-   * @param config 额外配置
-   * @returns Promise
-   */
-  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return this.request<T>({
-      url,
-      method: 'POST',
-      data,
-      ...config
-    })
-  },
-  /**
-   * PUT请求
-   * @param url 请求地址
-   * @param data 请求数据
-   * @param config 额外配置
-   * @returns Promise
-   */
-  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return this.request<T>({
-      url,
-      method: 'PUT',
-      data,
-      ...config
-    })
-  },
-  /**
-   * DELETE请求
-   * @param url 请求地址
-   * @param params 请求参数
-   * @param config 额外配置
-   * @returns Promise
-   */
-  delete<T = any>(url: string, params?: any, config?: AxiosRequestConfig): Promise<T> {
-    return this.request<T>({
-      url,
-      method: 'DELETE',
-      params,
-      ...config
-    })
   }
 }
+const request: AxiosInstance = axios.create({
+  baseURL: '/api', // 添加代理前缀
+  timeout: 30000, // 请求超时时间
+  headers: {
+    ...getAuthHeaders()
+  }
+})
+const err = (error: AxiosError) => {
+  if (error.response?.status === 401) {
+    // 拦截登录
+    useLogin()
+  }
+  return Promise.reject(error)
+}
+/**
+ * @description 请求发起前的拦截器
+ * @returns {AxiosRequestConfig} config
+ */
+request.interceptors.request.use(async (config: any) => {
+  // 检查是否要跳过添加认证头
+  // 处理完后删除自定义参数，避免发送到服务器
+  if (config.noToken) {
+    delete config.headers?.BladeAuth
+  } else {
+    // 从 localStorage 直接获取token
+    const token = localStorage.getItem('token')
+    if (token) {
+      // 直接设置认证头
+      config.headers['BladeAuth'] = token || '12312535423'
+    }
+  }
+  return config
+})
+/**
+ * @description 响应收到后的拦截器
+ * @returns {AxiosResponse} payload
+ */
+request.interceptors.response.use(async (response: any) => {
+  return Promise.resolve(response.data)
+}, err)
 export default request

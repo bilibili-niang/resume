@@ -87,7 +87,7 @@ const handleLogout = async () => {
 
 <style scoped lang="less">
 .index-header {
-  //flex: 1;
+  max-width: @max-page-width;
   padding: 10px 15px;
 }
 

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { LoginParams } from '@/api/user'
-import { getUserInfo as fetchUserInfo, login as userLogin, logout as userLogout, type UserInfo } from '@/api/user'
+import type { LoginParams } from '@/api/user/types'
+import { $getUserInfo as fetchUserInfo, $login as userLogin, $logout as userLogout, type UserInfo } from '@/api/user/index'
 import { useRouter } from 'vue-router'
 // 定义store
 const useUserStore = defineStore('user', () => {

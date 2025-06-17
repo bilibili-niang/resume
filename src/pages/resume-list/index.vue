@@ -71,7 +71,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { deleteResume, getResumeList } from '@/api'
+import { $resumeDelete, $resumeList } from '@/api'
 import { PaginationParams, ResumeInfo } from '@/api/resume/types'
 import { iceMessage } from 'icepro'
 
@@ -87,7 +87,7 @@ const pagination = ref<PaginationParams>({
 // 从接口加载简历列表数据
 const loadResumeList = () => {
   loading.value = true
-  getResumeList(pagination.value)
+  $resumeList(pagination.value)
     .then(res => {
       console.log('res===>')
       console.log(res)
@@ -180,13 +180,11 @@ const confirmDeleteResume = (id: number, title: string) => {
   }
 }
 // 执行删除简历
-const deleteResumeById = (id: number) => {
+const deleteResumeById = (id: number | string) => {
   loading.value = true
-  // 确保有用户认证信息 - 设置一个固定的token来模拟登录状态
-  // 这里的token应该包含用户ID '24cb5351abb64dceaddb62cdfda2aeba'
-  const mockToken = 'mock-token-for-fixed-user'
-  localStorage.setItem('token', mockToken)
-  deleteResume(id)
+  // 使用已登录用户的token进行操作
+  // 确保传入的ID是数字类型，否则后端会报“无效的简历ID”错误
+  $resumeDelete(id)
     .then(res => {
       if (res.code === 200) {
         iceMessage.success('删除成功')
