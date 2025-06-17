@@ -15,15 +15,16 @@ const instance: AxiosInstance = axios.create({
  */
 instance.interceptors.request.use(
   async (config: any) => {
-    // 根据配置判断是否需要添加token
+    // 保存noToken标记值，避免删除后无法判断
+    const shouldSkipToken = config.noToken === true
+    
     // 如果配置中有noToken属性，移除它，不发送给服务器
-    if ((config as any).noToken !== undefined) {
-      delete (config as any).noToken
+    if (config.noToken !== undefined) {
+      delete config.noToken
     }
-    // 如果需要添加token
-    if (config.noToken) {
-      null
-    } else {
+    
+    // 如果不需要跳过token，则添加token
+    if (!shouldSkipToken) {
       const token = localStorage.getItem('token')
       if (token) {
         // 使用后端预期的请求头名称 bladeauth

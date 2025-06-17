@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { themeStore } from '@/store/config.ts'
 import { storeToRefs } from 'pinia'
-import { userStore } from '../../store/modules/user.ts'
+import { useUserStore } from '../../store/modules/user.ts'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-// 直接使用userStore实例，不再调用函数
 const store = themeStore()
 const { isDark } = storeToRefs(store)
+
+// 正确创建userStore实例
+ const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
 const { changeTheme } = store
 // 获取用户显示名称

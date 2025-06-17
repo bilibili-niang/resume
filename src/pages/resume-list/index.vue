@@ -32,8 +32,8 @@
       <!-- 导入简历功能已移除 -->
 
       <!-- 已有简历列表 -->
-      <div v-for="resume in resumeList" :key="resume.id" class="resume-card" @click="openResume(resume.id)">
-        <div class="card-content preview">
+      <div v-for="resume in resumeList" :key="resume.id" class="resume-card">
+        <div class="card-content preview" @click="openResume(resume.id)">
           <!-- 判断图片存在否，不存在则使用默认图片 -->
           <img class="resume-thumbnail" 
                :src="resume.img || 'https://via.placeholder.com/150x200?text=Resume'" 
@@ -42,6 +42,12 @@
           <div class="card-info">
             <ice-text class="card-title">{{ resume.title || '无标题简历' }}</ice-text>
             <ice-text class="card-date">更新于 {{ formatDate(new Date(resume.updatedAt || resume.createdAt || Date.now()).getTime()) }}</ice-text>
+          </div>
+          <!-- 悬浮时显示的操作按钮 -->
+          <div class="card-actions">
+            <ice-button class="delete-btn" type="red" size="small" @click.stop="confirmDeleteResume(resume.id, resume.title)">
+              <i class="iconfont icon-delete"></i> 删除
+            </ice-button>
           </div>
         </div>
       </div>
@@ -62,9 +68,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getResumeList } from '@/api'
+import { getResumeList, createResume, deleteResume } from '@/api'
 import { PaginationParams, ResumeInfo } from '@/api/resume/types'
-import { iceMessage } from 'icepro'
+import { iceMessage, iceMessageBox } from 'icepro'
+import dayjs from 'dayjs';
 
 const router = useRouter()
 const resumeList = ref<ResumeInfo[]>([])
@@ -166,6 +173,42 @@ const openResume = (id: number) => {
     query: { id: String(id) } // 路由查询参数仍需要字符串
   })
 }
+
+// 确认删除简历
+const confirmDeleteResume = (id: number, title: string) => {
+  const isConfirmed = window.confirm(`确定要删除简历「${title || '无标题简历'}」吗？`);
+  if (isConfirmed) {
+    deleteResumeById(id);
+  }
+}
+
+// 执行删除简历
+const deleteResumeById = (id: number) => {
+  loading.value = true;
+  
+  // 确保有用户认证信息 - 设置一个固定的token来模拟登录状态
+  // 这里的token应该包含用户ID '24cb5351abb64dceaddb62cdfda2aeba'
+  const mockToken = 'mock-token-for-fixed-user';
+  localStorage.setItem('token', mockToken);
+  
+  deleteResume(id)
+    .then(res => {
+      if (res.code === 200) {
+        iceMessage.success('删除成功');
+        // 重新加载简历列表
+        loadResumeList();
+      } else {
+        iceMessage.error(`删除失败: ${res.msg || '未知错误'}`);
+      }
+    })
+    .catch(err => {
+      console.error('删除简历出错:', err);
+      iceMessage.error('删除失败，请检查网络连接');
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+}
 onMounted(() => {
   // 从接口加载用户的简历列表
   loadResumeList()
@@ -176,7 +219,7 @@ onMounted(() => {
 .resume-list {
   width: 100%;
   min-height: 100vh;
-  background-color: @bac;
+  background-color: var(--color-theme-100);
   padding: 20px;
   box-sizing: border-box;
 
@@ -192,7 +235,7 @@ onMounted(() => {
 
     .title {
       font-size: 24px;
-      color: @fontColor-light;
+      color: var(--primary);
       margin: 0;
     }
 
@@ -204,7 +247,7 @@ onMounted(() => {
         padding: 5px 10px;
 
         &.active {
-          background-color: @btn-skyblue;
+          background-color: var(--color-theme-500);
         }
       }
     }
@@ -219,16 +262,39 @@ onMounted(() => {
     
     // 定义所有卡片的通用样式
     .resume-card {
-      height: 280px;
-      border-radius: 12px;
+      background-color: var(--color-theme-50);
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      cursor: pointer;
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      
+      .card-content {
+        position: relative;
+        cursor: pointer;
+      }
+      
+      .card-actions {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 2;
+        
+        .delete-btn {
+          padding: 5px 10px;
+          font-size: 12px;
+          border-radius: 4px;
+        }
+      }
 
       &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        
+        .card-actions {
+          opacity: 1;
+        }
       }
       
       // 简历卡片内容区
@@ -244,17 +310,17 @@ onMounted(() => {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background-color: @bac;
+            background-color: var(--color-theme-100);
           }
           
           .card-info {
             padding: 15px;
-            background-color: @bac;
+            background-color: var(--color-theme-100);
             
             .card-title {
               font-size: 16px;
               font-weight: 500;
-              color: @fontColor-light;
+              color: var(--primary);
               margin-bottom: 5px;
               white-space: nowrap;
               overflow: hidden;
@@ -263,7 +329,7 @@ onMounted(() => {
             
             .card-date {
               font-size: 12px;
-              color: @fontColor-bleak;
+              color: var(--color-bleak);
             }
           }
         }
@@ -393,7 +459,7 @@ onMounted(() => {
       display: flex;
       justify-content: center;
       align-items: center;
-      color: @fontColor-bleak;
+      color: var(--color-bleak);
       font-size: 16px;
       text-align: center;
     }
@@ -403,7 +469,7 @@ onMounted(() => {
 // 深色模式适配
 :deep(.dark) {
   .resume-list {
-    background-color: @bac-dark;
+    background-color: var(--color-theme-800);
   }
 }
 </style>

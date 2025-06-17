@@ -11,6 +11,7 @@
           <ice-column class="leftMenu" v-if="false"></ice-column>
           <ice-column class="rightSelection">
             <ice-row>
+              <ice-button @click="saveResume" hover type="primary" style="margin-right: 10px;">保存简历</ice-button>
               <ice-button @click="generate" hover type="shadow-r-t">生成pdf</ice-button>
               <ice-button @click="generateWord" v-if="false">生成word</ice-button>
               <!--<ice-button @click="generateHtml">生成html</ice-button>-->
@@ -78,14 +79,99 @@ import {messageAlert} from "@/utils/utils.js";
 import markdownCard from "@/components/resume/markdownCard/index.vue";
 import {storeToRefs} from 'pinia'
 import CustomBlockController from '@/pages/resume/components/CustomBlockController';
+import { createResume, updateResume, getResumeDetail } from '@/api';
+import { useRoute } from 'vue-router';
 
 const resumeDataStore = resumeStore();
 const {updateMenu} = resumeDataStore;
+const route = useRoute();
+// 确保ID格式正确，只接受数字格式的ID
+const resumeId = ref(route.query.id ? Number(route.query.id) : null);
+const isLoading = ref(false);
 
 const {resumeData} = storeToRefs(resumeDataStore)
 let data = ref(resumeData.value);
 
 const startX = ref();
+
+// 保存简历函数
+const saveResume = () => {
+  isLoading.value = true;
+  
+  // 准备保存的数据
+  const saveData = {
+    userId: '24cb5351abb64dceaddb62cdfda2aeba', // 使用固定的userId
+    title: data.value.title || '无标题简历',
+    data: JSON.stringify(data.value), // 将简历数据转成字符串
+    img: data.value.img || ''
+  };
+  
+  // 判断是新建还是更新
+  const savePromise = resumeId.value
+    ? updateResume(Number(resumeId.value), saveData) // 更新已有简历
+    : createResume(saveData); // 创建新简历
+  
+  savePromise
+    .then(res => {
+      if (res.code === 200) {
+        // 保存成功
+        messageAlert("简历保存成功");
+        
+        // 如果是新建，获取新ID并更新URL
+        if (!resumeId.value && res.data && res.data.id) {
+          resumeId.value = Number(res.data.id);
+          // 更新URL但不重新加载页面
+          window.history.replaceState(
+            null, 
+            '', 
+            `${window.location.pathname}?id=${resumeId.value}`
+          );
+        }
+      } else {
+        // 保存失败
+        messageAlert("保存失败: " + (res.msg || '未知错误'));
+      }
+    })
+    .catch(err => {
+      console.error('保存简历出错:', err);
+      messageAlert("保存失败，请检查网络连接");
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+};
+
+// 加载简历数据
+const loadResumeData = () => {
+  if (!resumeId.value) return; // 没有ID则不加载
+  
+  isLoading.value = true;
+  getResumeDetail(resumeId.value) // resumeId已经转为数字类型
+    .then(res => {
+      if (res.code === 200 && res.data) {
+        try {
+          // 解析返回的简历数据
+          const resumeData = res.data.data ? JSON.parse(res.data.data) : {};
+          // 更新数据
+          data.value = resumeData;
+          // 如果有标题，显示标题
+          document.title = res.data.title || '简历编辑';
+        } catch (e) {
+          console.error('解析简历数据失败:', e);
+          messageAlert("简历数据格式错误");
+        }
+      } else {
+        messageAlert("获取简历数据失败: " + (res.msg || '未知错误'));
+      }
+    })
+    .catch(err => {
+      console.error('获取简历数据出错:', err);
+      messageAlert("获取简历数据失败，请检查网络连接");
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+};
 
 const onMousemove = (e) => {
   const endX = e.clientX;
@@ -138,6 +224,11 @@ onMounted(() => {
   // 设置初始选中的模块
   if (!resumeData.value.menu) {
     updateMenu(moduleIds.introduceMyself);
+  }
+  
+  // 如果URL中有ID参数，加载简历数据
+  if (resumeId.value) {
+    loadResumeData();
   }
 });
 
